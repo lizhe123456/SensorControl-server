@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SensorControl-server:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SensorControl-server.war">
+      <element id="artifact" artifact-name="SensorControl-server:war exploded" />
+    </root>
+  </artifact>
+</component>
