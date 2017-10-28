@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.DeviceDao">
+    <resultMap id="ArticleResult" type="Device">
+        <result property="did" column="did"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="dstate" column="dstate"/>
+        <result property="dip" column="dip"/>
+        <result property="dlongitude" column="dlongitude"/>
+        <result property="dlatitude" column="dlatitude"/>
+        <result property="dinfo" column="dinfo"/>
+    </resultMap>
+
+    <select id="findDevices" parameterType="java.util.Map" resultMap="ArticleResult">
+        SELECT * FROM device
+        <if test="start!=null and pagesize!=null">
+            limit #{start},#{pagesize}
+        </if>
+    </select>
+
+    <select id="findDevice" parameterType="String" resultType="com.zlcm.server.model.device.Device">
+        SELECT * FROM device
+        WHERE
+            <if test="did!=null and did!=''">
+                did=#{did}
+            </if>
+    </select>
+
+    <insert id="insertDevices" parameterType="com.zlcm.server.model.device.Device">
+        INSERT INTO device(did, name,type, dip) VALUES
+            (#{did},#{name},#{type},#{dip});
+    </insert>
+
+    <update id="upDateDevice" parameterType="com.zlcm.server.model.device.Device">
+        UPDATE device
+          <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="type!=null and type!=''">
+                type=#{type},
+            </if>
+            <if test="dstate!=null">
+                dstate=#{dstate},
+            </if>
+            <if test="dip!=null">
+                dip=#{dip},
+            </if>
+            <if test="dlongitude!=null">
+                dlongitude=#{dlongitude},
+            </if>
+            <if test="dlatitude!=null">
+                dlatitude=#{dlatitude},
+            </if>
+            <if test="dinfo!=null and dinfo!=''">
+                dinfo=#{dinfo},
+            </if>
+          </set>
+          <where>
+              did=#{did}
+          </where>
+    </update>
+
+    <delete id="deleteDevices" parameterType="String">
+        DELETE FROM device WHERE did=#{did}
+    </delete>
+
+</mapper>
