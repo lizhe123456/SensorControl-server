@@ -31,7 +31,7 @@ public class DaoTest {
         Map<String,Object> map = new HashMap();
         map.put("username","woshitigexi");
         map.put("password","123456");
-        int userUcenter = userDao.selectUser("woshitigexi","123456");
+//        int userUcenter = userDao.selectUser("woshitigexi","123456");
     }
 
     @Test
@@ -88,7 +88,7 @@ public class DaoTest {
 
     public String getUid(){
         String uid = UUIDTools.uuid();
-        if (userDao.selectUid(uid) != 0){
+        if (userDao.selectUid(uid) != null){
             getUid();
         }
         return uid;

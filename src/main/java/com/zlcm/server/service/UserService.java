@@ -1,8 +1,10 @@
 package com.zlcm.server.service;
 
+import com.zlcm.server.model.user.UserUcenter;
+
 public interface UserService {
 
-    int getLogin(String username, String pass);
+    UserUcenter getLogin(String username, String pass);
 
     int register(String username, String pass);
 

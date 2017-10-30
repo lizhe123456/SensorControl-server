@@ -5,8 +5,13 @@ import com.zlcm.server.model.user.UserInfo;
 import com.zlcm.server.model.user.UserUcenter;
 import com.zlcm.server.service.UserService;
 import com.zlcm.server.util.id.UUIDTools;
+import com.zlcm.server.util.jwt.JwtUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -26,18 +31,31 @@ public class UserServiceImpl implements UserService{
      * @return
      */
     @Override
-    public int getLogin(String username,String pass) {
+    public UserUcenter getLogin(String username,String pass) {
         if (isRegister(username)){
             //已注册
-            int num = userDao.selectUser(username,pass);
-            if (num != 0){
-                return SCS_SUCCESS;
+            UserUcenter userUcenter = userDao.selectUser(username,pass);
+
+            if (userUcenter != null){
+                UserInfo userInfo = userDao.selectUid(userUcenter.getUid());
+                String token = null;
+                try {
+                    token = JwtUtil.createJWT(userUcenter.getUsername(),userUcenter.getUid(),null,userInfo.getSignature(),
+                            "haha",24*60*1000*7, UUIDTools.getToken());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                userUcenter.setToken(token);
+                userUcenter.setCode(SCS_SUCCESS);
+                return userUcenter;
             }else {
-                return SCS_USER_ERROR;
+                userUcenter = new UserUcenter();
+                userUcenter.setCode(SCS_USER_ERROR);
+                return userUcenter;
             }
         }else {
             //未注册
-            return SCS_ISREGISTER;
+            return null;
         }
     }
 
@@ -83,7 +101,7 @@ public class UserServiceImpl implements UserService{
 
     private String getUid(){
         String uid = UUIDTools.uuid();
-        if (userDao.selectUid(uid) != 0){
+        if (userDao.selectUid(uid) != null){
             getUid();
         }
         return uid;

@@ -22,6 +22,8 @@ public class UserInfo implements Serializable {
     private String real_name;
     private String question;
     private String answer;
+    //权限
+    private int role;
 
     public String getUid() {
         return uid;

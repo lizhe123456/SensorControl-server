@@ -4,6 +4,7 @@ public class Result {
 
     private int stateCode;
     private String message;
+
     public Result(int stateCode, String message){
         super();
         this.stateCode = stateCode;
@@ -25,4 +26,6 @@ public class Result {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }

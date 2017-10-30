@@ -5,13 +5,16 @@ import com.zlcm.server.model.user.UserUcenter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.registry.infomodel.User;
+import java.util.Map;
+
 
 @Repository
 public interface UserDao {
 
-    int selectUid(String id);
+    UserInfo selectUid(String id);
 
-    int selectUser(@Param("userName") String username,@Param("passWord") String password);
+    UserUcenter selectUser(@Param(value = "userName") String username,@Param(value = "passWord") String pass);
 
     int selectUserFormName(String username);
 

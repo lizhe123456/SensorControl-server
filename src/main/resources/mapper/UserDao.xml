@@ -4,12 +4,12 @@
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.zlcm.server.dao.UserDao">
 
-    <select id="selectUid" resultType="java.lang.Integer" parameterType="java.lang.String">
-        SELECT count(1) FROM user WHERE uid = #{uid}
+    <select id="selectUid" resultType="UserInfo" parameterType="java.lang.String">
+        SELECT * FROM user WHERE uid = #{uid}
     </select>
 
-    <select id="selectUser" resultType="java.lang.Integer">
-        SELECT count(1) FROM ucenter_user WHERE username = #{userName,jdbcType=CHAR} AND password = #{passWord,jdbcType=VARCHAR};
+    <select id="selectUser" resultType="UserUcenter">
+        SELECT * FROM ucenter_user WHERE username = #{userName,jdbcType=CHAR} AND password = #{passWord,jdbcType=VARCHAR};
     </select>
     <select id="selectUserFormName" resultType="java.lang.Integer">
         SELECT count(1) FROM ucenter_user WHERE

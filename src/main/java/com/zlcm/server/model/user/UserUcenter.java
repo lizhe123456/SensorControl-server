@@ -19,6 +19,8 @@ public class UserUcenter {
     private Timestamp register_time;
     private String last_login_ip;
     private Timestamp last_login_time;
+    private String token;
+    private int code;
 
     public String getUid() {
         return uid;
@@ -114,5 +116,21 @@ public class UserUcenter {
 
     public void setLast_login_time(Timestamp last_login_time) {
         this.last_login_time = last_login_time;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }
