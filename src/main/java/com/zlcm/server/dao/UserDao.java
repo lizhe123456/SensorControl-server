@@ -22,5 +22,7 @@ public interface UserDao {
 
     boolean insertUserUcenter(UserUcenter userUcenter);
 
+    void updateToken(Map<String, Object> map);
+
 
 }

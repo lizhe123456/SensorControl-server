@@ -24,4 +24,8 @@
     <insert id="insertUserUcenter" parameterType="UserUcenter">
         INSERT INTO ucenter_user(uid, username, password) VALUES ( #{uid},#{username},#{password});
     </insert>
+    <update id="updateToken" parameterType="java.util.Map">
+        UPDATE ucenter_user SET token = #{token} WHERE uid=#{uid}
+    </update>
+
 </mapper>

@@ -2,21 +2,21 @@ package com.zlcm.server.model;
 
 public class Result {
 
-    private int stateCode;
+    private int code;
     private String message;
 
-    public Result(int stateCode, String message){
+    public Result(int code, String message){
         super();
-        this.stateCode = stateCode;
+        this.code = code;
         this.message = message;
     }
 
     public int getStateCode() {
-        return stateCode;
+        return code;
     }
 
     public void setStateCode(int stateCode) {
-        this.stateCode = stateCode;
+        this.code = stateCode;
     }
 
     public String getMessage() {

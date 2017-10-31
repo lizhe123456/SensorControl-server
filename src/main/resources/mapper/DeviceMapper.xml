@@ -12,11 +12,8 @@
         <result property="dinfo" column="dinfo"/>
     </resultMap>
 
-    <select id="findDevices" parameterType="java.util.Map" resultMap="ArticleResult">
-        SELECT * FROM device
-        <if test="start!=null and pagesize!=null">
-            limit #{start},#{pagesize}
-        </if>
+    <select id="findDevices" parameterType="java.lang.String" resultMap="List">
+        SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_ddevice WHERE uid = #{uid})
     </select>
 
     <select id="findDevice" parameterType="String" resultType="com.zlcm.server.model.device.Device">

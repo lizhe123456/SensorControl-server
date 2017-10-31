@@ -16,7 +16,7 @@ public interface DeviceService {
 
     void unBindDevice(int uid,int did);
 
-    List<Device> getListByPage(Map<String,Object> map);
+    List<Device> findDevices(String uid);
 
 
 

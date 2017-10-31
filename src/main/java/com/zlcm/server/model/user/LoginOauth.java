@@ -8,12 +8,12 @@ import com.zlcm.server.model.Result;
 public class LoginOauth extends Result{
     private String token;
 
-    public LoginOauth(int stateCode, String message,String token) {
-        super(stateCode, message);
+    public LoginOauth(int code, String message,String token) {
+        super(code, message);
         this.token = token;
     }
-    public LoginOauth(int stateCode, String message) {
-        super(stateCode, message);
+    public LoginOauth(int code, String message) {
+        super(code, message);
     }
 
     public String getToken() {

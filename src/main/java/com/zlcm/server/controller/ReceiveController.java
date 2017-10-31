@@ -1,6 +1,8 @@
 package com.zlcm.server.controller;
 
+import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.Result;
+import com.zlcm.server.service.ReceiveService;
 import com.zlcm.server.util.BmpUtil;
 import com.zlcm.server.util.DateUtil;
 import com.zlcm.server.util.HexStrUtils;
@@ -12,22 +14,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
 @Controller
-@RequestMapping("/send")
+@RequestMapping("/receive")
 public class ReceiveController {
 
+    @Resource
+    ReceiveService receiveService;
 
-    @RequestMapping(value = "/img",method = RequestMethod.POST)
-    public @ResponseBody Result receiveImg(@RequestParam("uploadFile") MultipartFile file,
+    @RequestMapping(value = "/api/img",method = RequestMethod.POST)
+    public @ResponseBody ResponseData receiveImg(@RequestParam("uploadFile") MultipartFile file,
                                            HttpServletRequest request, ModelMap model) {
-        String type = file.getContentType();
-        String fileName = file.getOriginalFilename();
         String newFileName = DateUtil.getStringDate()+"_"+UUIDTools.getImgName()+".bmp";
         //获取项目路径
         ServletContext servletContext = request.getSession().getServletContext();
@@ -57,16 +62,40 @@ public class ReceiveController {
         model.addAttribute("fileUrl", path + newFileName);
         byte[] rgb = BmpUtil.getImagePixel(path + newFileName);
         String s = HexStrUtils.bytesToHexString(rgb);
+
         System.out.println(s);
-        return new Result(200,"上传成功");
+        return ResponseData.ok();
     }
 
-    @RequestMapping()
-    public @ResponseBody Result receiveAT(){
-        Result result = null;
+    @RequestMapping("/device/info")
+    public void receiveIP(HttpServletRequest request, HttpServletResponse response) {
+        String ip = request.getParameter("ip");
+        if (ip != null) {
+            receiveService.reportDeviceIp(ip);
+        }
 
-        return result;
+        double longitude = Double.parseDouble(request.getParameter("longitude"));
+        double latitude = Double.parseDouble(request.getParameter("latitude"));
+        if (longitude != 0 & latitude != 0){
+            receiveService.reportLocation(longitude,latitude);
+        }
+        String state = request.getParameter("state");
+        if (state != null){
+            receiveService.reportDeviceState(state);
+        }
+        String info = request.getParameter("info");
+        if (info != null){
+            receiveService.reportDeviceInfo(info);
+        }
     }
+
+
+    @RequestMapping("/device/info")
+    public void receiveDeviceInfo(){
+
+    }
+
+
 
 
 }

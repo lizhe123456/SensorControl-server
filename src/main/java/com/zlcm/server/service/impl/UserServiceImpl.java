@@ -4,6 +4,7 @@ import com.zlcm.server.dao.UserDao;
 import com.zlcm.server.model.user.UserInfo;
 import com.zlcm.server.model.user.UserUcenter;
 import com.zlcm.server.service.UserService;
+import com.zlcm.server.util.LogUtil;
 import com.zlcm.server.util.id.UUIDTools;
 import com.zlcm.server.util.jwt.JwtUtil;
 import org.springframework.stereotype.Service;
@@ -35,17 +36,7 @@ public class UserServiceImpl implements UserService{
         if (isRegister(username)){
             //已注册
             UserUcenter userUcenter = userDao.selectUser(username,pass);
-
             if (userUcenter != null){
-                UserInfo userInfo = userDao.selectUid(userUcenter.getUid());
-                String token = null;
-                try {
-                    token = JwtUtil.createJWT(userUcenter.getUsername(),userUcenter.getUid(),null,userInfo.getSignature(),
-                            "haha",24*60*1000*7, UUIDTools.getToken());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                userUcenter.setToken(token);
                 userUcenter.setCode(SCS_SUCCESS);
                 return userUcenter;
             }else {

@@ -1,72 +1,54 @@
 package com.zlcm.server.util.jwt;
 
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.io.File;
-import java.io.IOException;
-import java.security.Key;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Date;
+import com.auth0.jwt.JWTSigner;
+import com.auth0.jwt.JWTVerifier;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * jwt加密和解密的工具类
  */
-public class JwtUtil {
 
-    public static Claims parseJWT(String jsonWebToken, String base64Security){
+public class JwtUtil {
+    private static final String SECRET = "XX#$%()(#*!()!KL<><MQLMNQNQJQK sdfkjsdrow32234545fdf>?N<:{LWPW";
+
+    private static final String EXP = "exp";
+
+    private static final String PAYLOAD = "payload";
+    //加密，传入一个对象和有效期
+    public static <T> String sign(T object, long maxAge){
         try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
-                    .parseClaimsJws(jsonWebToken).getBody();
-            return claims;
-        } catch (Exception ex) {
+            final JWTSigner signer = new JWTSigner(SECRET);
+            final Map<String, Object> claims = new HashMap<String, Object>();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = mapper.writeValueAsString(object);
+            claims.put(PAYLOAD, jsonString);
+            claims.put(EXP, System.currentTimeMillis() + maxAge);
+            return signer.sign(claims);
+        } catch(Exception e) {
             return null;
         }
     }
 
-    /**
-     * 前三个参数为自己用户token的一些信息比如id，权限，名称等。
-     * 不要将隐私信息放入（大家都可以获取到）
-     */
-    public static String createJWT(String name, String userId, String role,
-                                   String audience, String issuer, long TTLMillis, String base64Security) throws IOException {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        long nowMillis = System.currentTimeMillis();
-        Date now = new Date(nowMillis);
-        //生成签名密钥 就是一个base64加密后的字符串？
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary (base64Security);
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm. getJcaName());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("userName", name);
-        jsonObject.put("userLoginName", userId);
-        //添加构成JWT的参数
-        JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
-                .setIssuedAt(now) //创建时间
-                .setSubject(jsonObject.toString()) //主题，也差不多是个人的一些信息
-                .setIssuer(issuer) //发送谁
-                .setAudience(audience) //个人签名
-                .signWith(signatureAlgorithm, signingKey); //估计是第三段密钥
-        //添加Token过期时间
-        if (TTLMillis >= 0) {
-        //过期时间
-            long expMillis = nowMillis + TTLMillis;
-        //现在是什么时间
-            Date exp = new Date(expMillis);
-        //系统时间之前的token都是不可以被承认的
-            builder.setExpiration(exp).setNotBefore(now);
+    //解密，传入一个加密后的token字符串和解密后的类型
+    public static<T> T unsign(String jwt, Class<T> classT) {
+        final JWTVerifier verifier = new JWTVerifier(SECRET);
+        try {
+            final Map<String,Object> claims= verifier.verify(jwt);
+            if (claims.containsKey(EXP) && claims.containsKey(PAYLOAD)) {
+                long exp = (Long)claims.get(EXP);
+                long currentTimeMillis = System.currentTimeMillis();
+                if (exp > currentTimeMillis) {
+                    String json = (String)claims.get(PAYLOAD);
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    return objectMapper.readValue(json, classT);
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
         }
-        //生成JWT
-        return builder.compact();
     }
-
 }

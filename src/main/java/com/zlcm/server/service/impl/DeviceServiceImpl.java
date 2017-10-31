@@ -40,8 +40,9 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<Device> getListByPage(Map<String, Object> map) {
-        return null;
+    public List<Device> findDevices(String uid) {
+        return deviceDao.findDevices(uid);
     }
+
 
 }
