@@ -8,13 +8,13 @@ import java.util.Map;
 
 public interface DeviceService {
 
-    void addDevice();
+    int addDevice();
 
-    void deleteDevice(int mac);
+    int deleteDevice(String did);
 
-    void bingDevice(int uid,int did);
+    int bingDevice(String uid,String did);
 
-    void unBindDevice(int uid,int did);
+    int unBindDevice(String uid,String did);
 
     List<Device> findDevices(String uid);
 

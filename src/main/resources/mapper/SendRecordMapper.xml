@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper>
+    <insert id="insertRecord" parameterType="SendRecord">
+        INSERT INTO send_record(send_id, send_name, receive_id, receive_name, info_type, info) VALUES
+            (#{send_id},#{send_name},#{receive_id},#{receive_name},#{info_type},#{info})
+    </insert>
+    <!--查询用户发送记录-->
+    <select id="selectUserRecord" parameterType="java.lang.String" resultType="java.util.List">
+        SELECT * FROM send_record WHERE send_id = #{uid}
+    </select>
+    <!--查询设配接收记录-->
+    <select id="selectDeviceRecord" parameterType="java.lang.String" resultType="java.util.List">
+        SELECT * FROM send_record WHERE receive_id = #{did}
+    </select>
+    <!--查询某时间段用户发送记录-->
+    <select id="selectDateUserRecord" parameterType="java.util.Map" resultType="java.util.List">
+        SELECT * FROM (SELECT * FROM send_record WHERE send_id = #{uid}) a WHERE
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+             a.time <![CDATA[ >= ]]> #{beginDate}
+            </if>
+        <if test="endDate != null and endDate != ''">
+            AND a.time <![CDATA[ <= ]]> #{endDate}
+        </if>
+        </where>
+    </select>
+
+    <!--查询某时间段设配接收记录-->
+    <select id="selectDateDeviceRecord" parameterType="java.util.Map" resultType="java.util.List">
+        SELECT * FROM (SELECT * FROM send_record WHERE receive_id = #{did}) a WHERE
+        <where>
+            <if test="beginDate != null and beginDate != ''">
+                a.time <![CDATA[ >= ]]> #{beginDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND a.time <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteRecord" parameterType="java.util.Map">
+        DELETE FROM send_record WHERE id = #{id}
+    </delete>
+
+    <select id="selectAllRecord" parameterType="java.util.Map" resultType="java.util.List">
+        SELECT * FROM send_record LIMIT #{page},#{size}
+    </select>
+
+</mapper>

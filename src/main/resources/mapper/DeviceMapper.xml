@@ -13,7 +13,11 @@
     </resultMap>
 
     <select id="findDevices" parameterType="java.lang.String" resultMap="List">
-        SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_ddevice WHERE uid = #{uid})
+        SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE uid = #{uid})
+    </select>
+
+    <select id="findUsers" parameterType="java.lang.String" resultMap="List">
+        SELECT * FROM user WHERE uid = ANY ( SELECT uid FROM user_bind_device WHERE did = #{did})
     </select>
 
     <select id="findDevice" parameterType="String" resultType="com.zlcm.server.model.device.Device">

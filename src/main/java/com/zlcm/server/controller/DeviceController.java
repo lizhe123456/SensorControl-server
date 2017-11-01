@@ -27,4 +27,11 @@ public class DeviceController {
         return responseData;
     }
 
+    @RequestMapping(value = "/bind", method = RequestMethod.GET)
+    public ResponseData bindDevice(){
+        ResponseData responseData = null;
+        return responseData;
+    }
+
+    
 }

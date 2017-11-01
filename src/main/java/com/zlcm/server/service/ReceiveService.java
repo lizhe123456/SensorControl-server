@@ -10,7 +10,7 @@ public interface ReceiveService {
 
     void receiveFile(byte[] file);
 
-    void reportLocation(double longitude,double latitude);
+    void reportLocation(String longitude,String latitude);
 
     void reportDeviceState(String state);
 

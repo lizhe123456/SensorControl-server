@@ -74,9 +74,9 @@ public class ReceiveController {
             receiveService.reportDeviceIp(ip);
         }
 
-        double longitude = Double.parseDouble(request.getParameter("longitude"));
-        double latitude = Double.parseDouble(request.getParameter("latitude"));
-        if (longitude != 0 & latitude != 0){
+        String longitude = request.getParameter("longitude");
+        String latitude = request.getParameter("latitude");
+        if (longitude != null & latitude != null){
             receiveService.reportLocation(longitude,latitude);
         }
         String state = request.getParameter("state");

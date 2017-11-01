@@ -20,5 +20,15 @@ public class Constant {
 	public static final int JWT_TTL = 60*60*1000;  //millisecond
 	public static final int JWT_REFRESH_INTERVAL = 55*60*1000;  //millisecond
 	public static final int JWT_REFRESH_TTL = 12*60*60*1000;  //millisecond
-	
+
+	/**
+	 * 设配
+	 */
+	public static final int DEVICE_BIND_SUCCESS = 900;//设配绑定成功
+	public static final int DEVICE_BIND = 901;//设配以绑定
+	public static final int DEVICE_BIND_ERROR = 904;//设配绑定错误
+	public static final int DEVICE_UNBIND_SUCCESS = 905;//设配解绑成功
+	public static final int DEVICE_UNBIND_ERROR = 903;//设配解绑错误
+
+
 }
