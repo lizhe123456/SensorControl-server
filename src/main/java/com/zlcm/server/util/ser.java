@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class ser {
 
     public static void main(String[] args){
-        // TODO Auto-generated method stub
         ServerSocket serversocket=null;
         Socket socket=null;
         BufferedReader br=null;

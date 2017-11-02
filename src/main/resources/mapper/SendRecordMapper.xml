@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.zlcm.server.dao.SendRecordDao">
     <insert id="insertRecord" parameterType="SendRecord">
         INSERT INTO send_record(send_id, send_name, receive_id, receive_name, info_type, info) VALUES
             (#{send_id},#{send_name},#{receive_id},#{receive_name},#{info_type},#{info})

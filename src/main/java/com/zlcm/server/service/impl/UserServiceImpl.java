@@ -122,5 +122,15 @@ public class UserServiceImpl implements UserService{
         return 0;
     }
 
+    /**
+     * 查询用户信息
+     * @param uid
+     * @return
+     */
+    @Override
+    public UserInfo getUserInfo(String uid) {
+        return userDao.selectUid(uid);
+    }
+
 
 }

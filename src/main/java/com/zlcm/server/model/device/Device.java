@@ -12,19 +12,14 @@ public class Device {
     private BigDecimal dlongitude;
     private BigDecimal dlatitude;
     private String dinfo;
+    private String mac;
 
-    @Override
-    public String toString() {
-        return "Device{" +
-                "did='" + did + '\'' +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", dstate='" + dstate + '\'' +
-                ", dip='" + dip + '\'' +
-                ", dlongitude=" + dlongitude +
-                ", dlatitude=" + dlatitude +
-                ", dinfo='" + dinfo + '\'' +
-                '}';
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 
     public String getDid() {

@@ -24,11 +24,25 @@ public class Constant {
 	/**
 	 * 设配
 	 */
+	public static final int DEVICE_INSERT_SUCCESS = 906;//设配绑定成功
+	public static final int DEVICE_DELETE_SUCCESS = 907;
 	public static final int DEVICE_BIND_SUCCESS = 900;//设配绑定成功
 	public static final int DEVICE_BIND = 901;//设配以绑定
 	public static final int DEVICE_BIND_ERROR = 904;//设配绑定错误
 	public static final int DEVICE_UNBIND_SUCCESS = 905;//设配解绑成功
 	public static final int DEVICE_UNBIND_ERROR = 903;//设配解绑错误
 
+	/**
+	 * 接收发送
+	 */
+	public static final int DEVICE_NOT_FOUND = 801;//设配不存在
+	public static final int DEVICE_STATE_EXCEPTION = 805;//设配不存在
+	public static final int DEVICE_NOT_BIND = 802;//设配不在线
+
+	/**
+	 * 收发记录
+	 */
+	public static final int RECORD_DELETE_SUCCESS = 705;
+	public static final int RECORD_INSERT_SUCCESS = 700;
 
 }

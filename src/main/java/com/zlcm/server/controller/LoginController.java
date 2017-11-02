@@ -11,12 +11,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
+@RequestMapping("/login")
 public class LoginController {
 
     @Resource
     UserService userService;
-    @RequestMapping(value = "login",method= RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public @ResponseBody ResponseData login(@RequestParam(value = "username",required=false) String username,
+
+    /**
+     * 登录
+     * @param username
+     * @param pass
+     * @return
+     */
+    @RequestMapping(method= RequestMethod.GET)
+    public ResponseData login(@RequestParam(value = "username",required=false) String username,
                               @RequestParam(value = "pass",required=false) String pass){
         ResponseData result = null;
         UserUcenter userUcenter = userService.getLogin(username,pass);

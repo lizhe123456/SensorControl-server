@@ -32,12 +32,5 @@ public class UserController {
 //        response.getWriter().close();
     }
 
-    @RequestMapping("/sendCodeSMS")
-    @ResponseBody
-    public void sendCodeSMS(String smstel,HttpServletRequest request,HttpSession session){
-
-        String message = "发送成功";
-    }
-
 
 }

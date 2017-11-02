@@ -12,15 +12,24 @@
         <result property="dinfo" column="dinfo"/>
     </resultMap>
 
-    <select id="findDevices" parameterType="java.lang.String" resultMap="List">
+    <select id="findDevices" parameterType="java.lang.String" resultType="java.util.List">
         SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE uid = #{uid})
     </select>
 
-    <select id="findUsers" parameterType="java.lang.String" resultMap="List">
+    <select id="pagingDevices" parameterType="java.util.Map" resultType="java.util.List">
+        SELECT * FROM device LIMIT #{page},#{size}
+    </select>
+
+    <select id="findUsers" parameterType="java.lang.String" resultType="java.util.List">
         SELECT * FROM user WHERE uid = ANY ( SELECT uid FROM user_bind_device WHERE did = #{did})
     </select>
 
-    <select id="findDevice" parameterType="String" resultType="com.zlcm.server.model.device.Device">
+    <select id="peripheryDevices" parameterType="java.util.Map" resultType="java.util.List">
+        SELECT * FROM device d WHERE #{minlat} <![CDATA[ <= ]]> d.dlatitude <![CDATA[ >= ]]> #{maxlat} AND
+                                     #{minlng} <![CDATA[ <= ]]> d.dlongitude <![CDATA[ >= ]]> #{maxlng}
+    </select>
+
+    <select id="findDevice" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
         SELECT * FROM device
         WHERE
             <if test="did!=null and did!=''">
@@ -57,13 +66,16 @@
             <if test="dinfo!=null and dinfo!=''">
                 dinfo=#{dinfo},
             </if>
+            <if test="mac!=null and mac!=''">
+                mac=#{mac},
+            </if>
           </set>
           <where>
               did=#{did}
           </where>
     </update>
 
-    <delete id="deleteDevices" parameterType="String">
+    <delete id="deleteDevices" parameterType="java.lang.String">
         DELETE FROM device WHERE did=#{did}
     </delete>
 

@@ -13,9 +13,17 @@ public interface DeviceDao {
 
     List<Device> findDevices(@Param(value = "uid") String uid);
 
+    List<Device> findUsers(@Param(value = "did") String did);
+
+    Device findDevice(@Param(value = "did") String did);
+
     void insertDevices(Device device);
 
-    void insertDevice(String did);
-
     void upDateDevice(Device device);
+
+    void deleteDevices(@Param(value = "did") String did);
+
+    List<Device> pagingDevices(Map<String, Object> map);
+
+    List<Device> peripheryDevices(Map<String,Object> map);
 }

@@ -49,20 +49,7 @@ public class DaoTest {
             boolean t1 = userDao.insertUserInfo(userInfo);
         }
     }
-    @Test
-    public void testSelectByMap() {
-        try {
-            Map<String,Object> map = new HashMap<String,Object>();
-            map.put("start",0);
-            map.put("pagesize",4);
-            List<Device> re = deviceDao.findDevices(map);
-            for(Device ui:re){
-                System.out.println(ui);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
     @Test
     public void insertD(){
         for (int i = 0; i < 100; i++) {

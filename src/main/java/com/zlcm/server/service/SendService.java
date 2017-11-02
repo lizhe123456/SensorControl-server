@@ -2,10 +2,10 @@ package com.zlcm.server.service;
 
 public interface SendService {
 
-    void sendAt();
+    int sendAt(String did,String AT);
 
-    void sendImg();
+    int sendImg(String did,String img);
 
-    void sendFile();
+    int sendFile(String did,String file);
 
 }

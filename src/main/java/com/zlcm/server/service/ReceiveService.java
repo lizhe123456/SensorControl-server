@@ -1,14 +1,19 @@
 package com.zlcm.server.service;
 
+import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+
 public interface ReceiveService {
 
     void apiForDevice();
 
-    void receiveAT(String AT);
+    void receiveAT(String at);
 
-    void receiveImage(byte[] img);
+    void receiveFile(byte[] img);
 
-    void receiveFile(byte[] file);
+    String receiveImg(MultipartFile file, HttpServletRequest request, ModelMap model);
 
     void reportLocation(String longitude,String latitude);
 
@@ -17,4 +22,5 @@ public interface ReceiveService {
     void reportDeviceIp(String ip);
 
     void reportDeviceInfo(String info);
+
 }

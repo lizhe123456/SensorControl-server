@@ -27,5 +27,45 @@
     <update id="updateToken" parameterType="java.util.Map">
         UPDATE ucenter_user SET token = #{token} WHERE uid=#{uid}
     </update>
+    <update id="updateUserInfo" parameterType="com.zlcm.server.model.user.UserInfo">
+        UPDATE user u
+        <set>
+          <if test="name!=null and name!=''">
+              u.name = #{name},
+          </if>
+            <if test="sex!=null and sex!=''">
+                u.sex = #{sex},
+            </if>
+            <if test="birthday!=null and birthday!=''">
+                u.birthday = #{birthday},
+            </if>
+            <if test="login_frequency!=null and login_frequency!=''">
+                u.login_frequency = #{login_frequency},
+            </if>
 
+            <if test="signature!=null and signature!=''">
+                u.signature = #{signature},
+            </if>
+            <if test="real_name!=null and real_name!=''">
+                u.real_name = #{real_name},
+            </if>
+            <if test="question!=null and question!=''">
+                u.question = #{question},
+            </if>
+            <if test="answer!=null and answer!=''">
+                u.answer = #{answer},
+            </if>
+        </set>
+    </update>
+    <update id="updateLastLogin" parameterType="java.util.Map">
+        UPDATE user u
+        <set>
+            <if test="last_login_ip!=null and last_login_ip!=''">
+                u.last_login_ip = #{last_login_ip},
+            </if>
+            <if test="last_login_time!=null and last_login_time!=''">
+                u.last_login_time = #{last_login_time},
+            </if>
+        </set>
+    </update>
 </mapper>

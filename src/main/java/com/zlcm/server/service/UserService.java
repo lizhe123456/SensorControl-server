@@ -1,5 +1,6 @@
 package com.zlcm.server.service;
 
+import com.zlcm.server.model.user.UserInfo;
 import com.zlcm.server.model.user.UserUcenter;
 
 public interface UserService {
@@ -11,5 +12,7 @@ public interface UserService {
     int updatePass(String username,String oldPass,String newPass);
 
     int phoneLogin(String phone,String code);
+
+    UserInfo getUserInfo(String uid);
 
 }

@@ -28,6 +28,7 @@ public class SocketUtil {
         return socketUtil;
     }
 
+
     private void initThreadPool() {
         executor = new ThreadPoolExecutor(20000, 40000, 1000, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<Runnable>(10000));
@@ -36,7 +37,7 @@ public class SocketUtil {
     /**
      * 打开socket的连接
      */
-    private Runnable addData(String ip,String data){
+    private Runnable addData(String data){
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -72,7 +73,7 @@ public class SocketUtil {
     }
 
     public void sendData(String data){
-        Runnable run = addData(ip,data);
+        Runnable run = addData(data);
         executor.execute(run);
         executor.shutdown();
     }

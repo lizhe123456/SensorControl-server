@@ -20,6 +20,12 @@ public class RegisterController {
     @Resource
     UserService userService;
 
+    /**
+     * 注册
+     * @param username
+     * @param pass
+     * @return
+     */
     @RequestMapping(method= RequestMethod.GET)
     public Result register(@RequestParam(value = "username",required=false) String username,
                            @RequestParam(value = "pass",required=false) String pass){
@@ -34,4 +40,6 @@ public class RegisterController {
         }
         return result;
     }
+
+
 }
