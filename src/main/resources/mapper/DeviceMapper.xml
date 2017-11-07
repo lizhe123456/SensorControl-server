@@ -12,7 +12,7 @@
         <result property="dinfo" column="dinfo"/>
     </resultMap>
 
-    <select id="findDevices" parameterType="java.lang.String" resultType="java.util.List">
+    <select id="findDevices" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
         SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE uid = #{uid})
     </select>
 
@@ -20,11 +20,11 @@
         SELECT * FROM device LIMIT #{page},#{size}
     </select>
 
-    <select id="findUsers" parameterType="java.lang.String" resultType="java.util.List">
+    <select id="findUsers" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
         SELECT * FROM user WHERE uid = ANY ( SELECT uid FROM user_bind_device WHERE did = #{did})
     </select>
 
-    <select id="peripheryDevices" parameterType="java.util.Map" resultType="java.util.List">
+    <select id="peripheryDevices" parameterType="java.util.Map" resultType="com.zlcm.server.model.device.Device">
         SELECT * FROM device d WHERE #{minlat} <![CDATA[ <= ]]> d.dlatitude <![CDATA[ >= ]]> #{maxlat} AND
                                      #{minlng} <![CDATA[ <= ]]> d.dlongitude <![CDATA[ >= ]]> #{maxlng}
     </select>
