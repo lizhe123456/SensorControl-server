@@ -46,6 +46,7 @@ public class SendServiceImpl implements SendService{
 
     @Override
     public int sendFile(String did,String file) {
+
         Device device = deviceDao.findDevice(did);
         if (device != null) {
             SocketUtil.getSocketUtil(device.getDip(), 10026).sendData(file);

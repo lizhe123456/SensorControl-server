@@ -4,13 +4,9 @@ import com.zlcm.server.constant.Constant;
 import com.zlcm.server.dao.DeviceBindDao;
 import com.zlcm.server.dao.DeviceDao;
 import com.zlcm.server.model.device.Device;
-import com.zlcm.server.model.device.DeviceInfoPage;
 import com.zlcm.server.service.DeviceService;
 import com.zlcm.server.util.id.UUIDTools;
-import org.omg.CORBA.MARSHAL;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +76,7 @@ public class DeviceServiceImpl implements DeviceService {
         }
     }
 
+    @Override
     public int isBind(String uid, String did){
         Map<String, Object> map = new HashMap<>();
         map.put("uid",uid);
@@ -97,7 +94,8 @@ public class DeviceServiceImpl implements DeviceService {
         Map<String, Object> map = new HashMap<>();
         map.put("page",page);
         map.put("size",size);
-        return deviceDao.pagingDevices(map);
+        List<Device> list = deviceDao.pagingDevices(map);
+        return list;
     }
 
     @Override

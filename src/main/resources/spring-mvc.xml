@@ -22,6 +22,8 @@
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
           p:defaultEncoding="UTF-8" />
+
+    <bean class="com.zlcm.server.exception.CustomExcetionResolver"/>
     
     <mvc:interceptors>
         <mvc:interceptor>

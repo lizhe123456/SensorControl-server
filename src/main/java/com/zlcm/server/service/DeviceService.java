@@ -25,4 +25,6 @@ public interface DeviceService {
     void updateDevice(Device device);
 
     Device findDevice(String did);
+
+    int isBind(String uid, String did);
 }

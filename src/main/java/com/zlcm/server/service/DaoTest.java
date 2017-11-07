@@ -1,7 +1,6 @@
 package com.zlcm.server.service;
 
-import com.zlcm.server.dao.DeviceDao;
-import com.zlcm.server.dao.UserDao;
+import com.zlcm.server.dao.*;
 import com.zlcm.server.model.device.Device;
 import com.zlcm.server.model.user.UserInfo;
 import com.zlcm.server.model.user.UserUcenter;
@@ -25,6 +24,14 @@ public class DaoTest {
     UserDao userDao;
     @Autowired
     DeviceDao deviceDao;
+    @Autowired
+    DeviceBindDao deviceBindDao;
+    @Autowired
+    SendRecordDao sendRecordDao;
+    @Autowired
+    LogDao logDao;
+    @Autowired
+    DeviceService deviceService;
 
     @Test
     public void testQueryUser(){
@@ -72,6 +79,11 @@ public class DaoTest {
         deviceDao.upDateDevice(device);
     }
 
+    @Test
+    public void sadhia(){
+        List<Device> s = deviceService.pagingDevices(0,20);
+        System.out.println(s.size());
+    }
 
     public String getUid(){
         String uid = UUIDTools.uuid();

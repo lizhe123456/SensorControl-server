@@ -56,9 +56,13 @@ public class SendController {
         String uid = request.getParameter("loginId");
         UserInfo userInfo = userService.getUserInfo(uid);
         Device device = deviceService.findDevice(did);
-        sendService.sendImg(did,path);
-        sendRecordService.insertRecord(userInfo,device,path,"img");
-        return ResponseData.ok();
+        if (deviceService.isBind(uid,did) == 0){
+            return ResponseData.customerError();
+        }else {
+            sendService.sendImg(did, path);
+            sendRecordService.insertRecord(userInfo, device, path, "img");
+            return ResponseData.ok();
+        }
     }
 
     /**
@@ -73,10 +77,15 @@ public class SendController {
         String uid = request.getParameter("loginId");
         UserInfo userInfo = userService.getUserInfo(uid);
         Device device = deviceService.findDevice(did);
-        sendService.sendAt(did,at);
-        sendRecordService.insertRecord(userInfo,device,at,"at");
-        return ResponseData.ok();
+        if (deviceService.isBind(uid,did) == 0){
+            return ResponseData.customerError();
+        }else {
+            sendService.sendAt(did, at);
+            sendRecordService.insertRecord(userInfo, device, at, "at");
+            return ResponseData.ok();
+        }
     }
+
 
 
 }

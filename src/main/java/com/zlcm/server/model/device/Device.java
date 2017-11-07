@@ -1,88 +1,85 @@
 package com.zlcm.server.model.device;
 
-import java.math.BigDecimal;
-
 public class Device {
+  private String did;
+  private String name;
+  private String type;
+  private String dstate;
+  private String dip;
+  private Double dlongitude;
+  private Double dlatitude;
+  private String dinfo;
+  private String mac;
 
-    private String did;
-    private String name;
-    private String type;
-    private String dstate;
-    private String dip;
-    private BigDecimal dlongitude;
-    private BigDecimal dlatitude;
-    private String dinfo;
-    private String mac;
+  public String getDid() {
+    return did;
+  }
 
-    public String getMac() {
-        return mac;
-    }
+  public void setDid(String did) {
+    this.did = did;
+  }
 
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getDid() {
-        return did;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDid(String did) {
-        this.did = did;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public String getDstate() {
+    return dstate;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setDstate(String dstate) {
+    this.dstate = dstate;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getDip() {
+    return dip;
+  }
 
-    public String getDstate() {
-        return dstate;
-    }
+  public void setDip(String dip) {
+    this.dip = dip;
+  }
 
-    public void setDstate(String dstate) {
-        this.dstate = dstate;
-    }
+  public Double getDlongitude() {
+    return dlongitude;
+  }
 
-    public String getDip() {
-        return dip;
-    }
+  public void setDlongitude(Double dlongitude) {
+    this.dlongitude = dlongitude;
+  }
 
-    public void setDip(String dip) {
-        this.dip = dip;
-    }
+  public Double getDlatitude() {
+    return dlatitude;
+  }
 
-    public BigDecimal getDlongitude() {
-        return dlongitude;
-    }
+  public void setDlatitude(Double dlatitude) {
+    this.dlatitude = dlatitude;
+  }
 
-    public void setDlongitude(BigDecimal dlongitude) {
-        this.dlongitude = dlongitude;
-    }
+  public String getDinfo() {
+    return dinfo;
+  }
 
-    public BigDecimal getDlatitude() {
-        return dlatitude;
-    }
+  public void setDinfo(String dinfo) {
+    this.dinfo = dinfo;
+  }
 
-    public void setDlatitude(BigDecimal dlatitude) {
-        this.dlatitude = dlatitude;
-    }
+  public String getMac() {
+    return mac;
+  }
 
-    public String getDinfo() {
-        return dinfo;
-    }
-
-    public void setDinfo(String difo) {
-        this.dinfo = difo;
-    }
+  public void setMac(String mac) {
+    this.mac = mac;
+  }
 }

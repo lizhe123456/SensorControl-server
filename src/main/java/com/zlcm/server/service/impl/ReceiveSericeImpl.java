@@ -69,8 +69,8 @@ public class ReceiveSericeImpl implements ReceiveService{
     @Override
     public void reportLocation(String longitude, String latitude) {
         Device device = new Device();
-        device.setDlongitude(new BigDecimal(longitude));
-        device.setDlatitude(new BigDecimal(latitude));
+        device.setDlongitude(Double.parseDouble(longitude));
+        device.setDlatitude(Double.parseDouble(latitude));
         deviceDao.upDateDevice(device);
     }
 

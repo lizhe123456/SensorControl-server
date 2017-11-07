@@ -16,7 +16,7 @@
         SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE uid = #{uid})
     </select>
 
-    <select id="pagingDevices" parameterType="java.util.Map" resultType="java.util.List">
+    <select id="pagingDevices" parameterType="java.util.Map" resultType="com.zlcm.server.model.device.Device">
         SELECT * FROM device LIMIT #{page},#{size}
     </select>
 

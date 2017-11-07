@@ -96,10 +96,10 @@ public class DeviceController {
      * @return
      */
     @RequestMapping(value = "/list/paging", method = RequestMethod.GET)
-    public @ResponseBody ResponseData getPagingData(@RequestParam(value = "page") int page,
-                                                    @RequestParam(value = "size") int size){
+    public @ResponseBody ResponseData getPagingData(@RequestParam(value = "page") String page,
+                                                    @RequestParam(value = "size") String size){
         ResponseData responseData = ResponseData.ok();
-        responseData.putDataValue("device",deviceService.pagingDevices(page,size));
+        responseData.putDataValue("device",deviceService.pagingDevices(Integer.parseInt(page),Integer.parseInt(size)));
         return responseData;
     }
 

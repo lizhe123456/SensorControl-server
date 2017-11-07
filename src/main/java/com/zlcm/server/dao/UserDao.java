@@ -12,7 +12,7 @@ import java.util.Map;
 @Repository
 public interface UserDao {
 
-    UserInfo selectUid(String id);
+    UserInfo selectUid(@Param("uid") String id);
 
     UserUcenter selectUser(@Param(value = "userName") String username,@Param(value = "passWord") String pass);
 

@@ -33,8 +33,8 @@ public class ReportController {
         String info = request.getParameter("info");
         device.setDip(ip);
         device.setDstate(state);
-        device.setDlongitude(new BigDecimal(longitude));
-        device.setDlatitude(new BigDecimal(latitude));
+        device.setDlongitude(Double.parseDouble(longitude));
+        device.setDlatitude(Double.parseDouble(latitude));
         device.setDinfo(info);
         deviceService.updateDevice(device);
         return ResponseData.ok();

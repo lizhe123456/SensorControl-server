@@ -68,4 +68,19 @@
             </if>
         </set>
     </update>
+    <update id="updateLoginInfo" parameterType="java.util.Map">
+        UPDATE ucenter_user
+        <set>
+            <if test="password!=null and password!=null">
+                password = #{password},
+            </if>
+            <if test="email!=null and email!=null">
+                email = #{email},
+            </if>
+            <if test="phone!=null and phone!=null">
+                phone = #{phone},
+            </if>
+
+        </set>
+    </update>
 </mapper>
