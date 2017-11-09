@@ -10,6 +10,17 @@
       </list>
     </option>
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsLogMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsOrganizationMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsPermissionMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsRoleMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsRolePermissionMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsSystemMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsUserOrganizationMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsUserPermissionMapper.xml" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/UpmsUserRoleMapper.xml" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

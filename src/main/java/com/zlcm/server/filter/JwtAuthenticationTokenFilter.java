@@ -1,6 +1,5 @@
 package com.zlcm.server.filter;
 
-import com.zlcm.server.service.UserService;
 import com.zlcm.server.util.jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +15,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
-    @Autowired
-    private UserService userService;
     @Value("${jwt.header}")
     private String tokenHeader;
 
