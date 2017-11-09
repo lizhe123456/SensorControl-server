@@ -1,9 +1,11 @@
-package com.zlcm.server.authorization.interceptor;
+package com.zlcm.server.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.user.UserUcenter;
 import com.zlcm.server.util.jwt.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 public class TokenInterceptor implements HandlerInterceptor {
+
+    private static Logger _log = LoggerFactory.getLogger(TokenInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
