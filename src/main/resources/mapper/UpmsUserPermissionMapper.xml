@@ -78,4 +78,8 @@
   <select id="getPageList" resultType="java.lang.Integer">
     SELECT * FROM upms_user_permission LIMIT #{page},#{size}
   </select>
+  <select id="userToPermission" resultType="java.lang.Integer">
+    SELECT * FROM upms_user_permission WHERE user_id = #{user_id,jdbcType=INTEGER}
+  </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

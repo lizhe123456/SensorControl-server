@@ -78,5 +78,5 @@
     <delete id="deleteDevices" parameterType="java.lang.String">
         DELETE FROM device WHERE did=#{did}
     </delete>
-
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

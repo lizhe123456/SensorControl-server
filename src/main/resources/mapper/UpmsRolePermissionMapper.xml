@@ -67,6 +67,10 @@
     from upms_role_permission;
   </select>
   <select id="getPageList" resultType="java.lang.Integer">
-    SELECT * FROM upms_role_permission LIMIT #{page},#{size}
+    SELECT * FROM upms_role_permission LIMIT #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
+  <select id="roleToPermission" resultMap="BaseResultMap">
+    SELECT * FROM upms_role_permission WHERE role_id = #{role_id,jdbcType=INTEGER}
+  </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

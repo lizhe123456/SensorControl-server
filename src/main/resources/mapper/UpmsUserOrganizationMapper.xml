@@ -68,4 +68,5 @@
   <select id="getPageList" resultType="java.lang.Integer">
     SELECT * FROM upms_user_organization LIMIT #{page},#{size}
   </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

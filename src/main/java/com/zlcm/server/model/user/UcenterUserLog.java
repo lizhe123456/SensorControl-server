@@ -2,26 +2,26 @@ package com.zlcm.server.model.user;
 
 public class UcenterUserLog {
 
-  private Long user_log_id;
-  private Long user_id;
+  private Integer user_log_id;
+  private Integer user_id;
   private String content;
   private String ip;
   private String agent;
   private java.sql.Timestamp create_time;
 
-  public Long getUser_log_id() {
+  public Integer getUser_log_id() {
     return user_log_id;
   }
 
-  public void setUser_log_id(Long user_log_id) {
+  public void setUser_log_id(Integer user_log_id) {
     this.user_log_id = user_log_id;
   }
 
-  public Long getUser_id() {
+  public Integer getUser_id() {
     return user_id;
   }
 
-  public void setUser_id(Long user_id) {
+  public void setUser_id(Integer user_id) {
     this.user_id = user_id;
   }
 

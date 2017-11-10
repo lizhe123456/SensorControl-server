@@ -3,6 +3,7 @@ package com.zlcm.server.service;
 import com.zlcm.server.dao.DeviceDao;
 import com.zlcm.server.dao.upms.UpmsOrganizationMapper;
 import com.zlcm.server.dao.user.UcenterUserOauthDao;
+import com.zlcm.server.model.upms.UpmsRole;
 import com.zlcm.server.model.upms.UpmsUserRole;
 import com.zlcm.server.model.user.UcenterUserOauth;
 import org.junit.Test;
@@ -28,7 +29,8 @@ public class DaoTest {
     UcenterUserOauthService ucenterUserOauthService;
     @Autowired
     UpmsUserRoleService upmsUserRoleService;
-
+    @Autowired
+    UpmsApiService upmsApiService;
     @Test
     public void saas(){
         deviceDao.findDevice("00567c18f0ab45618e4a5c7e8780f6a6");
@@ -38,5 +40,9 @@ public class DaoTest {
         List<UpmsUserRole> list1 = upmsUserRoleService.findAll();
         System.out.println(list.size());
         System.out.println(list1.size());
+        upmsApiService.selectUpmsRoleByUpmsUserId(1);
+        List<UpmsRole> list2 = upmsApiService.selectUpmsRoleByUpmsUserIdByCache(1);
+
+
     }
 }

@@ -2,34 +2,34 @@ package com.zlcm.server.model.user;
 
 public class UcenterUserOauth {
 
-  private Long user_oauth_id;
-  private Long user_id;
-  private Long oauth_id;
+  private Integer user_oauth_id;
+  private Integer user_id;
+  private Integer oauth_id;
   private String open_id;
-  private Long status;
+  private Integer status;
   private java.sql.Timestamp create_time;
 
-  public Long getUser_oauth_id() {
+  public Integer getUser_oauth_id() {
     return user_oauth_id;
   }
 
-  public void setUser_oauth_id(Long user_oauth_id) {
+  public void setUser_oauth_id(Integer user_oauth_id) {
     this.user_oauth_id = user_oauth_id;
   }
 
-  public Long getUser_id() {
+  public Integer getUser_id() {
     return user_id;
   }
 
-  public void setUser_id(Long user_id) {
+  public void setUser_id(Integer user_id) {
     this.user_id = user_id;
   }
 
-  public Long getOauth_id() {
+  public Integer getOauth_id() {
     return oauth_id;
   }
 
-  public void setOauth_id(Long oauth_id) {
+  public void setOauth_id(Integer oauth_id) {
     this.oauth_id = oauth_id;
   }
 
@@ -41,11 +41,11 @@ public class UcenterUserOauth {
     this.open_id = open_id;
   }
 
-  public Long getStatus() {
+  public Integer getStatus() {
     return status;
   }
 
-  public void setStatus(Long status) {
+  public void setStatus(Integer status) {
     this.status = status;
   }
 

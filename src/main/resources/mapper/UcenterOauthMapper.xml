@@ -29,4 +29,5 @@
         select *
         from ucenter_oauth LIMIT #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
     </select>
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

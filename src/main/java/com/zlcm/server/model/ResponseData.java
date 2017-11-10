@@ -34,6 +34,9 @@ public class ResponseData {
     public static ResponseData ok() {
         return new ResponseData(200, "success");
     }
+    public static ResponseData phoneError() {
+        return new ResponseData(601, "验证码有误");
+    }
 
     public static ResponseData notFound() {
         return new ResponseData(404, "Not Found");

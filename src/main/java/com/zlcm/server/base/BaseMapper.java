@@ -10,20 +10,20 @@ public interface BaseMapper<Entity> {
      * 增加
      * @param entity
      */
-    void save(Entity entity);
+    int save(Entity entity);
 
     /**
      * 修改
      * @param entity
      */
-    void update(Entity entity);
+    int update(Entity entity);
 
     /**
      * 通过主键删除
      * @param pk
      */
 
-    void deleteByPK(@Param("pk") final Integer pk);
+    int deleteByPK(@Param("pk") final Integer pk);
 
     /**
      * 通过主键查询
@@ -31,7 +31,6 @@ public interface BaseMapper<Entity> {
      * @return
      */
     Entity get(@Param("pk") Integer pk);
-
 
     /**
      * 查询全部

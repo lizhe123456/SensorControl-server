@@ -46,4 +46,19 @@ public class GenMain {
         }
     }
 
+    public int[] twoSum(int[] nums, int target) {
+        int[] h = new int[2];
+        for(int i = 0;i < nums.length;i++){
+            for(int j = nums.length-1; j >= 0; j--){
+                int num = i + j;
+                if(num == target){
+                    h[0] = i;
+                    h[1] = j;
+                    return h;
+                }
+            }
+        }
+        return h;
+    }
+
 }

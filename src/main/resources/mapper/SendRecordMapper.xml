@@ -46,5 +46,5 @@
     <select id="selectAllRecord" parameterType="java.util.Map" resultType="java.util.List">
         SELECT * FROM send_record LIMIT #{page},#{size}
     </select>
-
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

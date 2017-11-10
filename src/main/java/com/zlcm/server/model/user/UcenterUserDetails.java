@@ -1,19 +1,19 @@
 package com.zlcm.server.model.user;
 
 public class UcenterUserDetails {
-  private Long user_id;
+  private Integer user_id;
   private String signature;
   private String real_name;
   private java.sql.Timestamp birthday;
   private String question;
   private String answer;
-  private Long real_name_auth;
+  private Integer real_name_auth;
 
-  public Long getUser_id() {
+  public Integer getUser_id() {
     return user_id;
   }
 
-  public void setUser_id(Long user_id) {
+  public void setUser_id(Integer user_id) {
     this.user_id = user_id;
   }
 
@@ -57,11 +57,11 @@ public class UcenterUserDetails {
     this.answer = answer;
   }
 
-  public Long getReal_name_auth() {
+  public Integer getReal_name_auth() {
     return real_name_auth;
   }
 
-  public void setReal_name_auth(Long real_name_auth) {
+  public void setReal_name_auth(Integer real_name_auth) {
     this.real_name_auth = real_name_auth;
   }
 }

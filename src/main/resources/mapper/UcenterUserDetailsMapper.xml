@@ -96,4 +96,5 @@
         select *
         from ucenter_user_details LIMIT #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
     </select>
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

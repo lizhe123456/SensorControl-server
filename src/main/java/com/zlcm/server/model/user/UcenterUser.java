@@ -1,26 +1,35 @@
 package com.zlcm.server.model.user;
 
 public class UcenterUser {
-  private Long user_id;
+  private Integer user_id;
   private String username;
   private String password;
   private String salt;
   private String nickname;
   private String email;
   private String phone;
-  private Long state;
+  private Integer state;
   private String avatar;
   private String register_ip;
   private java.sql.Timestamp register_time;
   private String last_login_ip;
   private java.sql.Timestamp last_login_time;
-  private Long sex;
+  private Integer sex;
+  private Integer locked;
 
-  public Long getUser_id() {
+  public Integer getLocked() {
+    return locked;
+  }
+
+  public void setLocked(Integer locked) {
+    this.locked = locked;
+  }
+
+  public Integer getUser_id() {
     return user_id;
   }
 
-  public void setUser_id(Long user_id) {
+  public void setUser_id(Integer user_id) {
     this.user_id = user_id;
   }
 
@@ -72,11 +81,11 @@ public class UcenterUser {
     this.phone = phone;
   }
 
-  public Long getState() {
+  public Integer getState() {
     return state;
   }
 
-  public void setState(Long state) {
+  public void setState(Integer state) {
     this.state = state;
   }
 
@@ -120,11 +129,11 @@ public class UcenterUser {
     this.last_login_time = last_login_time;
   }
 
-  public Long getSex() {
+  public Integer getSex() {
     return sex;
   }
 
-  public void setSex(Long sex) {
+  public void setSex(Integer sex) {
     this.sex = sex;
   }
 }

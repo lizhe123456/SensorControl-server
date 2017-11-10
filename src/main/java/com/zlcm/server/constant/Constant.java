@@ -45,4 +45,6 @@ public class Constant {
 	public static final int RECORD_DELETE_SUCCESS = 705;
 	public static final int RECORD_INSERT_SUCCESS = 700;
 
+
+	public final static String UPMS_TYPE = "zlcm-server-type";
 }
