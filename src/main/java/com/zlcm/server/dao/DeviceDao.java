@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository
 public interface DeviceDao {
 
-    List<Device> findDevices(@Param(value = "uid") String uid);
+    List<Device> findDevices(@Param(value = "uid") Integer uid);
 
     List<Device> findUsers(@Param(value = "did") String did);
 

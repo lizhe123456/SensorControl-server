@@ -4,7 +4,7 @@ public class Device {
   private String did;
   private String name;
   private String type;
-  private String dstate;
+  private Integer dstate;
   private String dip;
   private Double dlongitude;
   private Double dlatitude;
@@ -35,11 +35,11 @@ public class Device {
     this.type = type;
   }
 
-  public String getDstate() {
+  public Integer getDstate() {
     return dstate;
   }
 
-  public void setDstate(String dstate) {
+  public void setDstate(Integer dstate) {
     this.dstate = dstate;
   }
 
