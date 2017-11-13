@@ -1,82 +1,146 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zlcm.server.dao.DeviceDao">
-    <resultMap id="ArticleResult" type="Device">
-        <result property="did" column="did"/>
-        <result property="name" column="name"/>
-        <result property="type" column="type"/>
-        <result property="dstate" column="dstate"/>
-        <result property="dip" column="dip"/>
-        <result property="dlongitude" column="dlongitude"/>
-        <result property="dlatitude" column="dlatitude"/>
-        <result property="dinfo" column="dinfo"/>
-    </resultMap>
+<mapper namespace="com.zlcm.server.dao.device.DeviceMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.device.Device">
+    <id column="did" jdbcType="VARCHAR" property="did" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="dstate" jdbcType="TINYINT" property="dstate" />
+    <result column="dip" jdbcType="VARCHAR" property="dip" />
+    <result column="dlongitude" jdbcType="DECIMAL" property="dlongitude" />
+    <result column="dlatitude" jdbcType="DECIMAL" property="dlatitude" />
+    <result column="dinfo" jdbcType="VARCHAR" property="dinfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    did, name, type, dstate, dip, dlongitude, dlatitude, dinfo
+  </sql>
+  <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from device
+    where did = #{did,jdbcType=VARCHAR}
+  </select>
 
-    <select id="findDevices" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
-        SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE uid = #{uid})
-    </select>
+  <delete id="deleteByPK" parameterType="java.lang.String">
+    delete from device
+    where did = #{did,jdbcType=VARCHAR}
+  </delete>
+  <insert id="save" parameterType="com.zlcm.server.model.device.Device">
+    insert into device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="did != null">
+        did,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="dstate != null">
+        dstate,
+      </if>
+      <if test="dip != null">
+        dip,
+      </if>
+      <if test="dlongitude != null">
+        dlongitude,
+      </if>
+      <if test="dlatitude != null">
+        dlatitude,
+      </if>
+      <if test="dinfo != null">
+        dinfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="did != null">
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="dstate != null">
+        #{dstate,jdbcType=TINYINT},
+      </if>
+      <if test="dip != null">
+        #{dip,jdbcType=VARCHAR},
+      </if>
+      <if test="dlongitude != null">
+        #{dlongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="dlatitude != null">
+        #{dlatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="dinfo != null">
+        #{dinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        mac = #{dinfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.device.Device">
+    update device
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="dstate != null">
+        dstate = #{dstate,jdbcType=TINYINT},
+      </if>
+      <if test="dip != null">
+        dip = #{dip,jdbcType=VARCHAR},
+      </if>
+      <if test="dlongitude != null">
+        dlongitude = #{dlongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="dlatitude != null">
+        dlatitude = #{dlatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="dinfo != null">
+        dinfo = #{dinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        mac = #{dinfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+  <select id="findAll" resultType="com.zlcm.server.model.device.Device">
+    select *
+    from device;
+  </select>
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(*)
+    from device;
+  </select>
+  <select id="getPageList" resultType="java.lang.Integer">
+    select *
+    from device LIMIT #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <select id="findDevices" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
+    SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE user_id = #{uid})
+  </select>
 
-    <select id="pagingDevices" parameterType="java.util.Map" resultType="com.zlcm.server.model.device.Device">
-        SELECT * FROM device LIMIT #{page},#{size}
-    </select>
+  <select id="findUsers" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
+    SELECT * FROM ucenter_user WHERE user_id = ANY ( SELECT user_bind_device.user_id FROM user_bind_device WHERE did = #{did})
+  </select>
 
-    <select id="findUsers" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
-        SELECT * FROM user WHERE uid = ANY ( SELECT uid FROM user_bind_device WHERE did = #{did})
-    </select>
-
-    <select id="peripheryDevices" parameterType="java.util.Map" resultType="com.zlcm.server.model.device.Device">
-        SELECT * FROM device d WHERE #{minlat} <![CDATA[ <= ]]> d.dlatitude <![CDATA[ >= ]]> #{maxlat} AND
-                                     #{minlng} <![CDATA[ <= ]]> d.dlongitude <![CDATA[ >= ]]> #{maxlng}
-    </select>
-
-    <select id="findDevice" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
-        SELECT * FROM device
-        WHERE
-            <if test="did!=null and did!=''">
-                did=#{did}
-            </if>
-    </select>
-
-    <insert id="insertDevices" parameterType="com.zlcm.server.model.device.Device">
-        INSERT INTO device(did, name,type, dip) VALUES
-            (#{did},#{name},#{type},#{dip});
-    </insert>
-
-    <update id="upDateDevice" parameterType="com.zlcm.server.model.device.Device">
-        UPDATE device
-          <set>
-            <if test="name!=null and name!=''">
-                name=#{name},
-            </if>
-            <if test="type!=null and type!=''">
-                type=#{type},
-            </if>
-            <if test="dstate!=null">
-                dstate=#{dstate},
-            </if>
-            <if test="dip!=null">
-                dip=#{dip},
-            </if>
-            <if test="dlongitude!=null">
-                dlongitude=#{dlongitude},
-            </if>
-            <if test="dlatitude!=null">
-                dlatitude=#{dlatitude},
-            </if>
-            <if test="dinfo!=null and dinfo!=''">
-                dinfo=#{dinfo},
-            </if>
-            <if test="mac!=null and mac!=''">
-                mac=#{mac},
-            </if>
-          </set>
-          <where>
-              did=#{did}
-          </where>
-    </update>
-
-    <delete id="deleteDevices" parameterType="java.lang.String">
-        DELETE FROM device WHERE did=#{did}
-    </delete>
-    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+  <select id="peripheryDevices" parameterType="java.util.Map" resultType="com.zlcm.server.model.device.Device">
+    SELECT * FROM device d WHERE #{minlat} <![CDATA[ <= ]]> d.dlatitude <![CDATA[ >= ]]> #{maxlat} AND
+    #{minlng} <![CDATA[ <= ]]> d.dlongitude <![CDATA[ >= ]]> #{maxlng}
+  </select>
+  <select id="getDeviceFormMac" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
+    select *
+    from device
+    where mac = #{mac};
+  </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

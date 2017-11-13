@@ -1,6 +1,5 @@
 package com.zlcm.server.service;
 
-import com.zlcm.server.dao.DeviceDao;
 import com.zlcm.server.dao.upms.UpmsOrganizationMapper;
 import com.zlcm.server.dao.user.UcenterUserOauthDao;
 import com.zlcm.server.model.upms.UpmsRole;
@@ -17,8 +16,6 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring-mybatis.xml"})
 public class DaoTest {
-    @Autowired
-    DeviceDao deviceDao;
 
     @Autowired
     UcenterUserOauthDao ucenterUserOauthDao;
@@ -33,7 +30,6 @@ public class DaoTest {
     UpmsApiService upmsApiService;
     @Test
     public void saas(){
-        deviceDao.findDevice("00567c18f0ab45618e4a5c7e8780f6a6");
         ucenterUserOauthDao.findAll();
         upmsOrganizationMapper.findAll();
         List<UcenterUserOauth> list = ucenterUserOauthService.findAll();

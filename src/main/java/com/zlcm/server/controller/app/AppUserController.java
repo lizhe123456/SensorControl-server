@@ -6,6 +6,7 @@ import com.zlcm.server.model.user.UcenterUserDetails;
 import com.zlcm.server.model.user.UcenterUserLog;
 import com.zlcm.server.service.*;
 import com.zlcm.server.util.*;
+import com.zlcm.server.util.id.UUIDTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -17,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import sun.misc.UCDecoder;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 @Controller
 @RequestMapping("/api/user")
@@ -68,7 +75,6 @@ public class AppUserController{
             ucenterUser.setRegister_ip(ip);
             ucenterUser.setPassword(MD5Utils.MD5(password + salt));
             ucenterUser.setUsername(phone);
-            ucenterUser.setPhone(phone);
             ucenterUser.setSalt(salt);
             UserAgent userAgent = UserAgentUtil.getUserAgent(request.getHeader("user-agent"));
             ucenterApiService.insertUser(ucenterUser,userAgent.getPlatformType(),ip,"url/"+request.getRequestURL() +"/手机号注册");
@@ -90,9 +96,11 @@ public class AppUserController{
         UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
         if (ucenterUser == null){
             //账号不存在
+            return ResponseData.userNull();
         }
         if (!MD5Utils.MD5(password+ucenterUser.getSalt()).equals(ucenterUser.getPassword())){
             //密码错误
+            return ResponseData.passError();
         }
         return ResponseData.ok();
     }
@@ -103,15 +111,80 @@ public class AppUserController{
 
     /**
      * 实名认证
+     * type认证方式 0.手机号 1.身份证
      */
+    @RequestMapping(value = "/authen",method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "实名认证")
+    public ResponseData authen(@RequestParam("type") Integer type,
+                               @RequestParam("name") String name,
+                               @RequestParam("idCard") String idCard,
+                               @RequestParam("phone") String phone){
+        //0
+        if (type == 0){
+
+        }else if (type == 1){
+
+        }
+        return null;
+    }
 
     /**
      * 获取用户信息
      */
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "获取用户信息")
+    public ResponseData getUserInfo(@RequestParam("username") String username){
+        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
+        ResponseData responseData = ResponseData.ok();
+        responseData.putDataValue("username",ucenterUser);
+        return responseData;
+    }
 
     /**
      * 修改用户信息
      */
+    @RequestMapping(value = "/update/info",method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "修改用户信息")
+    public void getUpdateUserInfo(HttpServletRequest request,@RequestParam("username") String username,
+                                  @RequestParam("name") String name,
+                                  @RequestParam("sex") Integer sex,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("uploadFile") MultipartFile file,
+                                  @RequestParam("signature") String signature){
+        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
+        UcenterUserDetails ucenterUserDetails = ucenterUserDetailsService.get(ucenterUser.getUser_id());
+        ucenterUserDetails.setSex(sex);
+        ucenterUserDetails.setNickname(name);
+        ucenterUserDetails.setEmail(email);
+        String newFileName = DateUtil.getStringDate() + "_" + UUIDTools.getImgName()+".bmp";
+        ServletContext servletContext = request.getSession().getServletContext();
+        // 设定文件保存的目录
+        String path = servletContext.getRealPath("/avatar") + "/";
+        File f = new File(path);
+        String serverPath = path + newFileName;
+        if (!f.exists())
+            f.mkdirs();
+        if (!file.isEmpty()){
+            try {
+                FileOutputStream fos = new FileOutputStream(serverPath);
+                InputStream in = file.getInputStream();
+                int b = 0;
+                while ((b = in.read()) != -1){
+                    fos.write(b);
+                }
+                fos.close();
+                in.close();
+            } catch (Exception  e) {
+                e.printStackTrace();
+            }
+        }
+        ucenterUserDetails.setAvatar(serverPath);
+        ucenterUserDetails.setSignature(signature);
+        ucenterUserService.update(ucenterUser);
+    }
 
     /**
      * 第三方登录

@@ -27,6 +27,7 @@ public class UcenterApiServiceImpl implements UcenterApiService {
         ucenterUserDao.save(ucenterUser);
         UcenterUserDetails ucenterUserDetails = new UcenterUserDetails();
         ucenterUserDetails.setUser_id(ucenterUser.getUser_id());
+        ucenterUserDetails.setPhone(ucenterUser.getUsername());
         ucenterUserDetailsDao.save(ucenterUserDetails);
         UcenterUserLog ucenterUserLog = GenerationLogUtils.generationUcenterUserLog(ucenterUser.getUser_id(),
                 agent,ip,content);

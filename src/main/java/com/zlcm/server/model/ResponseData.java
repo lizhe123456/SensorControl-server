@@ -37,6 +37,22 @@ public class ResponseData {
     public static ResponseData phoneError() {
         return new ResponseData(601, "验证码有误");
     }
+    public static ResponseData userNull() {
+        return new ResponseData(501, "用户不存在");
+    }
+    public static ResponseData passError() {
+        return new ResponseData(502, "密码错误");
+    }
+
+    public static ResponseData deviceNull() {
+        return new ResponseData(701, "设配为空");
+    }
+    public static ResponseData deviceStateError() {
+        return new ResponseData(702, "设配不可用");
+    }
+    public static ResponseData sendError() {
+        return new ResponseData(703, "发送错误");
+    }
 
     public static ResponseData notFound() {
         return new ResponseData(404, "Not Found");

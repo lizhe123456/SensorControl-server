@@ -13,7 +13,7 @@ public class SocketUtil {
     private ThreadPoolExecutor executor;
     private static SocketUtil socketUtil;
     private int port;
-    private Runnable runnable;
+    private String response = null;
 
     private SocketUtil() {
     }
@@ -37,19 +37,22 @@ public class SocketUtil {
     /**
      * 打开socket的连接
      */
-    private Runnable addData(String data){
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                PrintWriter pw = null;
-                OutputStream os = null;
+    private String addData(String data){
+        executor.execute(new Runnable() {
+             @Override
+             public void run() {
+                 PrintWriter pw = null;
+                 OutputStream os = null;
                 try {
                     Socket socket = new Socket(ip,port);
                     os = socket.getOutputStream();
                     pw = new PrintWriter(os);
                     pw.print(data);
                     pw.flush();
+                    byte[] datas = new byte[2048];
                     Thread.currentThread().sleep(4000);
+                    socket.getInputStream().read(datas);
+                    response = new String(datas);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -68,14 +71,17 @@ public class SocketUtil {
                     }
                 }
             }
-        };
-        return runnable;
+        });
+        executor.shutdown();
+       return response;
     }
 
-    public void sendData(String data){
-        Runnable run = addData(data);
-        executor.execute(run);
-        executor.shutdown();
+    public int sendData(String data){
+        String response = addData(data);
+        if (response == null && response.equals("AAAAAAA")){
+            return 203;
+        }
+        return 200;
     }
 
 }

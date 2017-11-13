@@ -1,85 +1,98 @@
 package com.zlcm.server.model.device;
 
-public class Device {
-  private String did;
-  private String name;
-  private String type;
-  private Integer dstate;
-  private String dip;
-  private Double dlongitude;
-  private Double dlatitude;
-  private String dinfo;
-  private String mac;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
-  public String getDid() {
-    return did;
-  }
+public class Device implements Serializable {
+    private String did;
 
-  public void setDid(String did) {
-    this.did = did;
-  }
+    private String name;
 
-  public String getName() {
-    return name;
-  }
+    private String type;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    private Byte dstate;
 
-  public String getType() {
-    return type;
-  }
+    private String dip;
 
-  public void setType(String type) {
-    this.type = type;
-  }
+    private BigDecimal dlongitude;
 
-  public Integer getDstate() {
-    return dstate;
-  }
+    private BigDecimal dlatitude;
 
-  public void setDstate(Integer dstate) {
-    this.dstate = dstate;
-  }
+    private String dinfo;
 
-  public String getDip() {
-    return dip;
-  }
+    private String mac;
 
-  public void setDip(String dip) {
-    this.dip = dip;
-  }
+    public String getMac() {
+        return mac;
+    }
 
-  public Double getDlongitude() {
-    return dlongitude;
-  }
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
 
-  public void setDlongitude(Double dlongitude) {
-    this.dlongitude = dlongitude;
-  }
+    private static final long serialVersionUID = 1L;
 
-  public Double getDlatitude() {
-    return dlatitude;
-  }
+    public String getDid() {
+        return did;
+    }
 
-  public void setDlatitude(Double dlatitude) {
-    this.dlatitude = dlatitude;
-  }
+    public void setDid(String did) {
+        this.did = did == null ? null : did.trim();
+    }
 
-  public String getDinfo() {
-    return dinfo;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setDinfo(String dinfo) {
-    this.dinfo = dinfo;
-  }
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
 
-  public String getMac() {
-    return mac;
-  }
+    public String getType() {
+        return type;
+    }
 
-  public void setMac(String mac) {
-    this.mac = mac;
-  }
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public Byte getDstate() {
+        return dstate;
+    }
+
+    public void setDstate(Byte dstate) {
+        this.dstate = dstate;
+    }
+
+    public String getDip() {
+        return dip;
+    }
+
+    public void setDip(String dip) {
+        this.dip = dip == null ? null : dip.trim();
+    }
+
+    public BigDecimal getDlongitude() {
+        return dlongitude;
+    }
+
+    public void setDlongitude(BigDecimal dlongitude) {
+        this.dlongitude = dlongitude;
+    }
+
+    public BigDecimal getDlatitude() {
+        return dlatitude;
+    }
+
+    public void setDlatitude(BigDecimal dlatitude) {
+        this.dlatitude = dlatitude;
+    }
+
+    public String getDinfo() {
+        return dinfo;
+    }
+
+    public void setDinfo(String dinfo) {
+        this.dinfo = dinfo == null ? null : dinfo.trim();
+    }
 }
