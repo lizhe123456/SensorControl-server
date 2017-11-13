@@ -1,5 +1,6 @@
 package com.zlcm.server.controller.app;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.user.UcenterUser;
 import com.zlcm.server.model.user.UcenterUserDetails;
@@ -9,6 +10,9 @@ import com.zlcm.server.util.*;
 import com.zlcm.server.util.id.UUIDTools;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api/user")
@@ -93,14 +99,10 @@ public class AppUserController{
     @ApiOperation(value = "账号密码登录")
     public ResponseData login(@RequestParam("username") String username,
                               @RequestParam("password") String password){
-        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
-        if (ucenterUser == null){
-            //账号不存在
-            return ResponseData.userNull();
-        }
-        if (!MD5Utils.MD5(password+ucenterUser.getSalt()).equals(ucenterUser.getPassword())){
-            //密码错误
-            return ResponseData.passError();
+        Subject subject = SecurityUtils.getSubject();
+        subject.login(new UsernamePasswordToken(username,password));
+        if (subject.isAuthenticated()){
+
         }
         return ResponseData.ok();
     }
@@ -185,6 +187,21 @@ public class AppUserController{
         ucenterUserDetails.setSignature(signature);
         ucenterUserService.update(ucenterUser);
     }
+
+    /**
+     * 退出登录
+     */
+    @RequestMapping(value="/logout",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "退出登录")
+    public String logout() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("success", true);
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
+        return JSONUtils.toJSONString(result);
+    }
+
 
     /**
      * 第三方登录

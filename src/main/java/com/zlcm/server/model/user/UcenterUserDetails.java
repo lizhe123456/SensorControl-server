@@ -7,7 +7,6 @@ public class UcenterUserDetails {
   private java.sql.Timestamp birthday;
   private String question;
   private String answer;
-  private Integer real_name_auth;
   private Integer sex;
   private String avatar;
   private String nickname;
@@ -102,11 +101,4 @@ public class UcenterUserDetails {
     this.answer = answer;
   }
 
-  public Integer getReal_name_auth() {
-    return real_name_auth;
-  }
-
-  public void setReal_name_auth(Integer real_name_auth) {
-    this.real_name_auth = real_name_auth;
-  }
 }

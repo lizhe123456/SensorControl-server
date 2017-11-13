@@ -22,9 +22,6 @@
             <if test="answer != null">
                 answer,
             </if>
-            <if test="real_name_auth != null">
-                real_name_auth
-            </if>
             <if test="nickname != null">
                 nickname,
             </if>
@@ -59,9 +56,6 @@
             </if>
             <if test="answer != null">
                 #{answer,jdbcType=VARCHAR},
-            </if>
-            <if test="real_name_auth != null">
-                real_name_auth
             </if>
             <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
@@ -98,9 +92,6 @@
             </if>
             <if test="answer != null">
                 answer = #{answer,jdbcType=VARCHAR},
-            </if>
-            <if test="real_name_auth != null">
-                real_name_auth = #{real_name_auth,jdbcType=VARCHAR},
             </if>
             <if test="nickname != null">
                 nickname=#{nickname,jdbcType=VARCHAR},
