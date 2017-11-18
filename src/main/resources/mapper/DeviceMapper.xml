@@ -9,6 +9,7 @@
     <result column="dip" jdbcType="VARCHAR" property="dip" />
     <result column="dlongitude" jdbcType="DECIMAL" property="dlongitude" />
     <result column="dlatitude" jdbcType="DECIMAL" property="dlatitude" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
     <result column="dinfo" jdbcType="VARCHAR" property="dinfo" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -49,6 +50,9 @@
       <if test="dlatitude != null">
         dlatitude,
       </if>
+      <if test="mac != null">
+        mac,
+      </if>
       <if test="dinfo != null">
         dinfo,
       </if>
@@ -75,11 +79,11 @@
       <if test="dlatitude != null">
         #{dlatitude,jdbcType=DECIMAL},
       </if>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
       <if test="dinfo != null">
         #{dinfo,jdbcType=VARCHAR},
-      </if>
-      <if test="mac != null">
-        mac = #{dinfo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -108,7 +112,7 @@
         dinfo = #{dinfo,jdbcType=VARCHAR},
       </if>
       <if test="mac != null">
-        mac = #{dinfo,jdbcType=VARCHAR},
+        mac = #{mac,jdbcType=VARCHAR},
       </if>
     </set>
     where did = #{did,jdbcType=VARCHAR}
@@ -134,8 +138,8 @@
   </select>
 
   <select id="peripheryDevices" parameterType="java.util.Map" resultType="com.zlcm.server.model.device.Device">
-    SELECT * FROM device d WHERE #{minlat} <![CDATA[ <= ]]> d.dlatitude <![CDATA[ >= ]]> #{maxlat} AND
-    #{minlng} <![CDATA[ <= ]]> d.dlongitude <![CDATA[ >= ]]> #{maxlng}
+    SELECT * FROM device d WHERE #{minlat} <![CDATA[ <= ]]> d.dlatitude <![CDATA[ <= ]]> #{maxlat} AND
+    #{minlng} <![CDATA[ <= ]]> d.dlongitude <![CDATA[ <= ]]> #{maxlng}
   </select>
   <select id="getDeviceFormMac" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
     select *

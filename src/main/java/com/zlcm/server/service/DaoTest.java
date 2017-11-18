@@ -2,15 +2,21 @@ package com.zlcm.server.service;
 
 import com.zlcm.server.dao.upms.UpmsOrganizationMapper;
 import com.zlcm.server.dao.user.UcenterUserOauthDao;
+import com.zlcm.server.model.device.Device;
 import com.zlcm.server.model.upms.UpmsRole;
 import com.zlcm.server.model.upms.UpmsUserRole;
+import com.zlcm.server.model.user.UcenterUser;
 import com.zlcm.server.model.user.UcenterUserOauth;
+import com.zlcm.server.util.IPUtils;
+import com.zlcm.server.util.MD5Utils;
+import com.zlcm.server.util.id.UUIDTools;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -18,27 +24,20 @@ import java.util.List;
 public class DaoTest {
 
     @Autowired
-    UcenterUserOauthDao ucenterUserOauthDao;
+    DeviceService deviceService;
 
-    @Autowired
-    UpmsOrganizationMapper upmsOrganizationMapper;
-    @Autowired
-    UcenterUserOauthService ucenterUserOauthService;
-    @Autowired
-    UpmsUserRoleService upmsUserRoleService;
-    @Autowired
-    UpmsApiService upmsApiService;
     @Test
     public void saas(){
-        ucenterUserOauthDao.findAll();
-        upmsOrganizationMapper.findAll();
-        List<UcenterUserOauth> list = ucenterUserOauthService.findAll();
-        List<UpmsUserRole> list1 = upmsUserRoleService.findAll();
-        System.out.println(list.size());
-        System.out.println(list1.size());
-        upmsApiService.selectUpmsRoleByUpmsUserId(1);
-        List<UpmsRole> list2 = upmsApiService.selectUpmsRoleByUpmsUserIdByCache(1);
+        Device device = new Device();
+        device.setDlongitude(BigDecimal.valueOf(114.1603088379));
+        device.setDlatitude(BigDecimal.valueOf(30.6068904120));
+        device.setName("asdkasl");
+        device.setMac("25:88:77:88");
+        device.setDid(UUIDTools.getUUID());
+        device.setType("BSP8266");
+        deviceService.save(device);
 
-
+//        List<Device> li  = deviceService.findPeriphery(114.1365337372,30.6181922948,0.5);
+//        System.out.println(li.size());
     }
 }

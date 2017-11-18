@@ -129,5 +129,15 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore-nio:4.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpasyncclient-cache:4.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient-cache:4.5.2" level="project" />
+    <orderEntry type="library" name="Maven: nl.bitwalker:UserAgentUtils:1.2.4" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: org.richard:my-jar:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

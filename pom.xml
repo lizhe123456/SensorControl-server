@@ -280,6 +280,18 @@
       <artifactId>yunpian-java-sdk</artifactId>
       <version>1.2.5</version>
     </dependency>
+    <dependency>
+      <groupId>nl.bitwalker</groupId>
+      <artifactId>UserAgentUtils</artifactId>
+      <version>1.2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.richard</groupId>
+      <artifactId>my-jar</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/CCP_REST_SMS_SDK_JAVA_v2.6.3r.jar</systemPath>
+    </dependency>
   </dependencies>
 
   <build>

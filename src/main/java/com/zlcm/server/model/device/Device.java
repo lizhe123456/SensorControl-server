@@ -18,9 +18,11 @@ public class Device implements Serializable {
 
     private BigDecimal dlatitude;
 
+    private String mac;
+
     private String dinfo;
 
-    private String mac;
+
 
     public String getMac() {
         return mac;

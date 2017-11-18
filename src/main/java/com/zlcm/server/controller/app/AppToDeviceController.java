@@ -1,6 +1,7 @@
 package com.zlcm.server.controller.app;
 
 import com.zlcm.server.dao.user.UcenterUserLogDao;
+import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.device.Device;
 import com.zlcm.server.model.upms.Advert;
@@ -46,11 +47,13 @@ public class AppToDeviceController {
     /**
      * 发送数据
      */
+    @LoginRequired
     @RequestMapping(value = "/advert",method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "发送广告")
-    public ResponseData sendData(HttpServletRequest request,@RequestParam("uid") Integer uid, @RequestParam("did") String did,
-                                 @RequestParam("uploadFile") MultipartFile file,@RequestParam(value = "desc", defaultValue = "") String desc,
+    public ResponseData sendData(HttpServletRequest request, @RequestParam("did") String did,
+                                 @RequestParam("uploadFile") MultipartFile file,
+                                 @RequestParam(value = "desc", defaultValue = "") String desc,
                                  @RequestParam(value = "continuedTime",defaultValue = "60000") String continuedTime){
         Device device = deviceService.get(did);
         if (device == null){
@@ -86,9 +89,9 @@ public class AppToDeviceController {
                 return ResponseData.sendError();
             }
             String ip = IPUtils.getIpAddr(request);
-            UserAgent userAgent = UserAgentUtil.getUserAgent(request.getHeader("user-agent"));
+            String ua = request.getHeader("user-agent");
             UcenterUserLog log =
-            GenerationLogUtils.generationUcenterUserLog(uid,ip,userAgent.getPlatformType(),"url/"+request.getRequestURL() +"/发出广告");
+            GenerationLogUtils.generationUcenterUserLog(Integer.valueOf(request.getParameter("loginId")),ip,UserAgentUtil.getMobileOS(ua),"url/"+request.getRequestURL() +"/发出广告");
             ucenterUserLogService.save(log);
             Advert advert = new Advert();
             advert.setDid(did);
@@ -96,7 +99,7 @@ public class AppToDeviceController {
             advert.setContinuedTime(continuedTime);
             advert.setInfo(serverPath);
             advert.setState((byte) 0);
-            advert.setUserId(uid);
+            advert.setUserId(Integer.valueOf(request.getParameter("loginId")));
             advertService.save(advert);
             return ResponseData.ok();
         }else {

@@ -37,13 +37,22 @@ public class ResponseData {
     public static ResponseData phoneError() {
         return new ResponseData(601, "验证码有误");
     }
+    public static ResponseData codeError() {
+        return new ResponseData(602, "验证码获取次数过多");
+    }
+
     public static ResponseData userNull() {
         return new ResponseData(501, "用户不存在");
     }
     public static ResponseData passError() {
         return new ResponseData(502, "密码错误");
     }
-
+    public static ResponseData userFound() {
+        return new ResponseData(503, "手机号已注册");
+    }
+    public static ResponseData userLocked() {
+        return new ResponseData(504, "由于不正规使用，用户已停用，请联系客服");
+    }
     public static ResponseData deviceNull() {
         return new ResponseData(701, "设配为空");
     }
@@ -77,6 +86,7 @@ public class ResponseData {
     public static ResponseData customerError() {
         return new ResponseData(1001, "customer Error");
     }
+
 
 }
 

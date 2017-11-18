@@ -1,34 +1,38 @@
 package com.zlcm.server.controller.app;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
+import com.zlcm.server.model.Sms;
 import com.zlcm.server.model.user.UcenterUser;
 import com.zlcm.server.model.user.UcenterUserDetails;
-import com.zlcm.server.model.user.UcenterUserLog;
 import com.zlcm.server.service.*;
 import com.zlcm.server.util.*;
 import com.zlcm.server.util.id.UUIDTools;
+import com.zlcm.server.util.jwt.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.util.TextUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.UCDecoder;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,8 +64,16 @@ public class AppUserController{
     @ResponseBody
     @ApiOperation(value = "获取手机验证码", notes = "")
     public ResponseData getPhoneCode(@RequestParam("phone") String phone){
-        code = JavaSmsApi.getRandomStr(6,2);
-        JavaSmsApi.sendM(phone,code);
+        code = JavaSmsApi.getRandomStr(6,0);
+        try {
+            String s = JavaSmsApi.sendM(phone,code);
+            Sms sms = JackJsonUtils.fromJson(s, Sms.class);
+            if (sms.getCode() == 22){
+                return ResponseData.codeError();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return ResponseData.ok();
     }
 
@@ -74,22 +86,29 @@ public class AppUserController{
     public ResponseData phoneRegister(HttpServletRequest request,@RequestParam("phone") String phone,
                                       @RequestParam("code") String code,
                                       @RequestParam("password") String password){
-        if (this.code == code) {
+        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(phone);
+        if (ucenterUser != null){
+            return ResponseData.userFound();
+        }
+        if (!TextUtils.isEmpty(this.code) && this.code .equals(code)) {
             String salt = MD5Utils.getSalt();
             String ip = IPUtils.getIpAddr(request);
-            UcenterUser ucenterUser = new UcenterUser();
+            ucenterUser = new UcenterUser();
             ucenterUser.setRegister_ip(ip);
             ucenterUser.setPassword(MD5Utils.MD5(password + salt));
             ucenterUser.setUsername(phone);
             ucenterUser.setSalt(salt);
-            UserAgent userAgent = UserAgentUtil.getUserAgent(request.getHeader("user-agent"));
-            ucenterApiService.insertUser(ucenterUser,userAgent.getPlatformType(),ip,"url/"+request.getRequestURL() +"/手机号注册");
+            String ua = request.getHeader("user-agent");
+            ucenterApiService.insertUser(ucenterUser,UserAgentUtil.getMobileOS(ua),ip,"url/"+request.getRequestURL() +"/手机号注册");
             return ResponseData.ok();
         }else {
             return ResponseData.phoneError();
         }
     }
 
+    /**
+     * 手机验证码登录
+     */
 
     /**
      * 登录
@@ -99,12 +118,25 @@ public class AppUserController{
     @ApiOperation(value = "账号密码登录")
     public ResponseData login(@RequestParam("username") String username,
                               @RequestParam("password") String password){
-        Subject subject = SecurityUtils.getSubject();
-        subject.login(new UsernamePasswordToken(username,password));
-        if (subject.isAuthenticated()){
+        // 查询用户信息
+        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
 
+        if (ucenterUser == null) {
+            return ResponseData.userNull();
         }
-        return ResponseData.ok();
+        if (!ucenterUser.getPassword().equals(MD5Utils.MD5(password + ucenterUser.getSalt()))){
+            return ResponseData.passError();
+        }
+        if (ucenterUser.getLocked() == 1){
+            return ResponseData.userLocked();
+        }
+        ucenterUser.setState(1);
+        ucenterUserService.update(ucenterUser);
+        String token = JwtUtil.sign(ucenterUser,1000*60*60*24*30);
+        ResponseData responseData = ResponseData.ok();
+        responseData.putDataValue("token",token);
+        responseData.putDataValue("loginId",String.valueOf(ucenterUser.getUser_id()));
+        return responseData;
     }
 
     /**
@@ -115,6 +147,7 @@ public class AppUserController{
      * 实名认证
      * type认证方式 0.手机号 1.身份证
      */
+    @LoginRequired
     @RequestMapping(value = "/authen",method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "实名认证")
@@ -134,6 +167,7 @@ public class AppUserController{
     /**
      * 获取用户信息
      */
+    @LoginRequired
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "获取用户信息")
@@ -147,6 +181,7 @@ public class AppUserController{
     /**
      * 修改用户信息
      */
+    @LoginRequired
     @RequestMapping(value = "/update/info",method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "修改用户信息")
@@ -191,6 +226,7 @@ public class AppUserController{
     /**
      * 退出登录
      */
+    @LoginRequired
     @RequestMapping(value="/logout",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "退出登录")

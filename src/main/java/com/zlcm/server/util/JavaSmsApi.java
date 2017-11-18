@@ -56,43 +56,32 @@ public class JavaSmsApi {
         String apikey = "1520c930ec6b39f9103b6eb1cdd1d9b0";
 
         //修改为您要发送的手机号
-        String mobile = "130xxxxxxxx";
+        String mobile = "17688943972";
 
         /**************** 查账户信息调用示例 *****************/
         System.out.println(JavaSmsApi.getUserInfo(apikey));
 
         /**************** 使用智能匹配模板接口发短信(推荐) *****************/
         //设置您要发送的内容(内容必须和某个模板匹配。以下例子匹配的是系统提供的1号模板）
-        String text = "【云片网】您的验证码是1234";
+        String text = "【智领传媒】您的验证码是1234";
         //发短信调用示例
-        // System.out.println(JavaSmsApi.sendSms(apikey, text, mobile));
+         System.out.println(JavaSmsApi.sendSms(apikey, text, mobile));
 
         /**************** 使用指定模板接口发短信(不推荐，建议使用智能匹配模板接口) ******/
         //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
         long tpl_id = 1;
         //设置对应的模板变量值
 
-        String tpl_value = URLEncoder.encode("#code#", ENCODING) + "=" +
-                URLEncoder.encode("1234", ENCODING) + "&" + URLEncoder.encode(
-                "#company#", ENCODING) + "=" + URLEncoder.encode("云片网",
-                ENCODING);
-        //模板发送的调用示例
-        System.out.println(tpl_value);
-        System.out.println(JavaSmsApi.tplSendSms(apikey, tpl_id, tpl_value,
-                mobile));
+//        String tpl_value = URLEncoder.encode("#code#", ENCODING) + "=" +
+//                URLEncoder.encode("1234", ENCODING) + "&" + URLEncoder.encode(
+//                "#company#", ENCODING) + "=" + URLEncoder.encode("云片网",
+//                ENCODING);
+//        //模板发送的调用示例
+//        System.out.println(tpl_value);
+//        System.out.println(JavaSmsApi.tplSendSms(apikey, tpl_id, tpl_value,
+//                mobile));
 
-        /**************** 使用接口发语音验证码 *****************/
-        String code = "1234";
-        //System.out.println(JavaSmsApi.sendVoice(apikey, mobile ,code));
 
-        /**************** 使用接口绑定主被叫号码 *****************/
-        String from = "+86130xxxxxxxx";
-        String to = "+86131xxxxxxxx";
-        Integer duration = 30 * 60; // 绑定30分钟
-        //System.out.println(JavaSmsApi.bindCall(apikey, from ,to , duration));
-
-        /**************** 使用接口解绑主被叫号码 *****************/
-        //System.out.println(JavaSmsApi.unbindCall(apikey, from, to));
     }
 
     /**
@@ -128,13 +117,10 @@ public class JavaSmsApi {
         return post(URI_SEND_SMS, params);
     }
 
-    public static String sendM(String phone ,String code){
-        String text = "【智领传媒】您的验证码是"+code+"，请不要告诉他人！";
-        Map < String, String > params = new HashMap < String, String > ();
-        params.put("apikey", "1520c930ec6b39f9103b6eb1cdd1d9b0");
-        params.put("text", text);
-        params.put("mobile", phone);
-        return post(URI_SEND_SMS, params);
+    public static String sendM(String phone ,String code) throws IOException {
+        String text = "【智领传媒】您的验证码是"+code+"。如非本人操作，请忽略本短信";
+        String apikey = "1520c930ec6b39f9103b6eb1cdd1d9b0";
+        return sendSms(apikey,text,phone);
     }
     /**
      * 随机产生字符串

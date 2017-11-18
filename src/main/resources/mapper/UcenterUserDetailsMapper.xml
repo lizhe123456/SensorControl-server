@@ -4,13 +4,13 @@
     <insert id="save" parameterType="com.zlcm.server.model.user.UcenterUserDetails">
         insert into ucenter_user_details
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
+            <if test="user_id != null">
                 user_id,
             </if>
             <if test="signature != null">
                 signature,
             </if>
-            <if test="realName != null">
+            <if test="real_name != null">
                 real_name,
             </if>
             <if test="birthday != null">
@@ -39,13 +39,13 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
+            <if test="user_id != null">
                 #{user_id,jdbcType=INTEGER},
             </if>
             <if test="signature != null">
                 #{signature,jdbcType=VARCHAR},
             </if>
-            <if test="realName != null">
+            <if test="real_name != null">
                 #{real_name,jdbcType=VARCHAR},
             </if>
             <if test="birthday != null">
@@ -56,9 +56,6 @@
             </if>
             <if test="answer != null">
                 #{answer,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                #{phone,jdbcType=VARCHAR},
             </if>
             <if test="nickname != null">
                 #{nickname,jdbcType=VARCHAR},
@@ -72,6 +69,9 @@
             <if test="email != null">
                 #{email,jdbcType=VARCHAR},
             </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -81,7 +81,7 @@
             <if test="signature != null">
                 signature = #{signature,jdbcType=VARCHAR},
             </if>
-            <if test="realName != null">
+            <if test="real_name != null">
                 real_name = #{real_name,jdbcType=VARCHAR},
             </if>
             <if test="birthday != null">

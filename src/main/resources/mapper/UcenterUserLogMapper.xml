@@ -4,16 +4,16 @@
     <insert id="save" parameterType="com.zlcm.server.model.user.UcenterUserLog">
         insert into ucenter_user_log
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userLogId != null">
+            <if test="user_log_id != null">
                 user_log_id,
             </if>
-            <if test="userId != null">
+            <if test="user_id != null">
                 user_id,
             </if>
             <if test="ip != null">
                 ip,
             </if>
-            <if test="createTime != null">
+            <if test="create_time != null">
                 create_time,
             </if>
             <if test="content != null">
@@ -24,16 +24,16 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userLogId != null">
+            <if test="user_log_id != null">
                 #{user_log_id,jdbcType=INTEGER},
             </if>
-            <if test="userId != null">
+            <if test="user_id != null">
                 #{user_id,jdbcType=INTEGER},
             </if>
             <if test="ip != null">
                 #{ip,jdbcType=VARCHAR},
             </if>
-            <if test="createTime != null">
+            <if test="create_time != null">
                 #{create_time,jdbcType=TIMESTAMP},
             </if>
             <if test="content != null">

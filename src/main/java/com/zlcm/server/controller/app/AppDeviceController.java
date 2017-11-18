@@ -72,7 +72,7 @@ public class AppDeviceController {
                                         @RequestParam(value = "range",defaultValue = "0.5") double range){
         List<Device> list = deviceService.findPeriphery(longitude, latitude,range);
         ResponseData responseData = ResponseData.ok();
-        responseData.putDataValue("data", list);
+        responseData.putDataValue("device", list);
         return responseData;
     }
 

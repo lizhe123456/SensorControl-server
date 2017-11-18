@@ -31,7 +31,7 @@ public class AdminLoginController extends BaseController{
     UpmsApiService upmsApiService;
 
     @ApiOperation(value = "后台首页")
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String index(ModelMap modelMap){
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
@@ -39,6 +39,6 @@ public class AdminLoginController extends BaseController{
         List<UpmsPermission> upmsPermissions =
                 upmsApiService.selectUpmsPermissionByUpmsUserId(ucenterUser.getUser_id());
         modelMap.put("upmsPermissions",upmsPermissions);
-        return "/index.jsp";
+        return "/login.html";
     }
 }
