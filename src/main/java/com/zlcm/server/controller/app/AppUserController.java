@@ -107,6 +107,31 @@ public class AppUserController{
     }
 
     /**
+     *
+     */
+    @RequestMapping(value = "/userRegister",method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "", notes = "")
+    public ResponseData userRegister(HttpServletRequest request,
+                                     @RequestParam("username") String username,
+                                     @RequestParam("password") String password){
+        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
+        if (ucenterUser != null){
+            return ResponseData.userFound();
+        }
+        String salt = MD5Utils.getSalt();
+        String ip = IPUtils.getIpAddr(request);
+        ucenterUser = new UcenterUser();
+        ucenterUser.setRegister_ip(ip);
+        ucenterUser.setPassword(MD5Utils.MD5(password + salt));
+        ucenterUser.setUsername(username);
+        ucenterUser.setSalt(salt);
+        String ua = request.getHeader("user-agent");
+        ucenterApiService.insertUser(ucenterUser,UserAgentUtil.getMobileOS(ua),ip,"url/"+request.getRequestURL() +"/手机号注册");
+        return ResponseData.ok();
+    }
+
+    /**
      * 手机验证码登录
      */
 

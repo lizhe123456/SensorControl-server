@@ -82,9 +82,9 @@ public class AppToDeviceController {
             }
         }
         byte[] rgb = BmpUtil.getImagePixel(serverPath);
-        String data = HexStrUtils.bytesToHexString(rgb);
+//        String data = HexStrUtils.bytesToHexString(rgb);
         if (device.getDstate() == 1) {
-            int code = SocketUtil.getSocketUtil(device.getDip(), 10026).sendData(data);
+            int code = SocketUtil.getSocketUtil(device.getDip(), 10026).sendData(rgb);
             if (code == 203){
                 return ResponseData.sendError();
             }

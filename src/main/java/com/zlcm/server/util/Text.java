@@ -30,4 +30,6 @@ public class Text {
         b[1] = (byte) (c & 0xFF);
         return b;
     }
+
+
 }

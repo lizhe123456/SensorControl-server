@@ -37,22 +37,21 @@ public class SocketUtil {
     /**
      * 打开socket的连接
      */
-    private String addData(String data){
+    private String addData(byte[] data){
         executor.execute(new Runnable() {
              @Override
              public void run() {
-                 PrintWriter pw = null;
                  OutputStream os = null;
+                 Socket socket = null;
                 try {
-                    Socket socket = new Socket(ip,port);
+                    socket = new Socket(ip,port);
                     os = socket.getOutputStream();
-                    pw = new PrintWriter(os);
-                    pw.print(data);
-                    pw.flush();
-                    byte[] datas = new byte[2048];
-                    Thread.currentThread().sleep(4000);
-                    socket.getInputStream().read(datas);
-                    response = new String(datas);
+                    while (true){
+                        os.write(data);
+                        os.flush();
+                        Thread.currentThread().sleep(1000);
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -62,8 +61,8 @@ public class SocketUtil {
                         if (os != null) {
                             os.close();
                         }
-                        if (pw != null){
-                            pw.close();
+                        if (socket != null){
+                            socket.close();
                         }
                     } catch (IOException e) {
                         LogUtil.getInstance(SocketUtil.class).e("IO流关闭失败");
@@ -76,9 +75,9 @@ public class SocketUtil {
        return response;
     }
 
-    public int sendData(String data){
+    public int sendData(byte[] data){
         String response = addData(data);
-        if (response == null && response.equals("AAAAAAA")){
+        if (response != null && response.equals("AAAAAAA")){
             return 203;
         }
         return 200;
