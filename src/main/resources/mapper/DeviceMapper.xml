@@ -129,7 +129,7 @@
     select *
     from device LIMIT #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
-  <select id="findDevices" parameterType="java.lang.String" resultType="com.zlcm.server.model.device.Device">
+  <select id="findDevices" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.device.Device">
     SELECT * FROM device WHERE did = ANY ( SELECT did FROM user_bind_device WHERE user_id = #{uid})
   </select>
 

@@ -1,154 +1,256 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="Generator" content="EditPlus®">
+    <meta name="Author" content="梦想星辰大海">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>智领传媒</title>
+    <link rel="stylesheet" href="plugins/layui/css/layui.css">
+</head>
+<style>
 
-<html>
+</style>
+<body>
+    <!-- 布局容器 -->
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部 -->
+        <div class="layui-header">
+            <div class="layui-main">
+                <!-- logo -->
+                <a href="/" style="color: #c2c2c2; font-size: 18px; line-height: 60px;">后台管理系统</a>
+                <!-- 水平导航 -->
+                <ul class="layui-nav" style="position: absolute; top: 0; right: 0; background: none;">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            欢迎登录！admin
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;">
+                                    个人信息
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;">
+                                    修改密码
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;">
+                                    退出登录
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-	<head>
-		<meta charset="utf-8">
-		<title>后台管理模板</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="format-detection" content="telephone=no">
+        <!-- 侧边栏 -->
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree" lay-filter="left-nav" style="border-radius: 0;">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" data-url="1.html" data-id="1">
+                           首页
+                        </a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            APP用户管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="appuser.html" data-id="2">
+                                    APP用户列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="appuserlog.html" data-id="3">
+                                    APP用户日志
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            后台用户管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="adminuser.html" data-id="4">
+                                    后台用户列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="adminuserlog.html" data-id="5">
+                                    后台用户日志
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            广告管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="advert.html" data-id="6">
+                                    广告列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="noadvert.html" data-id="7">
+                                    待审核
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            订单管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="order.html" data-id="8">
+                                    订单列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="http://cn.bing.com/" data-id="3">
+                                    待审核
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            设配管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="device.html" data-id="9">
+                                    设配列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="devicelog.html" data-id="10">
+                                    设配日志
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            权限管理
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" data-url="role.html" data-id="11">
+                                    角色列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="permission.html" data-id="12">
+                                    权限列表
+                                </a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:;" data-url="organization.html" data-id="13">
+                                    组织列表
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-		<link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
-		<link rel="stylesheet" href="css/global.css" media="all">
-		<link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+        <!-- 主体 -->
+        <div class="layui-body">
+            <!-- 顶部切换卡 -->
+            <div class="layui-tab layui-tab-brief" lay-filter="top-tab" lay-allowClose="true" style="margin: 0;">
+                <ul class="layui-tab-title"></ul>
+                <div class="layui-tab-content" style="padding: 0;"></div>
+            </div>
+        </div>
 
-	</head>
+        <!-- 底部 -->
+        <div class="layui-footer" style="text-align: center; line-height: 44px;">
+            Copyright © 2017 <a href="http://www.kiscms.com" target="_blank">kiscms</a> Powered by 智领传媒
+        </div>
+    </div>
 
-	<body>
-		<div class="layui-layout layui-layout-admin" style="border-bottom: solid 5px #1aa094;">
-			<div class="layui-header header header-demo">
-				<div class="layui-main">
-					<div class="admin-login-box">
-						<a class="logo" style="left: 0;" href="index.html">
-							<span style="font-size: 22px;">BeginnerAdmin</span>
-						</a>
-						<div class="admin-side-toggle">
-							<i class="fa fa-bars" aria-hidden="true"></i>
-						</div>
-						<div class="admin-side-full">
-							<i class="fa fa-life-bouy" aria-hidden="true"></i>
-						</div>
-					</div>
-					<ul class="layui-nav admin-header-item">
-						<li class="layui-nav-item">
-							<a href="javascript:;">清除缓存</a>
-						</li>
-                        <li class="layui-nav-item" id="pay">
-                            <a href="javascript:;">捐赠我</a>
-                        </li>
-						<li class="layui-nav-item">
-							<a href="javascript:;">浏览网站</a>
-						</li>
-						<li class="layui-nav-item" id="video1">
-							<a href="javascript:;">视频</a>
-						</li>
-						<li class="layui-nav-item">
-							<a href="javascript:;" class="admin-header-user">
-								<img src="images/0.jpg" />
-								<span>beginner</span>
-							</a>
-							<dl class="layui-nav-child">
-								<dd>
-									<a href="javascript:;"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
-								</dd>
-								<dd>
-									<a href="javascript:;"><i class="fa fa-gear" aria-hidden="true"></i> 设置</a>
-								</dd>
-								<dd id="lock">
-									<a href="javascript:;">
-										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 锁屏 (Alt+L)
-									</a>
-								</dd>
-								<dd>
-									<a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
-								</dd>
-							</dl>
-						</li>
-					</ul>
-					<ul class="layui-nav admin-header-item-mobile">
-						<li class="layui-nav-item">
-							<a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="layui-side layui-bg-black" id="admin-side">
-				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side"></div>
-			</div>
-			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
-				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
-					<ul class="layui-tab-title">
-						<li class="layui-this">
-							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>控制面板</cite>
-						</li>
-					</ul>
-					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
-						<div class="layui-tab-item layui-show">
-							<iframe src="main.html"></iframe>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="layui-footer footer footer-demo" id="admin-footer">
-				<div class="layui-main">
-					<p>2016 &copy;
-						<a href="#">m.zhengjinfan.cn/</a> LGPL license  更多模板：<a href="http://www.mycodes.net/" target="_blank">源码之家</a>
-					</p>
-				</div>
-			</div>
-			<div class="site-tree-mobile layui-hide">
-				<i class="layui-icon">&#xe602;</i>
-			</div>
-			<div class="site-mobile-shade"></div>
-			
-			<!--锁屏模板 start-->
-			<script type="text/template" id="lock-temp">
-				<div class="admin-header-lock" id="lock-box">
-					<div class="admin-header-lock-img">
-						<img src="images/0.jpg"/>
-					</div>
-					<div class="admin-header-lock-name" id="lockUserName">beginner</div>
-					<input type="text" class="admin-header-lock-input" value="输入密码解锁.." name="lockPwd" id="lockPwd" />
-					<button class="layui-btn layui-btn-small" id="unlock">解锁</button>
-				</div>
-			</script>
-			<!--锁屏模板 end -->
-			
-			<script type="text/javascript" src="plugins/layui/layui.js"></script>
-			<script type="text/javascript" src="datas/nav.js"></script>
-			<script src="js/index.js"></script>
-			<script>
-				layui.use('layer', function() {
-					var $ = layui.jquery,
-						layer = layui.layer;
+    <script type="text/javascript" src="plugins/layui/layui.js"></script>
+    <script type="text/javascript">
+        layui.use(['layer','element'], function() {
+            var element    = layui.element();
+            var layer      = layui.layer;
+            var $          = layui.jquery;
 
-					$('#video1').on('click', function() {
-						layer.open({
-							title: 'YouTube',
-							maxmin: true,
-							type: 2,
-							content: 'video.html',
-							area: ['800px', '500px']
-						});
-                    });
-                    $('#pay').on('click', function () {
-                        layer.open({
-                            title: false,
-                            type: 1,
-                            content: '<img src="images/xx.png" />',
-                            area: ['500px', '250px'],
-                            shadeClose: true
-                        });
-                    });
+            var navfilter  = 'left-nav';
+            var nav        = $('.layui-nav[lay-filter='+navfilter+']').eq(0);
 
-				});
-			</script>
-		</div>
-	</body>
+            var tabfilter  = 'top-tab';
+            var tab        = $('.layui-tab[lay-filter='+tabfilter+']').eq(0);
+            var tabcontent = tab.children('.layui-tab-content').eq(0);
+            var tabtitle   = tab.children('.layui-tab-title').eq(0);
 
+            /**
+             * iframe自适应
+             */
+            $(window).resize(function() {
+                //设置顶部切换卡容器度
+                tabcontent.height($(this).height() - 60 - 41 - 44); //头部高度 顶部切换卡高度 底部高度
+                //设置顶部切换卡容器内每个iframe高度
+                tabcontent.find('iframe').each(function () {
+                    $(this).height(tabcontent.height());
+                });
+            }).resize();
+
+            /**
+             * 监听侧边栏导航点击事件
+             */
+            element.on('nav('+navfilter+')', function(elem) {
+                var a         = elem.children('a');
+                var title     = a.text();
+                var src       = elem.children('a').attr('data-url');
+                var id        = elem.children('a').attr('data-id');
+                var iframe    = tabcontent.find('iframe[data-id='+id+']').eq(0);
+                var tabindex  = tabtitle.children('li').length;
+
+                if(src != undefined && src != null && id != undefined && id != null) {
+                    if(iframe.length) { //存在 iframe
+                        //获取iframe身上的tab index
+                        tabindex = iframe.attr('data-tabindex');
+                    }else{ //不存在 iframe
+                        //显示加载层
+                        layer.load();
+                        setTimeout(function() {
+                            layer.closeAll('loading');
+                        }, 300);
+                        //拼接iframe
+                        var iframe = '<iframe';
+                        iframe += ' src="'+src+'" data-id="'+id+'" data-tabindex="'+tabindex+'"';
+                        iframe += ' style="width: 100%; height: '+tabcontent.height()+'px; border: 0px;"';
+                        iframe += '></iframe>';
+                        //顶部切换卡新增一个卡片
+                        element.tabAdd(tabfilter, {title: title,content: iframe});
+                    }
+
+                    //切换到指定索引的卡片
+                    element.tabChange(tabfilter, tabindex);
+                }
+            });
+
+            /**
+             * 初始化点击侧边栏第一个导航
+             */
+            nav.find('li').eq(0).click();
+        });
+    </script>
+</body>
 </html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App用户管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="plugins/layui/css/layui.css"  media="all">
+    <style>
+        body{padding: 20px; /*overflow-y: scroll;*/}
+    </style>
+</head>
+<body>
+    <div class="layui-btn-group">
+        <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+        <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
+        <button class="layui-btn" data-type="isAll">验证是否全选</button>
+    </div>
+
+    <table id="test"  lay-filter="test">
+
+    </table>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script type="text/html" id="toolbarDemo">
+        <i class="layui-icon">&#xe654;</i>
+        <i class="layui-icon">&#xe640;</i>
+    </script>
+    <script type="text/html" id="usernameTpl">
+        <a href="" class="layui-table-link">{{d.username || ''}}</a>
+    </script>
+
+    <script src="plugins/layui/layui.js" charset="utf-8"></script>
+    <script>
+        layui.use('table', function () {
+           var table = layui.table;
+
+            //渲染
+            table.render({
+                elem: '#test'
+                ,height: 350
+                ,url: 'json/table/demo1.json'
+                ,page: {
+
+                }
+                ,limit: 30
+                ,toolbar: '#toolbarDemo'
+                ,cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+                    ,{field:'username', title:'用户名', width:120, edit: 'text', templet: '#usernameTpl'}
+                    ,{field:'email', title:'邮箱', width:150}
+                    ,{field:'sex', title:'性别', width:80, edit: 'text', sort: true}
+                    ,{field:'city', title:'城市', width:100}
+                    ,{field:'sign', title:'签名'}
+                    ,{field:'experience', title:'积分', width:80, sort: true}
+                    ,{field:'ip', title:'IP', width:120}
+                    ,{field:'logins', title:'登入次数', width:100, sort: true}
+                    ,{field:'joinTime', title:'加入时间', width:120}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]]
+            });
+
+            table.on('checkbox(test)', function (obj) {
+                console.log(obj)
+            });
+
+            //监听单元格编辑
+            table.on('edit(test)', function(obj){
+                var value = obj.value //得到修改后的值
+                    ,data = obj.data //得到所在行所有键值
+                    ,field = obj.field; //得到字段
+
+            });
+
+            //监听工具条
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if(obj.event === 'edit'){
+                    layer.prompt({
+                        formType: 2
+                        ,value: data.username
+                    }, function(value, index){
+                        obj.update({
+                            username: value
+                        });
+                        layer.close(index);
+                    });
+                }
+            });
+
+           var $ = layui.jquery, active = {
+               getCheckData : function () {
+                   var checkStatus = table.checkStatus('test'),
+                       data = checkStatus.data;
+                   layer.msg(JSON.stringify(data));
+               },
+               getCheckLength: function(){
+                   var checkStatus = table.checkStatus('test')
+                       ,data = checkStatus.data;
+                   layer.msg('选中了：'+ data.length + ' 个');
+               },
+               isAll: function () {
+                   var checkStatus = table.checkStatus('test');
+                   layer.msg(checkStatus.isAll ? '全选': '未全选')
+               },
+               parseTable : function(){
+                table.init('parse-table-demo', {
+                    limit: 3
+                });
+            }
+           };
+
+           $('.layui-btn').on('click', function () {
+               var type = $(this).data('type');
+               active[type] ? active[type].call(this) : '';
+           });
+        });
+
+    </script>
+</body>
+
+</html>
