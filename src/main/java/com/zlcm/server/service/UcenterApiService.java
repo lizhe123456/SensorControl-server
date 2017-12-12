@@ -9,5 +9,9 @@ public interface UcenterApiService {
      */
     void insertUser(UcenterUser ucenterUser, String agent, String ip, String content);
 
+    /**
+     * 登录
+     */
+    void login(UcenterUser ucenterUser,String agent, String ip, String content);
 
 }

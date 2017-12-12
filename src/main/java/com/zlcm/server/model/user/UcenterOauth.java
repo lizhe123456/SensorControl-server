@@ -1,6 +1,8 @@
 package com.zlcm.server.model.user;
 
-public class UcenterOauth {
+import java.io.Serializable;
+
+public class UcenterOauth implements Serializable {
   private Long oauth_id;
   private String name;
 

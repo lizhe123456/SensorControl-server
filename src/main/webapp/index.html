@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="Generator" content="EditPlus®">
-    <meta name="Author" content="梦想星辰大海">
     <meta name="Keywords" content="">
     <meta name="Description" content="">
     <title>智领传媒</title>
@@ -54,7 +53,7 @@
             <div class="layui-side-scroll">
                 <ul class="layui-nav layui-nav-tree" lay-filter="left-nav" style="border-radius: 0;">
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" data-url="1.html" data-id="1">
+                        <a href="javascript:;" data-url="main.html" data-id="1">
                            首页
                         </a>
                     </li>
@@ -187,7 +186,7 @@
     <script type="text/javascript" src="plugins/layui/layui.js"></script>
     <script type="text/javascript">
         layui.use(['layer','element'], function() {
-            var element    = layui.element();
+            var element    = layui.element;
             var layer      = layui.layer;
             var $          = layui.jquery;
 
@@ -240,7 +239,6 @@
                         //顶部切换卡新增一个卡片
                         element.tabAdd(tabfilter, {title: title,content: iframe});
                     }
-
                     //切换到指定索引的卡片
                     element.tabChange(tabfilter, tabindex);
                 }

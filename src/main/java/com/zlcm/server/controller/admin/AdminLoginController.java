@@ -1,11 +1,14 @@
-package com.zlcm.admin.controller;
+package com.zlcm.server.controller.admin;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.zlcm.server.base.BaseController;
+import com.zlcm.server.model.LayuiResponse;
+import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.upms.UpmsPermission;
-import com.zlcm.server.model.upms.UpmsSystem;
 import com.zlcm.server.model.user.UcenterUser;
+import com.zlcm.server.service.UcenterUserService;
 import com.zlcm.server.service.UpmsApiService;
-import com.zlcm.server.service.UpmsSystemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
@@ -15,8 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class AdminLoginController extends BaseController{
 
     @Autowired
     UpmsApiService upmsApiService;
+    @Autowired
+    UcenterUserService ucenterUserService;
+
 
     @ApiOperation(value = "后台首页")
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -40,5 +45,21 @@ public class AdminLoginController extends BaseController{
                 upmsApiService.selectUpmsPermissionByUpmsUserId(ucenterUser.getUser_id());
         modelMap.put("upmsPermissions",upmsPermissions);
         return "/login.html";
+    }
+
+    @ApiOperation(value = "获取用户")
+    @RequestMapping(value = "/user/list", method = RequestMethod.GET)
+    @ResponseBody
+    public LayuiResponse getList(@RequestParam(value = "page") Integer page, @RequestParam(value = "limit") Integer limit){
+        LayuiResponse layuiResponse;
+        List<UcenterUser> list = ucenterUserService.getPageList(page,limit);
+
+        if (list != null){
+            layuiResponse = LayuiResponse.ok();
+            layuiResponse.addDataValue(list);
+            String s = JSON.toJSONString(layuiResponse);
+            return layuiResponse;
+        }
+        return LayuiResponse.customerError();
     }
 }

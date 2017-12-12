@@ -12,14 +12,31 @@
     </style>
 </head>
 <body>
+    <!-- 示例-970 -->
+    <ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+
     <div class="layui-btn-group">
         <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
         <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
         <button class="layui-btn" data-type="isAll">验证是否全选</button>
     </div>
-
-    <table id="test"  lay-filter="test">
-
+    <table class="layui-table layui-show" lay-filter="demo">
+        <thead>
+        <tr>
+            <th lay-data="{type:'checkbox', fixed:'left'}"></th>
+            <th lay-data="{field:'user_id', width:80, fixed: 'left', sort: true}">ID</th>
+            <th lay-data="{field:'username', width:120}">用户名</th>
+            <th lay-data="{field:'password', width:150}">密码</th>
+            <th lay-data="{field:'salt', width:80}">盐</th>
+            <th lay-data="{field:'state',width:100}">登录状态</th>
+            <th lay-data="{field:'register_ip',width:80,}">注册IP</th>
+            <th lay-data="{field:'register_time',width:80, sort: true}">注册时间</th>
+            <th lay-data="{field:'last_login_ip', width:120}">登入IP</th>
+            <th lay-data="{field:'last_login_time', width:100, sort: true}">登入时间</th>
+            <th lay-data="{field:'locked', width:120}">锁定</th>
+            <th lay-data="{fixed: 'right', toolbar: '#barDemo', width:150}">操作</th>
+        </tr>
+        </thead>
     </table>
 
     <script type="text/html" id="barDemo">
@@ -28,106 +45,85 @@
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
-    <script type="text/html" id="toolbarDemo">
-        <i class="layui-icon">&#xe654;</i>
-        <i class="layui-icon">&#xe640;</i>
-    </script>
-    <script type="text/html" id="usernameTpl">
-        <a href="" class="layui-table-link">{{d.username || ''}}</a>
-    </script>
-
-    <script src="plugins/layui/layui.js" charset="utf-8"></script>
+    <script src="/plugins/layui/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
     <script>
-        layui.use('table', function () {
-           var table = layui.table;
+        var getListUrl = '/manage/user/list';
 
-            //渲染
-            table.render({
-                elem: '#test'
-                ,height: 350
-                ,url: 'json/table/demo1.json'
-                ,page: {
+        var tableOptions = {
+            url: getListUrl, //请求地址
+            method: 'GET', //方式
+            id: 'listReload', //生成 Layui table 的标识 id，必须提供，用于后文刷新操作，笔者该处出过问题
+            page: true, //是否分页
+            response: { //定义后端 json 格式，详细参见官方文档
+                statusName: 'code', //状态字段名称
+                statusCode: '200', //状态字段成功值
+                msgName: 'msg', //消息字段
+                countName: 'count', //总数字段
+                dataName: 'data' //数据字段
+            }
+        };
 
-                }
-                ,limit: 30
-                ,toolbar: '#toolbarDemo'
-                ,cols: [[
-                    {type: 'checkbox', fixed: 'left'}
-                    ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-                    ,{field:'username', title:'用户名', width:120, edit: 'text', templet: '#usernameTpl'}
-                    ,{field:'email', title:'邮箱', width:150}
-                    ,{field:'sex', title:'性别', width:80, edit: 'text', sort: true}
-                    ,{field:'city', title:'城市', width:100}
-                    ,{field:'sign', title:'签名'}
-                    ,{field:'experience', title:'积分', width:80, sort: true}
-                    ,{field:'ip', title:'IP', width:120}
-                    ,{field:'logins', title:'登入次数', width:100, sort: true}
-                    ,{field:'joinTime', title:'加入时间', width:120}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
-                ]]
+        layui.use('table', function(){
+            var table = layui.table;
+            //监听表格复选框选择
+            table.on('checkbox(demo)', function(obj){
+                console.log(obj);
             });
-
-            table.on('checkbox(test)', function (obj) {
-                console.log(obj)
-            });
-
-            //监听单元格编辑
-            table.on('edit(test)', function(obj){
-                var value = obj.value //得到修改后的值
-                    ,data = obj.data //得到所在行所有键值
-                    ,field = obj.field; //得到字段
-
-            });
-
             //监听工具条
-            table.on('tool(test)', function(obj){
+            table.on('tool(demo)', function(obj){
                 var data = obj.data;
-                if(obj.event === 'del'){
+                if(obj.event === 'detail'){
+                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                } else if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del();
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    layer.prompt({
-                        formType: 2
-                        ,value: data.username
-                    }, function(value, index){
-                        obj.update({
-                            username: value
-                        });
-                        layer.close(index);
-                    });
+                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
                 }
             });
+            //表初始化
+            var createTable = function () {
+                table.init('demo', tableOptions);// table lay-filter
+            };
 
-           var $ = layui.jquery, active = {
-               getCheckData : function () {
-                   var checkStatus = table.checkStatus('test'),
-                       data = checkStatus.data;
-                   layer.msg(JSON.stringify(data));
-               },
-               getCheckLength: function(){
-                   var checkStatus = table.checkStatus('test')
-                       ,data = checkStatus.data;
-                   layer.msg('选中了：'+ data.length + ' 个');
-               },
-               isAll: function () {
-                   var checkStatus = table.checkStatus('test');
-                   layer.msg(checkStatus.isAll ? '全选': '未全选')
-               },
-               parseTable : function(){
-                table.init('parse-table-demo', {
-                    limit: 3
+            //表刷新方法
+            var reloadTable = function (item) {
+                table.reload("listReload", { //此处是上文提到的 初始化标识id
+                    where: {
+                        //key: { //该写法上文已经提到
+                        type: item.type, id: item.id
+                        //}
+                    }
                 });
-            }
-           };
+            };
+            //表初始化
+            createTable();
 
-           $('.layui-btn').on('click', function () {
-               var type = $(this).data('type');
-               active[type] ? active[type].call(this) : '';
-           });
+            var $ = layui.$, active = {
+                getCheckData: function(){ //获取选中数据
+                    var checkStatus = table.checkStatus('idTest')
+                        ,data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                }
+                ,getCheckLength: function(){ //获取选中数目
+                    var checkStatus = table.checkStatus('idTest')
+                        ,data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                }
+                ,isAll: function(){ //验证是否全选
+                    var checkStatus = table.checkStatus('idTest');
+                    layer.msg(checkStatus.isAll ? '全选': '未全选')
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
         });
-
     </script>
 </body>
 

@@ -28,12 +28,11 @@ public class TokenInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String name = request.getServletPath().toString();
-
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
-        LoginRequired methodAnnotation = method.getAnnotation(LoginRequired.class);
-        if (methodAnnotation != null) {
+//        String name = request.getServletPath().toString();
+//        HandlerMethod handlerMethod = (HandlerMethod) handler;
+//        Method method = handlerMethod.getMethod();
+//        LoginRequired methodAnnotation = method.getAnnotation(LoginRequired.class);
+//        if (methodAnnotation != null) {
             //token不存在
             if (null != token) {
                 UcenterUser login = JwtUtil.unsign(token, UcenterUser.class);
@@ -54,8 +53,8 @@ public class TokenInterceptor implements HandlerInterceptor {
                 responseMessage(response, response.getWriter(), responseData);
                 return false;
             }
-        }
-        return true;
+//        }
+//        return true;
     }
 
     //请求不通过，返回错误信息给客户端

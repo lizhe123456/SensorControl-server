@@ -12,7 +12,7 @@
 //
 //public class LoginInterceptor extends HandlerInterceptorAdapter{
 //
-//    WebTokenService
+//    @WebTokenService
 //    @Override
 //    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        final HttpServletRequest httpServletRequest = (HttpServletRequest) handler;

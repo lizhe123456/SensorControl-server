@@ -73,9 +73,6 @@
     <update id="update" parameterType="com.zlcm.server.model.user.UcenterUser">
         update ucenter_user
         set
-        <if test="user_id != null">
-            user_id=#{user_id,jdbcType=INTEGER},
-        </if>
         <if test="username != null">
             username=#{username,jdbcType=VARCHAR},
         </if>
@@ -101,9 +98,9 @@
             last_login_ip=#{last_login_ip,jdbcType=VARCHAR},
         </if>
         <if test="locked != null">
-            locked = #{locked,jdbcType=TINYINT},
+            locked = #{locked,jdbcType=TINYINT}
         </if>
-        where user_id = #{user_id,jdbcType=VARCHAR}
+        where user_id = #{user_id,jdbcType=INTEGER}
     </update>
 
     <delete id="deleteByPK" parameterType="java.lang.Integer">
@@ -120,7 +117,7 @@
         select count(*)
         from ucenter_user;
     </select>
-    <select id="getPageList" resultType="java.lang.Integer">
+    <select id="getPageList" resultType="com.zlcm.server.model.user.UcenterUser">
         select *
         from ucenter_user LIMIT #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
     </select>

@@ -1,6 +1,8 @@
 package com.zlcm.server.model.user;
 
-public class UcenterUserLog {
+import java.io.Serializable;
+
+public class UcenterUserLog implements Serializable {
 
   private Integer user_log_id;
   private Integer user_id;

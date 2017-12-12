@@ -1,6 +1,8 @@
 package com.zlcm.server.model.user;
 
-public class UcenterUser {
+import java.io.Serializable;
+
+public class UcenterUser implements Serializable{
   private Integer user_id;
   private String username;
   private String password;

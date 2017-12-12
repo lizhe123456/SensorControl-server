@@ -79,4 +79,16 @@ public interface UpmsApiService {
      */
     int insertUpmsLogSelective(UpmsLog record);
 
+    /**
+     *
+     * @return
+     */
+    List<UcenterUser> selectAppUserList();
+
+    /**
+     *
+     */
+
+    List<UcenterUser> selectAdminUserList();
+
 }

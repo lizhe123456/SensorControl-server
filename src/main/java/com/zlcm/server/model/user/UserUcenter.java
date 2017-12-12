@@ -1,11 +1,12 @@
 package com.zlcm.server.model.user;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * 注册登录
  */
-public class UserUcenter {
+public class UserUcenter implements Serializable {
 
     private String uid;
     private String username;

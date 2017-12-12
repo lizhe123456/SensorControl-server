@@ -42,7 +42,7 @@ public abstract class BaseServiceImpl<Entity,DAO extends BaseMapper<Entity>> imp
 
     @Override
     public List<Entity> getPageList(Integer page, Integer size) {
-        return dao.getPageList(page,size);
+        return dao.getPageList((page -1) * size,size);
     }
 
 }

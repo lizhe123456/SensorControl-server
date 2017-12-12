@@ -1,6 +1,7 @@
 package com.zlcm.server.controller.app;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.zlcm.server.base.BaseController;
 import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.Sms;
@@ -10,19 +11,18 @@ import com.zlcm.server.service.*;
 import com.zlcm.server.util.*;
 import com.zlcm.server.util.id.UUIDTools;
 import com.zlcm.server.util.jwt.JwtUtil;
+import com.zlcm.server.util.sms.SmsApi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.util.TextUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +42,7 @@ import java.util.Map;
 @RequestMapping("/api/user")
 @Api(value = "APP用户接口",description = "用户")
 @Scope("session")
-public class AppUserController{
+public class AppUserController extends BaseController{
 
     private static Logger _log = LoggerFactory.getLogger(AppUserController.class);
     private String code;
@@ -57,116 +58,77 @@ public class AppUserController{
 
     @Autowired
     UcenterApiService ucenterApiService;
+
     /**
      * 获取手机验证码
      */
     @RequestMapping(value = "/phoneCode", method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "获取手机验证码", notes = "")
-    public ResponseData getPhoneCode(@RequestParam("phone") String phone){
-        code = JavaSmsApi.getRandomStr(6,0);
-        try {
-            String s = JavaSmsApi.sendM(phone,code);
-            Sms sms = JackJsonUtils.fromJson(s, Sms.class);
-            if (sms.getCode() == 22){
-                return ResponseData.codeError();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ResponseData getPhoneCode(@RequestParam("mobile") String phone,HttpServletRequest request){
+        String code = SmsApi.getRandomStr(6,0);
+        request.getServletContext().setAttribute("code","111111");
+//        try {
+//            String s = SmsApi.sendM(phone,code);
+//            Sms sms = JackJsonUtils.fromJson(s, Sms.class);
+//            if (sms == null){
+//                return ResponseData.codeError();
+//            }
+//            if (sms.getCode() == 22){
+//                return ResponseData.codeError();
+//            }
+//        } catch (IOException e) {username
+//            e.printStackTrace();
+//            return ResponseData.codeError();
+//        }
         return ResponseData.ok();
     }
 
     /**
      * 注册(密码最大18位)
      */
-    @RequestMapping(value = "/register",method = RequestMethod.GET)
-    @ResponseBody
-    @ApiOperation(value = "手机号注册", notes = "")
-    public ResponseData phoneRegister(HttpServletRequest request,@RequestParam("phone") String phone,
-                                      @RequestParam("code") String code,
-                                      @RequestParam("password") String password){
-        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(phone);
-        if (ucenterUser != null){
-            return ResponseData.userFound();
-        }
-        if (!TextUtils.isEmpty(this.code) && this.code .equals(code)) {
-            String salt = MD5Utils.getSalt();
-            String ip = IPUtils.getIpAddr(request);
-            ucenterUser = new UcenterUser();
-            ucenterUser.setRegister_ip(ip);
-            ucenterUser.setPassword(MD5Utils.MD5(password + salt));
-            ucenterUser.setUsername(phone);
-            ucenterUser.setSalt(salt);
-            String ua = request.getHeader("user-agent");
-            ucenterApiService.insertUser(ucenterUser,UserAgentUtil.getMobileOS(ua),ip,"url/"+request.getRequestURL() +"/手机号注册");
-            return ResponseData.ok();
-        }else {
-            return ResponseData.phoneError();
-        }
-    }
-
-    /**
-     *
-     */
-    @RequestMapping(value = "/userRegister",method = RequestMethod.GET)
-    @ResponseBody
-    @ApiOperation(value = "", notes = "")
-    public ResponseData userRegister(HttpServletRequest request,
-                                     @RequestParam("username") String username,
-                                     @RequestParam("password") String password){
-        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
-        if (ucenterUser != null){
-            return ResponseData.userFound();
-        }
-        String salt = MD5Utils.getSalt();
+    public int phoneRegister(HttpServletRequest request,String phone,String code){
+        UcenterUser ucenterUser = new UcenterUser();
         String ip = IPUtils.getIpAddr(request);
-        ucenterUser = new UcenterUser();
         ucenterUser.setRegister_ip(ip);
-        ucenterUser.setPassword(MD5Utils.MD5(password + salt));
-        ucenterUser.setUsername(username);
-        ucenterUser.setSalt(salt);
+        ucenterUser.setUsername(phone);
         String ua = request.getHeader("user-agent");
         ucenterApiService.insertUser(ucenterUser,UserAgentUtil.getMobileOS(ua),ip,"url/"+request.getRequestURL() +"/手机号注册");
-        return ResponseData.ok();
+        return 200;
     }
-
-    /**
-     * 手机验证码登录
-     */
 
     /**
      * 登录
      */
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     @ResponseBody
-    @ApiOperation(value = "账号密码登录")
-    public ResponseData login(@RequestParam("username") String username,
-                              @RequestParam("password") String password){
-        // 查询用户信息
-        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(username);
+    @ApiOperation(value = "用户登录", notes = "")
+    public ResponseData userRegister(HttpServletRequest request,
+                                     @RequestParam("mobile") String mobile,
+                                     @RequestParam("code") String code){
+        String code1 = (String) request.getServletContext().getAttribute("code");
+        UcenterUser ucenterUser = upmsApiService.selectUpmsUserByUsername(mobile);
+        if (!TextUtils.isEmpty(code1) && code1 .equals(code)) {
+            if (ucenterUser == null){
+                phoneRegister(request,mobile,code);
+            }else if (ucenterUser.getLocked() == 1){
+                return ResponseData.userLocked();
+            }
+            String ip = IPUtils.getIpAddr(request);
+            String ua = request.getHeader("user-agent");
+            ucenterApiService.login(ucenterUser,UserAgentUtil.getMobileOS(ua),ip,"url/"+request.getRequestURL() +"/用户登录");
+            String token = JwtUtil.sign(ucenterUser,1000*60*60*24*30);
+            ResponseData responseData = ResponseData.ok();
+            responseData.putDataValue("token",token);
+            responseData.putDataValue("loginId",String.valueOf(ucenterUser.getUser_id()));
+            request.getServletContext().removeAttribute("code");
+            return responseData;
+        }else {
+            return ResponseData.phoneError();
+        }
 
-        if (ucenterUser == null) {
-            return ResponseData.userNull();
-        }
-        if (!ucenterUser.getPassword().equals(MD5Utils.MD5(password + ucenterUser.getSalt()))){
-            return ResponseData.passError();
-        }
-        if (ucenterUser.getLocked() == 1){
-            return ResponseData.userLocked();
-        }
-        ucenterUser.setState(1);
-        ucenterUserService.update(ucenterUser);
-        String token = JwtUtil.sign(ucenterUser,1000*60*60*24*30);
-        ResponseData responseData = ResponseData.ok();
-        responseData.putDataValue("token",token);
-        responseData.putDataValue("loginId",String.valueOf(ucenterUser.getUser_id()));
-        return responseData;
     }
 
-    /**
-     * 修改密码
-     */
 
     /**
      * 实名认证

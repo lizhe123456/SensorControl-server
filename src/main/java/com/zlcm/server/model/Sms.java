@@ -1,32 +1,29 @@
 package com.zlcm.server.model;
 
 /**
- * Created by lizhe on 2017/11/14 0014.
+ * Created by lizhe on 2017/12/11 0011.
  * 目标定在月亮之上，即使失败，也可以落在众星之间。
  */
 
 public class Sms {
 
-
     /**
-     * http_status_code : 400
-     * code : 22
-     * msg : 验证码类短信1小时内同一手机号发送次数不能超过3次
-     * detail : 验证码类短信1小时内同一手机号发送次数不能超过3次
+     * code : 0
+     * msg : 发送成功
+     * count : 1
+     * fee : 0.05
+     * unit : RMB
+     * mobile : 13030303300
+     * sid : 20172178348
      */
 
-    private int http_status_code;
     private int code;
     private String msg;
-    private String detail;
-
-    public int getHttp_status_code() {
-        return http_status_code;
-    }
-
-    public void setHttp_status_code(int http_status_code) {
-        this.http_status_code = http_status_code;
-    }
+    private int count;
+    private double fee;
+    private String unit;
+    private String mobile;
+    private long sid;
 
     public int getCode() {
         return code;
@@ -44,11 +41,43 @@ public class Sms {
         this.msg = msg;
     }
 
-    public String getDetail() {
-        return detail;
+    public int getCount() {
+        return count;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public long getSid() {
+        return sid;
+    }
+
+    public void setSid(long sid) {
+        this.sid = sid;
     }
 }

@@ -134,4 +134,14 @@ public class UpmsApiServiceImpl implements UpmsApiService{
     public int insertUpmsLogSelective(UpmsLog record) {
         return upmsLogMapper.save(record);
     }
+
+    @Override
+    public List<UcenterUser> selectAppUserList() {
+        return null;
+    }
+
+    @Override
+    public List<UcenterUser> selectAdminUserList() {
+        return null;
+    }
 }
