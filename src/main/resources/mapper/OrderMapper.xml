@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.Order">
+    <id column="oid" jdbcType="INTEGER" property="oid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zlcm.server.model.bean.Order">
+    <result column="duration" jdbcType="LONGVARCHAR" property="duration" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    oid, uid, aid, create_time, state, price
+  </sql>
+  <sql id="Blob_Column_List">
+    duration
+  </sql>
+  <select id="get" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from zlcm_order
+    where oid = #{oid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPK" parameterType="java.lang.Integer">
+    delete from zlcm_order
+    where oid = #{oid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="save" parameterType="com.zlcm.server.model.bean.Order">
+    insert into zlcm_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        oid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.bean.Order">
+    update zlcm_order
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null">
+        aid = #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where oid = #{oid,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="java.util.List">
+    SELECT * FROM zlcm_order
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_order
+  </select>
+
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+    SELECT * FROM zlcm_order a  JOIN (select did from zlcm_order limit #{page},#{size}) b ON a.ID = b.id
+  </select>
+</mapper>

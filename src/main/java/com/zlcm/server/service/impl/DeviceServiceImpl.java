@@ -1,11 +1,8 @@
 package com.zlcm.server.service.impl;
 
 import com.zlcm.server.base.BaseServiceImpl;
-import com.zlcm.server.dao.device.DeviceMapper;
-import com.zlcm.server.dao.device.UserBindDeviceMapper;
-import com.zlcm.server.model.device.Device;
-import com.zlcm.server.model.device.UserBindDevice;
-import com.zlcm.server.model.user.UcenterUser;
+import com.zlcm.server.dao.DeviceMapper;
+import com.zlcm.server.model.bean.Device;
 import com.zlcm.server.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,38 +16,15 @@ import java.util.Map;
 @Service
 public class DeviceServiceImpl extends BaseServiceImpl<Device,DeviceMapper> implements DeviceService{
 
-    @Autowired
-    UserBindDeviceMapper userBindDeviceMapper;
-
-    @Override
-    public List<UcenterUser> findUsers(String did) {
-        return dao.findUsers(did);
-    }
 
     @Override
     public List<Device> findDevices(Integer uid) {
-        return dao.findDevices(uid);
+        return null;
     }
 
     @Override
     public void report(Device device) {
-        dao.update(device);
-    }
 
-    @Override
-    public void bind(Integer uid, String did) {
-        UserBindDevice userBindDevice = new UserBindDevice();
-        userBindDevice.setDid(did);
-        userBindDevice.setUserId(uid);
-        userBindDeviceMapper.save(userBindDevice);
-    }
-
-    @Override
-    public void unbind(Integer uid, String did) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("did", did);
-        map.put("uid", uid);
-        userBindDeviceMapper.unbind(map);
     }
 
     /**
@@ -82,6 +56,11 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device,DeviceMapper> impl
 
     @Override
     public Device get(String pk) {
+        return null;
+    }
+
+    @Override
+    public Device get(Integer pk) {
         return dao.get(pk);
     }
 

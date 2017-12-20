@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.UserDetailsMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.UserDetails">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="idCrad" jdbcType="VARCHAR" property="idcrad" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="stor_id" jdbcType="INTEGER" property="storId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, nickname, avatar, real_name, idCrad, phone, sex, birthday, email, stor_id
+  </sql>
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zlcm_user_details
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPK" parameterType="java.lang.Integer">
+    delete from zlcm_user_details
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.zlcm.server.model.bean.UserDetails">
+    insert into zlcm_user_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="idcrad != null">
+        idCrad,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="storId != null">
+        stor_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="idcrad != null">
+        #{idcrad,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="storId != null">
+        #{storId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.bean.UserDetails">
+    update zlcm_user_details
+    <set>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="idcrad != null">
+        idCrad = #{idcrad,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="storId != null">
+        stor_id = #{storId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="java.util.List">
+    SELECT * FROM zlcm_user_details
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_user_details
+  </select>
+
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+    SELECT * FROM zlcm_user_details a  JOIN (select did from zlcm_user_details limit #{page},#{size}) b ON a.ID = b.id
+  </select>
+</mapper>

@@ -20,6 +20,12 @@ public class DateUtil {
         String dateString = formatter.format(currentTime);
         return dateString;
     }
+    public static String formatDateTime(long time) {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
 
     /**
      * 获取现在时间

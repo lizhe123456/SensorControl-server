@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.WalletMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.Wallet">
+    <id column="wid" jdbcType="INTEGER" property="wid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="record" jdbcType="INTEGER" property="record" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    wid, uid, record, money
+  </sql>
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zlcm_wallet
+    where wid = #{wid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPK" parameterType="java.lang.Integer">
+    delete from zlcm_wallet
+    where wid = #{wid,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.zlcm.server.model.bean.Wallet">
+    insert into zlcm_wallet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wid != null">
+        wid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="record != null">
+        record,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wid != null">
+        #{wid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="record != null">
+        #{record,jdbcType=INTEGER},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.bean.Wallet">
+    update zlcm_wallet
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="record != null">
+        record = #{record,jdbcType=INTEGER},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where wid = #{wid,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="java.util.List">
+    SELECT * FROM zlcm_user
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_user
+  </select>
+
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+    SELECT * FROM zlcm_user a  JOIN (select did from zlcm_user limit #{page},#{size}) b ON a.ID = b.id
+  </select>
+</mapper>

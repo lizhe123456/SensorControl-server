@@ -2,8 +2,7 @@ package com.zlcm.server.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zlcm.server.model.ResponseData;
-import com.zlcm.server.model.user.UcenterUser;
-import com.zlcm.server.model.user.UserUcenter;
+import com.zlcm.server.model.bean.User;
 import com.zlcm.server.util.jwt.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 
 public class TokenInterceptor implements HandlerInterceptor {
 
@@ -35,11 +33,11 @@ public class TokenInterceptor implements HandlerInterceptor {
 //        if (methodAnnotation != null) {
             //token不存在
             if (null != token) {
-                UcenterUser login = JwtUtil.unsign(token, UcenterUser.class);
+                User login = JwtUtil.unsign(token, User.class);
                 String loginId = request.getParameter("loginId");
                 //解密token后的loginId与用户传来的loginId不一致，一般都是token过期
                 if (null != loginId && null != login) {
-                    if (loginId.equals(String.valueOf(login.getUser_id()))) {
+                    if (loginId.equals(String.valueOf(login.getUid()))) {
                         return true;
                     } else {
                         responseMessage(response, response.getWriter(), responseData);
