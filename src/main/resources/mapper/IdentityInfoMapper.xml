@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.IdentityInfoMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.IdentityInfo">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="begin" jdbcType="VARCHAR" property="begin" />
+    <result column="department" jdbcType="VARCHAR" property="department" />
+    <result column="end" jdbcType="VARCHAR" property="end" />
+    <result column="front_orderid" jdbcType="INTEGER" property="frontOrderid" />
+    <result column="back_orderid" jdbcType="INTEGER" property="backOrderid" />
+    <result column="front_img" jdbcType="VARCHAR" property="frontImg" />
+    <result column="back_img" jdbcType="VARCHAR" property="backImg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, address, idcard, begin, department, end, front_orderid, back_orderid, front_img, 
+    back_img
+  </sql>
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zlcm_identity_info
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPK" parameterType="java.lang.Integer">
+    delete from zlcm_identity_info
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.zlcm.server.model.bean.IdentityInfo">
+    insert into zlcm_identity_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="idcard != null">
+        idcard,
+      </if>
+      <if test="begin != null">
+        begin,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="end != null">
+        end,
+      </if>
+      <if test="frontOrderid != null">
+        front_orderid,
+      </if>
+      <if test="backOrderid != null">
+        back_orderid,
+      </if>
+      <if test="frontImg != null">
+        front_img,
+      </if>
+      <if test="backImg != null">
+        back_img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="begin != null">
+        #{begin,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="end != null">
+        #{end,jdbcType=VARCHAR},
+      </if>
+      <if test="frontOrderid != null">
+        #{frontOrderid,jdbcType=INTEGER},
+      </if>
+      <if test="backOrderid != null">
+        #{backOrderid,jdbcType=INTEGER},
+      </if>
+      <if test="frontImg != null">
+        #{frontImg,jdbcType=VARCHAR},
+      </if>
+      <if test="backImg != null">
+        #{backImg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.bean.IdentityInfo">
+    update zlcm_identity_info
+    <set>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="begin != null">
+        begin = #{begin,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="end != null">
+        end = #{end,jdbcType=VARCHAR},
+      </if>
+      <if test="frontOrderid != null">
+        front_orderid = #{frontOrderid,jdbcType=INTEGER},
+      </if>
+      <if test="backOrderid != null">
+        back_orderid = #{backOrderid,jdbcType=INTEGER},
+      </if>
+      <if test="frontImg != null">
+        front_img = #{frontImg,jdbcType=VARCHAR},
+      </if>
+      <if test="backImg != null">
+        back_img = #{backImg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="java.util.List">
+    SELECT * FROM zlcm_identity_info
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_identity_info
+  </select>
+
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+    SELECT * FROM zlcm_identity_info a  JOIN (select did from zlcm_identity_info limit #{page},#{size}) b ON a.ID = b.id
+  </select>
+</mapper>

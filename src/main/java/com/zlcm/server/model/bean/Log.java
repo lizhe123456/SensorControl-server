@@ -1,9 +1,13 @@
 package com.zlcm.server.model.bean;
 
+import com.zlcm.server.util.StringUtils;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 public class Log implements Serializable {
+
     private Integer lid;
 
     private String type;
@@ -23,6 +27,8 @@ public class Log implements Serializable {
     private String ip;
 
     private Date operatedate;
+
+    private String timeout;			//结束时间
 
     private Integer uid;
 
@@ -93,7 +99,7 @@ public class Log implements Serializable {
     }
 
     public String getIp() {
-        return ip;
+        return StringUtils.isBlank(ip) ? ip : ip.trim();
     }
 
     public void setIp(String ip) {
@@ -114,5 +120,48 @@ public class Log implements Serializable {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    /**
+     * 设置请求参数
+     * @param paramMap
+     */
+    public void setMapToParams(Map<String, String[]> paramMap) {
+        if (paramMap == null){
+            return;
+        }
+        StringBuilder params = new StringBuilder();
+        for (Map.Entry<String, String[]> param : ((Map<String, String[]>)paramMap).entrySet()){
+            params.append(("".equals(params.toString()) ? "" : "&") + param.getKey() + "=");
+            String paramValue = (param.getValue() != null && param.getValue().length > 0 ? param.getValue()[0] : "");
+            params.append(StringUtils.abbr(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue, 100));
+        }
+        this.params = params.toString();
+    }
+
+    public String getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
+    }
+
+    @Override
+    public String toString() {
+        return "Log{" +
+                "lid=" + lid +
+                ", type='" + type + '\'' +
+                ", title='" + title + '\'' +
+                ", remoteaddr='" + remoteaddr + '\'' +
+                ", requesturi='" + requesturi + '\'' +
+                ", params='" + params + '\'' +
+                ", exception='" + exception + '\'' +
+                ", method='" + method + '\'' +
+                ", ip='" + ip + '\'' +
+                ", operatedate=" + operatedate +
+                ", timeout='" + timeout + '\'' +
+                ", uid=" + uid +
+                '}';
     }
 }

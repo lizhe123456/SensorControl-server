@@ -1,9 +1,13 @@
 package com.zlcm.server.aop;
 
+import com.zlcm.server.annotation.SystemControllerLog;
+import com.zlcm.server.annotation.SystemServiceLog;
+import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.bean.Log;
 import com.zlcm.server.model.bean.User;
 import com.zlcm.server.service.LogService;
 import com.zlcm.server.util.DateUtil;
+import com.zlcm.server.util.id.LoginId;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -36,7 +40,7 @@ public class SystemLogAspect {
             new NamedThreadLocal<Date>("ThreadLocal beginTime");
     private static final ThreadLocal<Log> logThreadLocal = new NamedThreadLocal<Log>("ThreadLocal log");
 
-    private static final ThreadLocal<User> currentUser=new NamedThreadLocal<>("ThreadLocal user");
+    private static final ThreadLocal<Integer> currentUser=new NamedThreadLocal<>("ThreadLocal user");
 
     @Autowired(required=false)
     private HttpServletRequest request;
@@ -50,8 +54,18 @@ public class SystemLogAspect {
     /**
      * Controller层切点 注解拦截
      */
-    @Pointcut("@annotation(com.myron.ims.annotation.SystemControllerLog)")
+    @Pointcut("@annotation(com.zlcm.server.annotation.SystemControllerLog)")
     public void controllerAspect(){}
+
+//    Service层切点
+/*	@Pointcut("@annotation(com.myron.ims.annotation.SystemServiceLog)")
+	public void serviceAspect(){}*/
+
+    /**
+     * 方法规则拦截
+     */
+    @Pointcut("execution(* com.zlcm.server.controller.*.*(..))")
+    public void controllerPointerCut(){}
 
     /**
      * 前置通知 用于拦截Controller层记录用户的操作的开始时间
@@ -69,9 +83,13 @@ public class SystemLogAspect {
 
         //读取session中的用户
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("ims_user");
-        currentUser.set(user);
-
+        try {
+            Integer uid = LoginId.getUid(request);
+            currentUser.set(uid);
+        } catch (Exception e) {
+            _log.error(e.getMessage());
+        }
+//        User user = (User) session.getAttribute("ims_user");
     }
 
     /**
@@ -81,8 +99,10 @@ public class SystemLogAspect {
     @SuppressWarnings("unchecked")
     @After("controllerAspect()")
     public void doAfter(JoinPoint joinPoint) {
-        User user = currentUser.get();
-        if(user !=null){
+//        Integer uid = currentUser.get();
+        Integer uid = 0;
+
+//        if(uid != -1){
             String title="";
             String type="info";                       //日志类型(info:入库,error:错误)
             String remoteAddr=request.getRemoteAddr();//请求的IP
@@ -116,9 +136,9 @@ public class SystemLogAspect {
             log.setRequesturi(requestUri);
             log.setMethod(method);
             log.setMapToParams(params);
-            log.setUserId(user.getId());
+            log.setUid(uid);
             Date operateDate=beginTimeThreadLocal.get();
-            log.setOperateDate(operateDate);
+            log.setOperatedate(operateDate);
             log.setTimeout(DateUtil.formatDateTime(endTime - beginTime));
 
             //1.直接执行保存操作
@@ -130,7 +150,7 @@ public class SystemLogAspect {
             //3.再优化:通过线程池来执行日志保存
             threadPoolTaskExecutor.execute(new SaveLogThread(log, logService));
             logThreadLocal.set(log);
-        }
+//        }
 
     }
 
@@ -149,13 +169,13 @@ public class SystemLogAspect {
 
     /**
      * 获取注解中对方法的描述信息 用于service层注解
-     * @param joinPoint切点
+     * @param joinPoint 切点
      * @return discription
      */
     public static String getServiceMthodDescription2(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        com.zlcm.server.aop.Log serviceLog = method.getAnnotation(com.zlcm.server.aop.Log .class);
+        SystemServiceLog serviceLog = method.getAnnotation(SystemServiceLog .class);
         String discription = serviceLog.description();
         return discription;
     }
@@ -189,7 +209,11 @@ public class SystemLogAspect {
 
         @Override
         public void run() {
-            logService.createLog(log);
+            try {
+                logService.save(log);
+            } catch (SysException e) {
+                _log.error(e.getMessage());
+            }
         }
     }
 
@@ -208,7 +232,11 @@ public class SystemLogAspect {
 
         @Override
         public void run() {
-            this.logService.updateLog(log);
+            try {
+                this.logService.update(log);
+            } catch (SysException e) {
+                _log.error(e.getMessage());
+            }
         }
     }
 

@@ -66,6 +66,9 @@ public class ResponseData {
     public static ResponseData notFound() {
         return new ResponseData(404, "Not Found");
     }
+    public static ResponseData sqlError() {
+        return new ResponseData(406, "SQL Error");
+    }
 
     public static ResponseData badRequest() {
         return new ResponseData(400, "Bad Request");

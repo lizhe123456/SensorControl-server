@@ -26,6 +26,15 @@ public class UserDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public UserDetails() {
+    }
+
+    public UserDetails(Integer uid, String nickname, String avatar) {
+        this.uid = uid;
+        this.nickname = nickname;
+        this.avatar = avatar;
+    }
+
     public Integer getUid() {
         return uid;
     }

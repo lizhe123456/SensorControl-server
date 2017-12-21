@@ -5,4 +5,7 @@ import com.zlcm.server.base.BaseMapper;
 import com.zlcm.server.model.bean.User;
 
 public interface UserMapper extends BaseMapper<User>{
+
+    User getUserForName(String username);
+
 }

@@ -12,6 +12,7 @@
     <result column="method" jdbcType="VARCHAR" property="method" />
     <result column="ip" jdbcType="VARCHAR" property="ip" />
     <result column="operateDate" jdbcType="TIMESTAMP" property="operatedate" />
+    <result column="timeout" jdbcType="TIMESTAMP" property="timeout" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -61,6 +62,9 @@
       <if test="operatedate != null">
         operateDate,
       </if>
+      <if test="timeout != null">
+        timeout,
+      </if>
       <if test="uid != null">
         uid,
       </if>
@@ -96,6 +100,9 @@
       <if test="operatedate != null">
         #{operatedate,jdbcType=TIMESTAMP},
       </if>
+      <if test="operatedate != null">
+        #{timeout,jdbcType=TIMESTAMP},
+      </if>
       <if test="uid != null">
         #{uid,jdbcType=INTEGER},
       </if>
@@ -130,6 +137,9 @@
       </if>
       <if test="operatedate != null">
         operateDate = #{operatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatedate != null">
+        timeout = #{timeout,jdbcType=TIMESTAMP},
       </if>
       <if test="uid != null">
         uid = #{uid,jdbcType=INTEGER},

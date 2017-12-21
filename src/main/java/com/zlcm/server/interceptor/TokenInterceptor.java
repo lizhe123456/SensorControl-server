@@ -1,8 +1,10 @@
 package com.zlcm.server.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zlcm.server.constant.Constant;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.bean.User;
+import com.zlcm.server.util.RSAUtils;
 import com.zlcm.server.util.jwt.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.Base64;
 
 public class TokenInterceptor implements HandlerInterceptor {
 
@@ -36,8 +39,9 @@ public class TokenInterceptor implements HandlerInterceptor {
                 User login = JwtUtil.unsign(token, User.class);
                 String loginId = request.getParameter("loginId");
                 //解密token后的loginId与用户传来的loginId不一致，一般都是token过期
-                if (null != loginId && null != login) {
-                    if (loginId.equals(String.valueOf(login.getUid()))) {
+                String uid = new String(RSAUtils.decryptByPrivateKey(loginId.getBytes(), Constant.APP_PRIVATE_KEY),"utf-8");
+                if (null != uid && null != login) {
+                    if (uid.equals(String.valueOf(login.getUid()))) {
                         return true;
                     } else {
                         responseMessage(response, response.getWriter(), responseData);

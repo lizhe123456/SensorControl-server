@@ -24,12 +24,18 @@
     from zlcm_user
     where uid = #{uid,jdbcType=INTEGER}
   </select>
+  <select id="getUserForName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from zlcm_user
+    where username = #{username,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPK" parameterType="java.lang.Integer">
     delete from zlcm_user
     where uid = #{uid,jdbcType=INTEGER}
   </delete>
 
-  <insert id="save" parameterType="com.zlcm.server.model.bean.User">
+  <insert id="save" parameterType="com.zlcm.server.model.bean.User"  useGeneratedKeys="true" keyProperty="uid">
     insert into zlcm_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uid != null">
