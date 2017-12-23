@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class AppUserInfo implements Serializable{
 
-    String avatar;
     String nickname;
     String real_name;
     String idCrad;
@@ -14,14 +13,6 @@ public class AppUserInfo implements Serializable{
     String birthday;
     String storename;
     String address;
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
 
     public String getNickname() {
         return nickname;
@@ -95,18 +86,4 @@ public class AppUserInfo implements Serializable{
         this.storephone = storephone;
     }
 
-    @Override
-    public String toString() {
-        return "AppUserInfo{" +
-                "avatar='" + avatar + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", real_name='" + real_name + '\'' +
-                ", idCrad='" + idCrad + '\'' +
-                ", phone='" + phone + '\'' +
-                ", sex='" + sex + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", storename='" + storename + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }

@@ -99,10 +99,11 @@ public class SystemLogAspect {
     @SuppressWarnings("unchecked")
     @After("controllerAspect()")
     public void doAfter(JoinPoint joinPoint) {
-//        Integer uid = currentUser.get();
-        Integer uid = 0;
-
-//        if(uid != -1){
+        Integer uid = currentUser.get();
+        if (uid == null){
+            uid = 0;
+        }
+        if(uid != null){
             String title="";
             String type="info";                       //日志类型(info:入库,error:错误)
             String remoteAddr=request.getRemoteAddr();//请求的IP
@@ -150,7 +151,7 @@ public class SystemLogAspect {
             //3.再优化:通过线程池来执行日志保存
             threadPoolTaskExecutor.execute(new SaveLogThread(log, logService));
             logThreadLocal.set(log);
-//        }
+        }
 
     }
 

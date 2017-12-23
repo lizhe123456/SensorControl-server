@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,16 +65,17 @@ public class AppUserController extends BaseController{
     @ApiOperation(value = "获取手机验证码", notes = "")
     @SystemControllerLog(description = "获取手机验证码")
     public ResponseData getPhoneCode(@RequestParam("mobile") String phone,HttpServletRequest request){
-        String code = appUserService.getPhoneCode(phone);
-        if (code == null || code.equals("")){
-
-        }else {
-            request.getServletContext().setAttribute("code", code);
-        }
+//        String code = appUserService.getPhoneCode(phone);
+        request.getServletContext().setAttribute("code", "111111");
+//        if (code == null || code.equals("")){
+//            return ResponseData.codeError();
+//        }else {
+//            request.getServletContext().setAttribute("code", "111111");
+//        }
         return ResponseData.ok();
     }
-/**
-     * 获取手机验证码
+    /**
+     * 测试接口
      */
     @RequestMapping(value = "/hehe", method = RequestMethod.GET)
     @ResponseBody
@@ -169,7 +171,6 @@ public class AppUserController extends BaseController{
                     userInfo.setIdCrad(StringReplaceUtil.IdReplaceWithStar(userDetails.getIdcrad()));
                 }
                 userInfo.setPhone(StringReplaceUtil.phoneReplaceWithStar(userDetails.getPhone()));
-                userInfo.setAvatar(userDetails.getAvatar());
                 userInfo.setNickname(userDetails.getNickname());
             }else {
                 //userDetails为null
@@ -269,6 +270,35 @@ public class AppUserController extends BaseController{
             return ResponseData.notFound();
         }
         return ResponseData.ok();
+    }
+
+    @RequestMapping(value = "/homepage", method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "获取首页信息")
+    @SystemControllerLog(description = "获取首页信息")
+    public ResponseData homepage(HttpServletRequest request){
+        ResponseData responseData;
+        try {
+            Integer uid = LoginId.getUid(request);
+            responseData = ResponseData.ok();
+            if (uid != null && uid != 0){
+                //此时返回头像、昵称
+                //我的钱包多少钱，如果开通了
+                //设配
+                UserDetails userDetails = userDetailsService.get(uid);
+                responseData.putDataValue("avatar",userDetails.getAvatar());
+                responseData.putDataValue("nickname",userDetails.getNickname());
+                responseData.putDataValue("device",null);
+                responseData.putDataValue("wallet",66);
+            }else {
+                //此时只返回最近的设配
+                responseData.putDataValue("device",null);
+            }
+            return responseData;
+        } catch (Exception e) {
+            _log.error(e.toString());
+            return ResponseData.notFound();
+        }
     }
 
 }

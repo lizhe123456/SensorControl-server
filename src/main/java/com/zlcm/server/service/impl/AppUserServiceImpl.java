@@ -13,6 +13,7 @@ import com.zlcm.server.model.bean.Wallet;
 import com.zlcm.server.service.AppUserService;
 import com.zlcm.server.util.IPUtils;
 import com.zlcm.server.util.JackJsonUtils;
+import com.zlcm.server.util.StringReplaceUtil;
 import com.zlcm.server.util.sms.SmsApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,12 +54,13 @@ public class AppUserServiceImpl implements AppUserService {
                 userMapper.save(user);
                 UserDetails details = new UserDetails();
                 details.setUid(user.getUid());
-                details.setPhone(user.getUsername());
-                details.setNickname(user.getUsername());
-                details.setAvatar(request.getServletPath() + "/img/avatar.jpg");
+                details.setPhone(phone);
+                details.setNickname(phone);
+                details.setAvatar("http://localhost:8080/img/avatar.jpg");
                 try {
                     userDetailsMapper.save(details);
                 }catch (DataAccessException e){
+                    userMapper.deleteByPK(user.getUid());
                     _log.error(e.getMessage());
                     throw new SysException(Constant.ADD_ERROR);
                 }

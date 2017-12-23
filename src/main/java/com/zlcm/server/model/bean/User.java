@@ -77,7 +77,7 @@ public class User implements Serializable {
     }
 
     public Byte getLocked() {
-        return locked;
+        return locked == null ? 0 : locked;
     }
 
     public void setLocked(Byte locked) {
