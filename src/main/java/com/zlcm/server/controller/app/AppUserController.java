@@ -108,7 +108,7 @@ public class AppUserController extends BaseController{
 //                String loginId = new String(RSAUtils.encryptByPublicKey(String.valueOf(user.getUid()).getBytes(), Constant.PUBLIC_KEY),"utf-8");
                 ResponseData responseData = ResponseData.ok();
                 responseData.putDataValue("token",token);
-//                responseData.putDataValue("loginId",loginId);
+                responseData.putDataValue("loginId",user.getUid());
                 request.getServletContext().removeAttribute("code");
                 return responseData;
             }else {
