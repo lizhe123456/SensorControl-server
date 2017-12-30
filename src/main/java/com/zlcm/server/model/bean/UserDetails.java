@@ -24,7 +24,7 @@ public class UserDetails implements Serializable {
 
     private Integer storId;
 
-    private static final long serialVersionUID = 1L;
+    private Integer credit;
 
     public UserDetails() {
     }
@@ -114,4 +114,13 @@ public class UserDetails implements Serializable {
     public void setStorId(Integer storId) {
         this.storId = storId;
     }
+
+    public Integer getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Integer credit) {
+        this.credit = credit;
+    }
+
 }

@@ -9,9 +9,10 @@
     <result column="iphone" jdbcType="VARCHAR" property="iphone" />
     <result column="legal_person" jdbcType="VARCHAR" property="legalPerson" />
     <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="state" jdbcType="TINYINT" property="state" />
   </resultMap>
   <sql id="Base_Column_List">
-    sid, name, address, organization, iphone, legal_person, business_license
+    sid, name, address, organization, iphone, legal_person, business_license, state
   </sql>
   <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -47,6 +48,9 @@
       <if test="businessLicense != null">
         business_license,
       </if>
+      <if test="state != null">
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="sid != null">
@@ -70,6 +74,9 @@
       <if test="businessLicense != null">
         #{businessLicense,jdbcType=VARCHAR},
       </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
     </trim>
   </insert>
   <update id="update" parameterType="com.zlcm.server.model.bean.Store">
@@ -92,6 +99,9 @@
       </if>
       <if test="businessLicense != null">
         business_license = #{businessLicense,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
       </if>
     </set>
     where sid = #{sid,jdbcType=INTEGER}

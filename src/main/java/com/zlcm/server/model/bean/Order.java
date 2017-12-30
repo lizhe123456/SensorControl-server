@@ -19,7 +19,6 @@ public class Order implements Serializable {
 
     private String duration;
 
-    private static final long serialVersionUID = 1L;
 
     public Integer getOid() {
         return oid;

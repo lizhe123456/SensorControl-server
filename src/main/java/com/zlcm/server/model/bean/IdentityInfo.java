@@ -23,7 +23,6 @@ public class IdentityInfo implements Serializable {
 
     private String backImg;
 
-    private static final long serialVersionUID = 1L;
 
     public Integer getUid() {
         return uid;

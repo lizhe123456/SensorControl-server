@@ -26,7 +26,6 @@ public class User implements Serializable {
 
     private Date lastLoginTime;
 
-    private static final long serialVersionUID = 1L;
 
     public Integer getUid() {
         return uid;

@@ -23,7 +23,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         response.setCharacterEncoding("utf-8");
-        String token = request.getParameter("token");
+        String token = request.getHeader("token");
         ResponseData responseData = ResponseData.ok();
         if (!(handler instanceof HandlerMethod)) {
             return true;
@@ -37,9 +37,9 @@ public class TokenInterceptor implements HandlerInterceptor {
             //token不存在
             if (null != token) {
                 User login = JwtUtil.unsign(token, User.class);
-                String loginId = request.getParameter("loginId");
+                String loginId = request.getHeader("loginId");
                 //解密token后的loginId与用户传来的loginId不一致，一般都是token过期
-                String uid = new String(RSAUtils.decryptByPrivateKey(loginId.getBytes(), Constant.APP_PRIVATE_KEY),"utf-8");
+                String uid = null;
                 if (null != uid && null != login) {
                     if (uid.equals(String.valueOf(login.getUid()))) {
                         return true;

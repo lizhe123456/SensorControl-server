@@ -32,7 +32,6 @@ public class Log implements Serializable {
 
     private Integer uid;
 
-    private static final long serialVersionUID = 1L;
 
     public Integer getLid() {
         return lid;

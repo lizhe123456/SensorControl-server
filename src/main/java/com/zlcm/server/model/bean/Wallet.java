@@ -12,8 +12,6 @@ public class Wallet implements Serializable {
 
     private BigDecimal money;
 
-    private static final long serialVersionUID = 1L;
-
     public Integer getWid() {
         return wid;
     }

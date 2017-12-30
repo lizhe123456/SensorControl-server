@@ -17,6 +17,8 @@ public class Store implements Serializable {
 
     private String businessLicense;
 
+    private Byte state;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getSid() {
@@ -73,5 +75,13 @@ public class Store implements Serializable {
 
     public void setBusinessLicense(String businessLicense) {
         this.businessLicense = businessLicense == null ? null : businessLicense.trim();
+    }
+
+    public Byte getState() {
+        return state;
+    }
+
+    public void setState(Byte state) {
+        this.state = state;
     }
 }

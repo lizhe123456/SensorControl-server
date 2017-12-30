@@ -1,12 +1,10 @@
-package com.zlcm.server.model.bean;
+package com.zlcm.server.model.apprep;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Device implements Serializable {
+public class AppDevice implements Serializable{
     private Integer did;
-
-    private String mac;
 
     private String address;
 
@@ -16,11 +14,7 @@ public class Device implements Serializable {
 
     private String ip;
 
-    private Byte state;
-
     private Integer household;
-
-    private String desc;
 
     public Integer getDid() {
         return did;
@@ -30,20 +24,12 @@ public class Device implements Serializable {
         this.did = did;
     }
 
-    public String getMac() {
-        return mac;
-    }
-
-    public void setMac(String mac) {
-        this.mac = mac == null ? null : mac.trim();
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public BigDecimal getDlatitude() {
@@ -67,15 +53,7 @@ public class Device implements Serializable {
     }
 
     public void setIp(String ip) {
-        this.ip = ip == null ? null : ip.trim();
-    }
-
-    public Byte getState() {
-        return state;
-    }
-
-    public void setState(Byte state) {
-        this.state = state;
+        this.ip = ip;
     }
 
     public Integer getHousehold() {
@@ -84,13 +62,5 @@ public class Device implements Serializable {
 
     public void setHousehold(Integer household) {
         this.household = household;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
     }
 }

@@ -6,10 +6,8 @@ import com.zlcm.server.constant.Constant;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
-import com.zlcm.server.model.bean.AppUserInfo;
-import com.zlcm.server.model.bean.Store;
-import com.zlcm.server.model.bean.User;
-import com.zlcm.server.model.bean.UserDetails;
+import com.zlcm.server.model.apprep.AppDevice;
+import com.zlcm.server.model.bean.*;
 import com.zlcm.server.service.*;
 import com.zlcm.server.util.*;
 import com.zlcm.server.util.id.LoginId;
@@ -35,6 +33,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/user")
@@ -54,6 +53,9 @@ public class AppUserController extends BaseController{
     UserDetailsService userDetailsService;
 
     @Autowired
+    DeviceService deviceService;
+
+    @Autowired
     StoreService storeService;
 
 
@@ -65,13 +67,12 @@ public class AppUserController extends BaseController{
     @ApiOperation(value = "获取手机验证码", notes = "")
     @SystemControllerLog(description = "获取手机验证码")
     public ResponseData getPhoneCode(@RequestParam("mobile") String phone,HttpServletRequest request){
-//        String code = appUserService.getPhoneCode(phone);
-        request.getServletContext().setAttribute("code", "111111");
-//        if (code == null || code.equals("")){
-//            return ResponseData.codeError();
-//        }else {
-//            request.getServletContext().setAttribute("code", "111111");
-//        }
+        String code = appUserService.getPhoneCode(phone);
+        if (code == null || code.equals("")){
+            return ResponseData.codeError();
+        }else {
+            request.getServletContext().setAttribute("code", code);
+        }
         return ResponseData.ok();
     }
     /**
@@ -104,9 +105,10 @@ public class AppUserController extends BaseController{
                     return ResponseData.userLocked();
                 }
                 String token = JwtUtil.sign(user,1000*60*60*24*30);
+//                String loginId = new String(RSAUtils.encryptByPublicKey(String.valueOf(user.getUid()).getBytes(), Constant.PUBLIC_KEY),"utf-8");
                 ResponseData responseData = ResponseData.ok();
                 responseData.putDataValue("token",token);
-                responseData.putDataValue("loginId",RSAUtils.encryptByPublicKey(String.valueOf(user.getUid()).getBytes(), Constant.PUBLIC_KEY));
+//                responseData.putDataValue("loginId",loginId);
                 request.getServletContext().removeAttribute("code");
                 return responseData;
             }else {
@@ -254,7 +256,7 @@ public class AppUserController extends BaseController{
     /**
      * 退出登录
      */
-    @RequestMapping(value="/logout",method=RequestMethod.GET)
+    @RequestMapping(value="/logout",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "退出登录")
     @SystemControllerLog(description = "退出登录")
@@ -265,40 +267,43 @@ public class AppUserController extends BaseController{
             if (user != null){
                 user.setState((byte) 0);
                 userService.update(user);
+                return ResponseData.ok();
             }
+            return ResponseData.notFound();
         } catch (Exception e) {
             return ResponseData.notFound();
         }
-        return ResponseData.ok();
     }
 
     @RequestMapping(value = "/homepage", method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "获取首页信息")
     @SystemControllerLog(description = "获取首页信息")
-    public ResponseData homepage(HttpServletRequest request){
+    public ResponseData homepage(HttpServletRequest request,@RequestParam("longitude") double longitude, @RequestParam("latitude") double latitude
+            ,@RequestParam(value = "range", defaultValue = "5") double range,@RequestParam(value = "size", defaultValue = "1000") int size){
         ResponseData responseData;
         try {
             Integer uid = LoginId.getUid(request);
             responseData = ResponseData.ok();
             if (uid != null && uid != 0){
-                //此时返回头像、昵称
-                //我的钱包多少钱，如果开通了
-                //设配
                 UserDetails userDetails = userDetailsService.get(uid);
-                responseData.putDataValue("avatar",userDetails.getAvatar());
-                responseData.putDataValue("nickname",userDetails.getNickname());
-                responseData.putDataValue("device",null);
-                responseData.putDataValue("wallet",66);
-            }else {
-                //此时只返回最近的设配
-                responseData.putDataValue("device",null);
+                responseData.putDataValue("head",null);
+                responseData.putDataValue("pushInfo",null);
+                responseData.putDataValue("logo",null);
+                responseData.putDataValue("wallet",null);
             }
+            List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,range,size);
+            responseData.putDataValue("hean",null);
+            responseData.putDataValue("pushInfo",null);
+            responseData.putDataValue("deviceList",devices);
+            responseData.putDataValue("logo",null);
+            responseData.putDataValue("wallet",null);
             return responseData;
         } catch (Exception e) {
             _log.error(e.toString());
             return ResponseData.notFound();
         }
     }
+
 
 }

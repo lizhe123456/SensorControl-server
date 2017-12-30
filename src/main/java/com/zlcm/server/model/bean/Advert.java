@@ -1,88 +1,147 @@
 package com.zlcm.server.model.bean;
 
-import java.io.Serializable;
+
 import java.util.Date;
 
-public class Advert implements Serializable {
-    private Integer aid;
+public class Advert {
 
-    private Integer did;
+  private Integer aid;
 
-    private String img;
+  private Integer did;
 
-    private String text;
+  private Integer uid;
 
-    private Date startTime;
+  private String advertImg;
 
-    private Byte state;
+  private String textInfo;
 
-    private String auditingInfo;
+  private Date startTime;
 
-    private String duration;
+  private Long duration;
 
-    private static final long serialVersionUID = 1L;
+  private Byte state;
 
-    public Integer getAid() {
-        return aid;
-    }
+  private Integer hits;
 
-    public void setAid(Integer aid) {
-        this.aid = aid;
-    }
+  private Byte recommend;
 
-    public Integer getDid() {
-        return did;
-    }
+  private String iphone;
 
-    public void setDid(Integer did) {
-        this.did = did;
-    }
+  private Integer sid;
 
-    public String getImg() {
-        return img;
-    }
+  private String auditingInfo;
+  private String address;
 
-    public void setImg(String img) {
-        this.img = img == null ? null : img.trim();
-    }
 
-    public String getText() {
-        return text;
-    }
+  public Integer getAid() {
+    return aid;
+  }
 
-    public void setText(String text) {
-        this.text = text == null ? null : text.trim();
-    }
+  public void setAid(Integer aid) {
+    this.aid = aid;
+  }
 
-    public Date getStartTime() {
-        return startTime;
-    }
+  public Integer getDid() {
+    return did;
+  }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+  public void setDid(Integer did) {
+    this.did = did;
+  }
 
-    public Byte getState() {
-        return state;
-    }
+  public Integer getUid() {
+    return uid;
+  }
 
-    public void setState(Byte state) {
-        this.state = state;
-    }
+  public void setUid(Integer uid) {
+    this.uid = uid;
+  }
 
-    public String getAuditingInfo() {
-        return auditingInfo;
-    }
+  public String getAdvertImg() {
+    return advertImg;
+  }
 
-    public void setAuditingInfo(String auditingInfo) {
-        this.auditingInfo = auditingInfo == null ? null : auditingInfo.trim();
-    }
+  public void setAdvertImg(String advertImg) {
+    this.advertImg = advertImg == null ? null : advertImg.trim();
+  }
 
-    public String getDuration() {
-        return duration;
-    }
+  public String getTextInfo() {
+    return textInfo;
+  }
 
-    public void setDuration(String duration) {
-        this.duration = duration == null ? null : duration.trim();
-    }
+  public void setTextInfo(String textInfo) {
+    this.textInfo = textInfo == null ? null : textInfo.trim();
+  }
+
+  public Date getStartTime() {
+    return startTime;
+  }
+
+  public void setStartTime(Date startTime) {
+    this.startTime = startTime;
+  }
+
+  public Long getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Long duration) {
+    this.duration = duration;
+  }
+
+  public Byte getState() {
+    return state;
+  }
+
+  public void setState(Byte state) {
+    this.state = state;
+  }
+
+  public Integer getHits() {
+    return hits;
+  }
+
+  public void setHits(Integer hits) {
+    this.hits = hits;
+  }
+
+  public Byte getRecommend() {
+    return recommend;
+  }
+
+  public void setRecommend(Byte recommend) {
+    this.recommend = recommend;
+  }
+
+  public String getIphone() {
+    return iphone;
+  }
+
+  public void setIphone(String iphone) {
+    this.iphone = iphone == null ? null : iphone.trim();
+  }
+
+  public Integer getSid() {
+    return sid;
+  }
+
+  public void setSid(Integer sid) {
+    this.sid = sid;
+  }
+
+  public String getAuditingInfo() {
+    return auditingInfo;
+  }
+
+  public void setAuditingInfo(String auditingInfo) {
+    this.auditingInfo = auditingInfo == null ? null : auditingInfo.trim();
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address == null ? null : address.trim();
+  }
 }

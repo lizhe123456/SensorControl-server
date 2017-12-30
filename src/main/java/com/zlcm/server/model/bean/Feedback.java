@@ -11,7 +11,6 @@ public class Feedback implements Serializable {
 
     private String iphone;
 
-    private static final long serialVersionUID = 1L;
 
     public Integer getFid() {
         return fid;

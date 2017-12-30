@@ -12,9 +12,10 @@
     <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="stor_id" jdbcType="INTEGER" property="storId" />
+    <result column="credit" jdbcType="INTEGER" property="credit" />
   </resultMap>
   <sql id="Base_Column_List">
-    uid, nickname, avatar, real_name, idCrad, phone, sex, birthday, email, stor_id
+    uid, nickname, avatar, real_name, idCrad, phone, sex, birthday, email, stor_id, credit
   </sql>
   <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -59,6 +60,9 @@
       <if test="storId != null">
         stor_id,
       </if>
+      <if test="credit != null">
+        credit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uid != null">
@@ -90,6 +94,9 @@
       </if>
       <if test="storId != null">
         #{storId,jdbcType=INTEGER},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -123,6 +130,9 @@
       <if test="storId != null">
         stor_id = #{storId,jdbcType=INTEGER},
       </if>
+      <if test="credit != null">
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
     </set>
     where uid = #{uid,jdbcType=INTEGER}
   </update>
@@ -136,6 +146,6 @@
   </select>
 
   <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
-    SELECT * FROM zlcm_user_details a  JOIN (select did from zlcm_user_details limit #{page},#{size}) b ON a.ID = b.id
+    SELECT * FROM zlcm_user_details a  JOIN (select uid from zlcm_user_details limit #{page},#{size}) b ON a.uid = b.uid
   </select>
 </mapper>

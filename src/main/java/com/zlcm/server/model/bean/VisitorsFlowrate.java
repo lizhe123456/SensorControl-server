@@ -7,7 +7,6 @@ public class VisitorsFlowrate implements Serializable {
 
     private Integer visitorsFlowrate;
 
-    private static final long serialVersionUID = 1L;
 
     public Integer getDid() {
         return did;

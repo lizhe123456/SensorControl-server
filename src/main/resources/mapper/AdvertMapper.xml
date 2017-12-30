@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zlcm.server.dao.ZlcmAdvertMapper">
+<mapper namespace="com.zlcm.server.dao.AdvertMapper">
   <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.Advert">
     <id column="aid" jdbcType="INTEGER" property="aid" />
     <result column="did" jdbcType="INTEGER" property="did" />
-    <result column="img" jdbcType="VARCHAR" property="img" />
-    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="advert_img" jdbcType="VARCHAR" property="advertImg" />
+    <result column="text_info" jdbcType="VARCHAR" property="textInfo" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="duration" jdbcType="BIGINT" property="duration" />
     <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="hits" jdbcType="INTEGER" property="hits" />
+    <result column="recommend" jdbcType="TINYINT" property="recommend" />
+    <result column="iphone" jdbcType="VARCHAR" property="iphone" />
+    <result column="sid" jdbcType="INTEGER" property="sid" />
     <result column="auditing_info" jdbcType="VARCHAR" property="auditingInfo" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zlcm.server.model.bean.Advert">
-    <result column="duration" jdbcType="LONGVARCHAR" property="duration" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
   </resultMap>
   <sql id="Base_Column_List">
-    aid, did, img, text, start_time, state, auditing_info
+    aid, did, uid, advert_img, text_info, start_time, duration, state, hits, recommend, 
+    iphone, sid, auditing_info, address
   </sql>
-  <sql id="Blob_Column_List">
-    duration
-  </sql>
-  <select id="get" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from zlcm_advert
     where aid = #{aid,jdbcType=INTEGER}
   </select>
@@ -40,23 +40,41 @@
       <if test="did != null">
         did,
       </if>
-      <if test="img != null">
-        img,
+      <if test="uid != null">
+        uid,
       </if>
-      <if test="text != null">
-        text,
+      <if test="advertImg != null">
+        advert_img,
+      </if>
+      <if test="textInfo != null">
+        text_info,
       </if>
       <if test="startTime != null">
         start_time,
       </if>
+      <if test="duration != null">
+        duration,
+      </if>
       <if test="state != null">
         state,
+      </if>
+      <if test="hits != null">
+        hits,
+      </if>
+      <if test="recommend != null">
+        recommend,
+      </if>
+      <if test="iphone != null">
+        iphone,
+      </if>
+      <if test="sid != null">
+        sid,
       </if>
       <if test="auditingInfo != null">
         auditing_info,
       </if>
-      <if test="duration != null">
-        duration,
+      <if test="address != null">
+        address,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -66,23 +84,41 @@
       <if test="did != null">
         #{did,jdbcType=INTEGER},
       </if>
-      <if test="img != null">
-        #{img,jdbcType=VARCHAR},
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
       </if>
-      <if test="text != null">
-        #{text,jdbcType=VARCHAR},
+      <if test="advertImg != null">
+        #{advertImg,jdbcType=VARCHAR},
+      </if>
+      <if test="textInfo != null">
+        #{textInfo,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null">
         #{startTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="duration != null">
+        #{duration,jdbcType=BIGINT},
+      </if>
       <if test="state != null">
         #{state,jdbcType=TINYINT},
+      </if>
+      <if test="hits != null">
+        #{hits,jdbcType=INTEGER},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=TINYINT},
+      </if>
+      <if test="iphone != null">
+        #{iphone,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
       </if>
       <if test="auditingInfo != null">
         #{auditingInfo,jdbcType=VARCHAR},
       </if>
-      <if test="duration != null">
-        #{duration,jdbcType=LONGVARCHAR},
+      <if test="auditingInfo != null">
+        #{address,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -92,29 +128,47 @@
       <if test="did != null">
         did = #{did,jdbcType=INTEGER},
       </if>
-      <if test="img != null">
-        img = #{img,jdbcType=VARCHAR},
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
       </if>
-      <if test="text != null">
-        text = #{text,jdbcType=VARCHAR},
+      <if test="advertImg != null">
+        advert_img = #{advertImg,jdbcType=VARCHAR},
+      </if>
+      <if test="textInfo != null">
+        text_info = #{textInfo,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null">
         start_time = #{startTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=BIGINT},
+      </if>
       <if test="state != null">
         state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="hits != null">
+        hits = #{hits,jdbcType=INTEGER},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=TINYINT},
+      </if>
+      <if test="iphone != null">
+        iphone = #{iphone,jdbcType=VARCHAR},
+      </if>
+      <if test="sid != null">
+        sid = #{sid,jdbcType=INTEGER},
       </if>
       <if test="auditingInfo != null">
         auditing_info = #{auditingInfo,jdbcType=VARCHAR},
       </if>
-      <if test="duration != null">
-        duration = #{duration,jdbcType=LONGVARCHAR},
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
       </if>
     </set>
     where aid = #{aid,jdbcType=INTEGER}
   </update>
 
-  <select id="findAll" resultType="java.util.List">
+  <select id="findAll" resultType="com.zlcm.server.model.bean.Advert">
     SELECT * FROM zlcm_advert
   </select>
 
@@ -122,7 +176,33 @@
     SELECT COUNT(*) FROM zlcm_advert
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
-    SELECT * FROM zlcm_advert a JOIN (select aid from zlcm_advert limit #{page},#{size}) b ON a.ID = b.id
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Advert">
+    SELECT * FROM zlcm_advert a JOIN (select aid from zlcm_advert limit #{page},#{size}) b ON a.aid = b.aid
+  </select>
+
+  <select id="getAppHotList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.apprep.AppAdvert">
+    SELECT ad.aid,ad.advert_img,ad.text_info,ad.start_time,ad.hits,ad.iphone ,a.nickname,a.avatar,a.credit,real_name,a.stor_id,ad.address
+    FROM zlcm_advert ad INNER JOIN
+    (SELECT ud.uid,ud.nickname,ud.credit,ud.avatar,ud.real_name,ud.stor_id FROM zlcm_user_details ud) as a
+    ON ad.uid = a.uid WHERE ad.state = 1
+    ORDER BY ad.hits DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
+  </select>
+
+  <select id="getAppRecommend" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.apprep.AppAdvert">
+    SELECT ad.aid,ad.advert_img,ad.text_info,ad.start_time,ad.hits,ad.iphone ,a.nickname,a.avatar,a.credit,real_name,a.stor_id,ad.address
+    FROM zlcm_advert ad INNER JOIN
+    (SELECT ud.uid,ud.nickname,ud.credit,ud.avatar,ud.real_name,ud.stor_id FROM zlcm_user_details ud) as a
+    ON ad.uid = a.uid WHERE ad.state = 1 AND recommend = 1
+    ORDER BY ad.start_time DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
+  </select>
+  <select id="findAdvertFordid" parameterType="java.lang.Integer" resultType="java.lang.String">
+      SELECT advert_img FROM zlcm_advert WHERE did = #{did,jdbcType=INTEGER}
+  </select>
+  <select id="findAdvertForDid" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.apprep.AppAdvert">
+      SELECT ad.aid,ad.advert_img,ad.text_info,ad.start_time,ad.hits,ad.iphone ,a.nickname,a.avatar,a.credit,real_name,a.stor_id,ad.address
+    FROM zlcm_advert ad INNER JOIN
+    (SELECT ud.uid,ud.nickname,ud.credit,ud.avatar,ud.real_name,ud.stor_id FROM zlcm_user_details ud) as a
+    ON ad.uid = a.uid WHERE ad.did = #{did,jdbcType=INTEGER}
+    ORDER BY ad.hits DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
   </select>
 </mapper>

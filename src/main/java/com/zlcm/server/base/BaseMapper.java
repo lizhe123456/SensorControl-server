@@ -23,14 +23,14 @@ public interface BaseMapper<Entity> {
      * @param pk
      */
 
-    int deleteByPK(@Param("pk") final Integer pk);
+    int deleteByPK(Integer pk);
 
     /**
      * 通过主键查询
      * @param pk
      * @return
      */
-    Entity get(@Param("pk") Integer pk);
+    Entity get(Integer pk);
 
     /**
      * 查询全部

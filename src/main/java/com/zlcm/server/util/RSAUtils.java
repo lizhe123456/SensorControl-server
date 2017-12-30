@@ -1,298 +1,213 @@
 package com.zlcm.server.util;
 
+import com.auth0.jwt.internal.org.apache.commons.codec.binary.Base64;
+import com.zlcm.server.constant.Constant;
+
 import javax.crypto.Cipher;
-import java.io.ByteArrayOutputStream;
+import java.math.BigInteger;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RSAUtils {
 
-    /** *//**
-     * 加密算法RSA
-     */
+    //非对称密钥算法
     public static final String KEY_ALGORITHM = "RSA";
 
-    /** *//**
-     * 签名算法
-     */
-    public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
-    /** *//**
-     * 获取公钥的key
+    /**
+     * 密钥长度，DH算法的默认密钥长度是1024
+     * 密钥长度必须是64的倍数，在512到65536位之间
      */
+    private static final int KEY_SIZE = 512;
+    //公钥
     private static final String PUBLIC_KEY = "RSAPublicKey";
 
-    /** *//**
-     * 获取私钥的key
-     */
+    //私钥
     private static final String PRIVATE_KEY = "RSAPrivateKey";
 
-    /** *//**
-     * RSA最大加密明文大小
-     */
-    private static final int MAX_ENCRYPT_BLOCK = 117;
-
-    /** *//**
-     * RSA最大解密密文大小
-     */
-    private static final int MAX_DECRYPT_BLOCK = 128;
-
-    /** *//**
-     * <p>
-     * 生成密钥对(公钥和私钥)
-     * </p>
+    /**
+     * 初始化密钥对
      *
-     * @return
-     * @throws Exception
+     * @return Map 甲方密钥的Map
      */
-    public static Map<String, Object> genKeyPair() throws Exception {
-        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
-        keyPairGen.initialize(1024);
-        KeyPair keyPair = keyPairGen.generateKeyPair();
+    public static Map<String, Object> initKey() throws Exception {
+        //实例化密钥生成器
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        //初始化密钥生成器
+        keyPairGenerator.initialize(KEY_SIZE);
+        //生成密钥对
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        //甲方公钥
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        //甲方私钥
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        Map<String, Object> keyMap = new HashMap<String, Object>(2);
+        //将密钥存储在map中
+        Map<String, Object> keyMap = new HashMap<String, Object>();
         keyMap.put(PUBLIC_KEY, publicKey);
         keyMap.put(PRIVATE_KEY, privateKey);
         return keyMap;
+
     }
 
-    /** *//**
-     * <p>
-     * 用私钥对信息生成数字签名
-     * </p>
-     *
-     * @param data 已加密数据
-     * @param privateKey 私钥(BASE64编码)
-     *
-     * @return
-     * @throws Exception
-     */
-    public static String sign(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initSign(privateK);
-        signature.update(data);
-        return Base64Utils.encode(signature.sign());
-    }
 
-    /** *//**
-     * <p>
-     * 校验数字签名
-     * </p>
-     *
-     * @param data 已加密数据
-     * @param publicKey 公钥(BASE64编码)
-     * @param sign 数字签名
-     *
-     * @return
-     * @throws Exception
-     *
-     */
-    public static boolean verify(byte[] data, String publicKey, String sign)
-            throws Exception {
-        byte[] keyBytes = Base64Utils.decode(publicKey);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        PublicKey publicK = keyFactory.generatePublic(keySpec);
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initVerify(publicK);
-        signature.update(data);
-        return signature.verify(Base64Utils.decode(sign));
-    }
-
-    /** *//**
-     * <P>
-     * 私钥解密
-     * </p>
-     *
-     * @param encryptedData 已加密数据
-     * @param privateKey 私钥(BASE64编码)
-     * @return
-     * @throws Exception
-     */
-    public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey)
-            throws Exception {
-        byte[] keyBytes = Base64Utils.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, privateK);
-        int inputLen = encryptedData.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段解密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
-                cache = cipher.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(encryptedData, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_DECRYPT_BLOCK;
-        }
-        byte[] decryptedData = out.toByteArray();
-        out.close();
-        return decryptedData;
-    }
-
-    /** *//**
-     * <p>
-     * 公钥解密
-     * </p>
-     *
-     * @param encryptedData 已加密数据
-     * @param publicKey 公钥(BASE64编码)
-     * @return
-     * @throws Exception
-     */
-    public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey)
-            throws Exception {
-        byte[] keyBytes = Base64Utils.decode(publicKey);
-        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key publicK = keyFactory.generatePublic(x509KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, publicK);
-        int inputLen = encryptedData.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段解密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
-                cache = cipher.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(encryptedData, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_DECRYPT_BLOCK;
-        }
-        byte[] decryptedData = out.toByteArray();
-        out.close();
-        return decryptedData;
-    }
-
-    /** *//**
-     * <p>
-     * 公钥加密
-     * </p>
-     *
-     * @param data 源数据
-     * @param publicKey 公钥(BASE64编码)
-     * @return
-     * @throws Exception
-     */
-    public static byte[] encryptByPublicKey(byte[] data, String publicKey)
-            throws Exception {
-        byte[] keyBytes = Base64Utils.decode(publicKey);
-        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key publicK = keyFactory.generatePublic(x509KeySpec);
-        // 对数据加密
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, publicK);
-        int inputLen = data.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段加密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_ENCRYPT_BLOCK) {
-                cache = cipher.doFinal(data, offSet, MAX_ENCRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(data, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_ENCRYPT_BLOCK;
-        }
-        byte[] encryptedData = out.toByteArray();
-        out.close();
-        return encryptedData;
-    }
-
-    /** *//**
-     * <p>
+    /**
      * 私钥加密
-     * </p>
      *
-     * @param data 源数据
-     * @param privateKey 私钥(BASE64编码)
-     * @return
-     * @throws Exception
+     * @param data 待加密数据
+     * @param key       密钥
+     * @return byte[] 加密数据
      */
-    public static byte[] encryptByPrivateKey(byte[] data, String privateKey)
-            throws Exception {
-        byte[] keyBytes = Base64Utils.decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
+    public static byte[] encryptByPrivateKey(byte[] data, byte[] key) throws Exception {
+
+        //取得私钥
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(key);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
+        //生成私钥
+        PrivateKey privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
+        //数据加密
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, privateK);
-        int inputLen = data.length;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] cache;
-        int i = 0;
-        // 对数据分段加密
-        while (inputLen - offSet > 0) {
-            if (inputLen - offSet > MAX_ENCRYPT_BLOCK) {
-                cache = cipher.doFinal(data, offSet, MAX_ENCRYPT_BLOCK);
-            } else {
-                cache = cipher.doFinal(data, offSet, inputLen - offSet);
-            }
-            out.write(cache, 0, cache.length);
-            i++;
-            offSet = i * MAX_ENCRYPT_BLOCK;
-        }
-        byte[] encryptedData = out.toByteArray();
-        out.close();
-        return encryptedData;
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+        return cipher.doFinal(data);
     }
 
-    /** *//**
-     * <p>
-     * 获取私钥
-     * </p>
+    /**
+     * 公钥加密
      *
-     * @param keyMap 密钥对
-     * @return
-     * @throws Exception
+     * @param data 待加密数据
+     * @param key       密钥
+     * @return byte[] 加密数据
      */
-    public static String getPrivateKey(Map<String, Object> keyMap)
-            throws Exception {
+    public static byte[] encryptByPublicKey(byte[] data, byte[] key) throws Exception {
+
+        //实例化密钥工厂
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        //初始化公钥
+        //密钥材料转换
+        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(key);
+        //产生公钥
+        PublicKey pubKey = keyFactory.generatePublic(x509KeySpec);
+
+        //数据加密
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+        return cipher.doFinal(data);
+    }
+
+    /**
+     * 私钥解密
+     *
+     * @param data 待解密数据
+     * @param key  密钥
+     * @return byte[] 解密数据
+     */
+    public static byte[] decryptByPrivateKey(byte[] data, byte[] key) throws Exception {
+        //取得私钥
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(key);
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        //生成私钥
+        PrivateKey privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
+        //数据解密
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        return cipher.doFinal(data);
+    }
+
+    /**
+     * 公钥解密
+     *
+     * @param data 待解密数据
+     * @param key  密钥
+     * @return byte[] 解密数据
+     */
+    public static byte[] decryptByPublicKey(byte[] data, byte[] key) throws Exception {
+
+        //实例化密钥工厂
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        //初始化公钥
+        //密钥材料转换
+        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(key);
+        //产生公钥
+        PublicKey pubKey = keyFactory.generatePublic(x509KeySpec);
+        //数据解密
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, pubKey);
+        return cipher.doFinal(data);
+    }
+
+    /**
+     * 取得私钥
+     *
+     * @param keyMap 密钥map
+     * @return byte[] 私钥
+     */
+    public static byte[] getPrivateKey(Map<String, Object> keyMap) {
         Key key = (Key) keyMap.get(PRIVATE_KEY);
-        return Base64Utils.encode(key.getEncoded());
+        return key.getEncoded();
     }
 
-    /** *//**
-     * <p>
-     * 获取公钥
-     * </p>
+    /**
+     * 取得公钥
      *
-     * @param keyMap 密钥对
-     * @return
+     * @param keyMap 密钥map
+     * @return byte[] 公钥
+     */
+    public static byte[] getPublicKey(Map<String, Object> keyMap) throws Exception {
+        Key key = (Key) keyMap.get(PUBLIC_KEY);
+        return key.getEncoded();
+    }
+
+    /**
+     * @param args
      * @throws Exception
      */
-    public static String getPublicKey(Map<String, Object> keyMap)
-            throws Exception {
-        Key key = (Key) keyMap.get(PUBLIC_KEY);
-        return Base64Utils.encode(key.getEncoded());
+    public static void main(String[] args) throws Exception {
+        //初始化密钥
+        //生成密钥对
+        Map<String, Object> keyMap = RSAUtils.initKey();
+        //公钥
+        byte[] publicKey = RSAUtils.getPublicKey(keyMap);
+
+        //私钥
+        byte[] privateKey = RSAUtils.getPrivateKey(keyMap);
+        System.out.println("公钥：/n" + Base64.encodeBase64String(publicKey));
+        System.out.println("私钥：/n" + Base64.encodeBase64String(privateKey));
+
+        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
+        String str = "RSA密码交换算法";
+        System.out.println("/n===========甲方向乙方发送加密数据==============");
+        System.out.println("原文:" + str);
+        //甲方进行数据的加密
+        byte[] code1 = RSAUtils.encryptByPrivateKey(str.getBytes(), privateKey);
+        System.out.println("加密后的数据：" + Base64.encodeBase64String(code1));
+        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
+        //乙方进行数据的解密
+        byte[] decode1 = RSAUtils.decryptByPublicKey(code1, publicKey);
+        System.out.println("乙方解密后的数据：" + new String(decode1) + "/n/n");
+
+        System.out.println("===========反向进行操作，乙方向甲方发送数据==============/n/n");
+
+        str = "乙方向甲方发送数据RSA算法";
+
+        System.out.println("原文:" + str);
+
+        //乙方使用公钥对数据进行加密
+        byte[] code2 = RSAUtils.encryptByPublicKey(str.getBytes(), publicKey);
+        System.out.println("===========乙方使用公钥对数据进行加密==============");
+        System.out.println("加密后的数据：" + Base64.encodeBase64String(code2));
+
+        System.out.println("=============乙方将数据传送给甲方======================");
+        System.out.println("===========甲方使用私钥对数据进行解密==============");
+
+        //甲方使用私钥对数据进行解密
+        byte[] decode2 = RSAUtils.decryptByPrivateKey(code2, privateKey);
+
+        System.out.println("甲方解密后的数据：" + new String(decode2));
     }
 }

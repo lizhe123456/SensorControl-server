@@ -2,6 +2,7 @@ package com.zlcm.server.service.impl;
 
 import com.zlcm.server.base.BaseServiceImpl;
 import com.zlcm.server.dao.DeviceMapper;
+import com.zlcm.server.model.apprep.AppDevice;
 import com.zlcm.server.model.bean.Device;
 import com.zlcm.server.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,38 +36,24 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device,DeviceMapper> impl
      * @return
      */
     @Override
-    public List<Device> findPeriphery(double longitude, double latitude, double range) {
-        //先计算查询点的经纬度范围
-        double r = 6371;//地球半径千米
-        double dlng =  2*Math.asin(Math.sin(range/(2*r))/Math.cos(latitude*Math.PI/180));
-        dlng = dlng*180/Math.PI;//角度转为弧度
-        double dlat = range/r;
-        dlat = dlat*180/Math.PI;
-        double minlat =latitude-dlat;
-        double maxlat = latitude+dlat;
-        double minlng = longitude -dlng;
-        double maxlng = longitude + dlng;
+    public List<AppDevice> findPeriphery(double longitude, double latitude, double range, int size) {
         Map<String , Object> map = new HashMap<>();
-        map.put("minlat",minlat);
-        map.put("maxlat",maxlat);
-        map.put("minlng",minlng);
-        map.put("maxlng",maxlng);
+        map.put("lng",longitude);
+        map.put("lat",latitude);
+        map.put("range",range);
+        map.put("size",size);
         return dao.peripheryDevices(map);
-    }
-
-    @Override
-    public Device get(String pk) {
-        return null;
-    }
-
-    @Override
-    public Device get(Integer pk) {
-        return dao.get(pk);
     }
 
     @Override
     public Device getDeviceFormMac(String mac) {
         return dao.getDeviceFormMac(mac);
+    }
+
+    @Override
+    public int getHouseholdNum(Integer did) {
+        int num = dao.findHouseholdNum(did);
+        return (int) ((num * 0.8f) * 3);
     }
 
 
