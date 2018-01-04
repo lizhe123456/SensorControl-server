@@ -1,31 +1,37 @@
 package com.zlcm.server.model;
 
-public class Result {
 
-    private int code;
-    private String message;
+public class Result<T>{
+    private final String message;
+    private final int code;
+    private T info;
 
-    public Result(int code, String message){
-        super();
-        this.code = code;
+    public Result(String message, int code) {
         this.message = message;
-    }
-
-    public int getStateCode() {
-        return code;
-    }
-
-    public void setStateCode(int stateCode) {
-        this.code = stateCode;
+        this.code = code;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public int getCode() {
+        return code;
     }
 
+    public T getInfo() {
+        return info;
+    }
 
+    public void setInfo(T info) {
+        this.info = info;
+    }
+
+    public static Result ok() {
+        return new Result("success", 200);
+    }
+
+    public static Result notFound() {
+        return new Result("Not Found", 404);
+    }
 }

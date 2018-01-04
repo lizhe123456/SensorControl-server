@@ -186,10 +186,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void updateAvatar(Integer uid,String url) {
+    public void updateAvatar(Integer uid,String url,String nickName) {
         UserDetails userDetails = userDetailsMapper.get(uid);
         if (userDetails != null){
             userDetails.setAvatar(url);
+            userDetails.setNickname(nickName);
             userDetailsMapper.update(userDetails);
         }else {
             //TODO:用户信息为空

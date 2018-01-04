@@ -69,4 +69,13 @@ public class AdvertServiceImpl  extends BaseServiceImpl<Advert,AdvertMapper> imp
         }
     }
 
+    /**
+     * 查询待审广告
+     */
+
+
+    /**
+     * 审核广告并发送到设配
+     */
+
 }

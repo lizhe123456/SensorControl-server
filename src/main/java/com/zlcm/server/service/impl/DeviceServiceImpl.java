@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,5 +57,16 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device,DeviceMapper> impl
         return (int) ((num * 0.8f) * 3);
     }
 
+    @Override
+    public List<AppDevice> findDevicesList(List<Integer> devices, String province, String city, String area,int size,int page) {
+        Map map = new HashMap();
+        map.put("list",devices);
+        map.put("province",province);
+        map.put("city",city);
+        map.put("area",area);
+        map.put("size",size);
+        map.put("page",page*size);
+        return dao.findDevicesList(map);
+    }
 
 }

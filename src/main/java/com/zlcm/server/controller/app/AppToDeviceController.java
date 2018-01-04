@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class AppToDeviceController {
                                  @RequestParam("uploadFile") MultipartFile file,
                                  @RequestParam(value = "desc", defaultValue = "") String desc,
                                  @RequestParam(value = "continuedTime",defaultValue = "60000") String continuedTime){
+
         return null;
 
     }
@@ -71,15 +73,19 @@ public class AppToDeviceController {
             Integer uid = LoginId.getUid(request);
             responseData = ResponseData.ok();
             responseData.putDataValue("address",device.getAddress());
-            responseData.putDataValue("charging",10);
+            responseData.putDataValue("charging",1);
             responseData.putDataValue("household",device.getHousehold());
-            responseData.putDataValue("visitorsflowrate",7000);
-            UserDetails userDetails = userDetailsService.get(uid);
-            if (userDetails != null && !TextUtils.isEmpty(userDetails.getRealName())){
-                if (userDetails.getStorId() == null || userDetails.getStorId() == 0){
-                    responseData.putDataValue("authCode",2);
+            responseData.putDataValue("visitorsflowrate",((device.getHousehold() * 0.8f) * 3));
+            if (uid != null){
+                UserDetails userDetails = userDetailsService.get(uid);
+                if (userDetails != null && !TextUtils.isEmpty(userDetails.getRealName())){
+                    if (userDetails.getStorId() == null || userDetails.getStorId() == 0){
+                        responseData.putDataValue("authCode",2);
+                    }else {
+                        responseData.putDataValue("authCode",1);
+                    }
                 }else {
-                    responseData.putDataValue("authCode",1);
+                    responseData.putDataValue("authCode",0);
                 }
             }else {
                 responseData.putDataValue("authCode",0);
@@ -100,25 +106,52 @@ public class AppToDeviceController {
         double longitude = Double.parseDouble(request.getParameter("longitude"));
         double latitude = Double.parseDouble(request.getParameter("latitude"));
         ResponseData responseData = ResponseData.ok();
-        List<Periphery> peripheries = new ArrayList<>();
         try {
             List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,20,5);
             if (devices == null){
                 responseData.putDataValue("devices",null);
                 return responseData;
             }
-            for (AppDevice device : devices) {
-                Periphery periphery = new Periphery();
-                periphery.setAddress(device.getAddress());
-                List<String> list = advertService.findAdvertFordid(device.getDid());
-                periphery.setDid(device.getDid());
-                periphery.setAdvert(list);
-                peripheries.add(periphery);
-            }
-            responseData.putDataValue("devices",peripheries);
+            responseData.putDataValue("devices",generatePeriphery(devices));
             return responseData;
         } catch (SysException e) {
             return ResponseData.notFound();
         }
     }
+
+    @RequestMapping(value = "/delivery", method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation("投放设配列表")
+    @SystemControllerLog(description = "获取投放设配列表")
+    public ResponseData getDeliveryList(@RequestParam("province") String province, @RequestParam("city") String city,
+                                        @RequestParam("area") String area, @RequestParam("devices") List<Integer> devices,
+                                        @RequestParam(value = "page" ,defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "5") int size){
+        ResponseData responseData = ResponseData.ok();
+        try {
+            List<AppDevice> device = deviceService.findDevicesList(devices,province,city,area,size,page);
+            if (device == null){
+                responseData.putDataValue("devices",null);
+                return responseData;
+            }
+            responseData.putDataValue("devices", generatePeriphery(device));
+            return responseData;
+        } catch (SysException e){
+            return ResponseData.notFound();
+        }
+    }
+
+    private List<Periphery> generatePeriphery(List<AppDevice> devices) throws SysException {
+        List<Periphery> peripheries = new ArrayList<>();
+        for (AppDevice d : devices) {
+            Periphery periphery = new Periphery();
+            periphery.setAddress(d.getAddress());
+            List<String> list = advertService.findAdvertFordid(d.getDid());
+            periphery.setDid(d.getDid());
+            periphery.setAdvert(list);
+            peripheries.add(periphery);
+        }
+        return peripheries;
+    }
+
+
 }

@@ -12,6 +12,7 @@ public interface DeviceService extends BaseService<Device> {
      *
      */
     List<Device> findDevices(Integer uid);
+
     /**
      * 上报数据
      */
@@ -24,5 +25,5 @@ public interface DeviceService extends BaseService<Device> {
 
     int getHouseholdNum(Integer did);
 
-
+    List<AppDevice> findDevicesList(List<Integer> devices,String province,String city,String area,int size,int page);
 }

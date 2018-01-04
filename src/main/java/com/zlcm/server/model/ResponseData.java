@@ -31,6 +31,7 @@ public class ResponseData {
         this.message = message;
     }
 
+
     public static ResponseData ok() {
         return new ResponseData(200, "success");
     }

@@ -6,6 +6,7 @@ import com.zlcm.server.constant.Constant;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
+import com.zlcm.server.model.Result;
 import com.zlcm.server.model.apprep.AppDevice;
 import com.zlcm.server.model.bean.*;
 import com.zlcm.server.service.*;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,7 +58,6 @@ public class AppUserController extends BaseController{
     @Autowired
     StoreService storeService;
 
-
     /**
      * 获取手机验证码
      */
@@ -75,6 +74,7 @@ public class AppUserController extends BaseController{
         }
         return ResponseData.ok();
     }
+
     /**
      * 测试接口
      */
@@ -84,7 +84,6 @@ public class AppUserController extends BaseController{
     public ResponseData heiehi(@RequestParam("heh") String hee,HttpServletRequest request){
         return ResponseData.ok();
     }
-
 
     /**
      * 登录
@@ -104,7 +103,7 @@ public class AppUserController extends BaseController{
                 if (user.getLocked() == 1){
                     return ResponseData.userLocked();
                 }
-                String token = JwtUtil.sign(user,1000*60*60*24*30);
+                String token = JwtUtil.sign(user,1000L*60L*60L*24L*30L);
 //                String loginId = new String(RSAUtils.encryptByPublicKey(String.valueOf(user.getUid()).getBytes(), Constant.PUBLIC_KEY),"utf-8");
                 ResponseData responseData = ResponseData.ok();
                 responseData.putDataValue("token",token);
@@ -120,7 +119,6 @@ public class AppUserController extends BaseController{
             return ResponseData.forbidden();
         }
     }
-
 
     /**
      * 实名认证
@@ -150,12 +148,13 @@ public class AppUserController extends BaseController{
      * 获取用户信息
      */
     @LoginRequired
-    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    @RequestMapping(value = "/info",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "获取用户信息")
     @SystemControllerLog(description = "获取用户信息")
-    public ResponseData getUserInfo(@RequestParam("username") String username){
+    public Result<AppUserInfo> getUserInfo(@RequestParam("username") String username){
         AppUserInfo userInfo = new AppUserInfo();
+        Result<AppUserInfo> responseData = Result.ok();
         try {
             User user = userService.getUserForName(username);
             UserDetails userDetails = appUserService.getUserInfo(user.getUid());
@@ -172,20 +171,18 @@ public class AppUserController extends BaseController{
                     userInfo.setSex(userDetails.getSex() == 0 ? "男" : "女");
                     userInfo.setIdCrad(StringReplaceUtil.IdReplaceWithStar(userDetails.getIdcrad()));
                 }
+
                 userInfo.setPhone(StringReplaceUtil.phoneReplaceWithStar(userDetails.getPhone()));
                 userInfo.setNickname(userDetails.getNickname());
             }else {
                 //userDetails为null
             }
-            ResponseData responseData = ResponseData.ok();
-            responseData.putDataValue("userInfo",userInfo);
+            responseData.setInfo(userInfo);
             return responseData;
         } catch (SysException e) {
-            return ResponseData.sqlError();
+            return Result.notFound();
         }
     }
-
-
 
     /**
      * 上传头像
@@ -194,13 +191,13 @@ public class AppUserController extends BaseController{
     @ResponseBody
     @ApiOperation(value = "上传头像")
     @SystemControllerLog(description = "上传头像")
-    public void getUpdateUserAvatar(HttpServletRequest request, @RequestParam("uploadFile") MultipartFile file){
+    public ResponseData getUpdateUserAvatar(HttpServletRequest request, @RequestParam("avatar") MultipartFile file,@RequestParam("nickName") String nickName){
         try {
             Integer uid = LoginId.getUid(request);
-            String newFileName = DateUtil.getStringDate() + "_" + UUIDTools.getImgName()+".bmp";
+            String newFileName = DateUtil.getStringDate() + "_" + UUIDTools.getImgName()+".jpg";
             ServletContext servletContext = request.getSession().getServletContext();
             // 设定文件保存的目录
-            String path = servletContext.getRealPath("/avatar") + "/";
+            String path = "D:/web/avatar/";
             File f = new File(path);
             String serverPath = path + newFileName;
             if (!f.exists())
@@ -216,41 +213,44 @@ public class AppUserController extends BaseController{
                     fos.close();
                     in.close();
                 } catch (Exception  e) {
-                    e.printStackTrace();
+                    return ResponseData.notFound();
                 }
             }
-            appUserService.updateAvatar(Integer.valueOf(uid),serverPath);
+            appUserService.updateAvatar(Integer.valueOf(uid),Constant.ADDRESS +"avatar/"+newFileName,nickName);
+            return ResponseData.ok();
         } catch (SysException e) {
-            e.printStackTrace();
+            return ResponseData.sqlError();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            return ResponseData.notFound();
         } catch (Exception e) {
-            e.printStackTrace();
+            return ResponseData.notFound();
         }
     }
 
     /**
      * 修改用户信息
      */
-    @RequestMapping(value = "/update/info",method = RequestMethod.GET)
+    @RequestMapping(value = "/update/info",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "修改用户信息")
     @SystemControllerLog(description = "修改用户信息")
-    public ResponseData updateUserInfo(HttpServletRequest request){
+    public ResponseData updateUserInfo(HttpServletRequest request) {
         try {
             Integer uid = LoginId.getUid(request);
             String email = request.getParameter("email");
-            String nickname = request.getParameter("nickname");
+            String nickname = request.getParameter("nickName");
             UserDetails userDetails = userDetailsService.get(uid);
-            if (userDetails != null){
+            if (userDetails != null) {
                 userDetails.setEmail(email);
                 userDetails.setNickname(nickname);
                 userDetailsService.update(userDetails);
+                return ResponseData.ok();
+            }else {
+                return ResponseData.notFound();
             }
         } catch (Exception e) {
             return ResponseData.notFound();
         }
-        return ResponseData.ok();
     }
 
     /**
@@ -281,16 +281,18 @@ public class AppUserController extends BaseController{
     @SystemControllerLog(description = "获取首页信息")
     public ResponseData homepage(HttpServletRequest request,@RequestParam("longitude") double longitude, @RequestParam("latitude") double latitude
             ,@RequestParam(value = "range", defaultValue = "5") double range,@RequestParam(value = "size", defaultValue = "1000") int size){
-        ResponseData responseData;
+        ResponseData responseData = ResponseData.ok();
         try {
             Integer uid = LoginId.getUid(request);
-            responseData = ResponseData.ok();
             if (uid != null && uid != 0){
                 UserDetails userDetails = userDetailsService.get(uid);
                 responseData.putDataValue("head",null);
                 responseData.putDataValue("pushInfo",null);
                 responseData.putDataValue("logo",null);
                 responseData.putDataValue("wallet",null);
+                responseData.putDataValue("avatar",userDetails.getAvatar());
+                responseData.putDataValue("nickName",userDetails.getNickname());
+                responseData.putDataValue("credit",userDetails.getCredit());
             }
             List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,range,size);
             responseData.putDataValue("hean",null);

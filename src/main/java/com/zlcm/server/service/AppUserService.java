@@ -44,6 +44,6 @@ public interface AppUserService {
     void updatePhone(Integer uid,String phone);
 
     //修改头像
-    void updateAvatar(Integer uid,String url);
+    void updateAvatar(Integer uid,String url,String nickName);
 
 }
