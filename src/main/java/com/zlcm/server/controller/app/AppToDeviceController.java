@@ -2,12 +2,10 @@ package com.zlcm.server.controller.app;
 
 import com.zlcm.server.annotation.SystemControllerLog;
 import com.zlcm.server.exception.SysException;
-import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.apprep.AppDevice;
 import com.zlcm.server.model.apprep.Periphery;
 import com.zlcm.server.model.bean.Device;
-import com.zlcm.server.model.bean.User;
 import com.zlcm.server.model.bean.UserDetails;
 import com.zlcm.server.service.*;
 import com.zlcm.server.util.id.LoginId;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
