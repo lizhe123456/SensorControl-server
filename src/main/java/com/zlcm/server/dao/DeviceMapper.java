@@ -20,4 +20,5 @@ public interface DeviceMapper extends BaseMapper<Device>{
     List<Device> findDevices(List<Integer> dids);
 
     List<AppDevice> findDevicesList(Map<String,Object> map);
+
 }

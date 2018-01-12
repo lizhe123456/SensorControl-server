@@ -35,6 +35,11 @@ public class ResponseData {
     public static ResponseData ok() {
         return new ResponseData(200, "success");
     }
+
+    public static ResponseData no(){
+        return new ResponseData(202,"fail");
+    }
+
     public static ResponseData phoneError() {
         return new ResponseData(601, "验证码有误");
     }

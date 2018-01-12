@@ -2,27 +2,89 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- 扫描service包下所有使用注解的类型 -->
     <context:component-scan base-package="com.zlcm.server.service"/>
 
     <!-- 配置数据库相关参数properties的属性：${url} -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
-
-    <!-- 数据库连接池 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <!-- c3p0连接池配置 -->
+    <bean id="dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driver}"/>
+
+        <!-- 一次性获取连接数，Default:3  -->
+        <property name="acquireIncrement" value="5"/>
+
+        <!-- 初始化连接数，Default:3 -->
+        <property name="initialPoolSize" value="3"/>
+
+        <property name="minPoolSize" value="10"/>
+        <!-- 连接池中保留的最大连接数，Default:15 -->
+        <property name="maxPoolSize" value="30"/>
+
+        <!-- 获取连接失败后，重复尝试的次数，Default:30 -->
+        <property name="acquireRetryAttempts" value="2"/>
+
+        <!-- 获取连接超时时间，超时后将抛出SQLException，Default:0，单位：毫秒 -->
+        <property name="checkoutTimeout" value="10000"/>
+
+        <!-- 多长时间检查所有连接池中的空闲连接，Default:0，单位：秒 -->
+        <property name="idleConnectionTestPeriod" value="1200"/>
+
+        <!-- 最大空闲时间内连接未使用，则被丢弃，Default:0，单位：秒 -->
+        <property name="maxIdleTime" value="1800"/>
+
+        <!-- 取得连接的同时是否校验连接的有效性，Default:false -->
+        <property name="testConnectionOnCheckin" value="true"/>
+
+        <property name="autoCommitOnClose" value="false"/>
+    </bean>
+    <!-- 数据库连接池 -->
+    <bean id="dataSource3" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc2.testUrl}"/>
+        <property name="user" value="${jdbc2.testUsername}"/>
+        <property name="password" value="${jdbc2.testPassword}"/>
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+        <property name="autoCommitOnClose" value="false"/>
+        <property name="checkoutTimeout" value="18000"/>
+        <property name="acquireRetryAttempts" value="30"/>
+    </bean>
+
+    <!-- rds -->
+    <bean id="rdsDataSource" parent="dataSource1">
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>
-        <property name="minPoolSize" value="${c3p0.minPoolSize}"/>
-        <property name="autoCommitOnClose" value="${c3p0.autoCommitOnClose}"/>
-        <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/>
-        <property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}"/>
+    </bean>
+    <!--esc本地-->
+    <bean id="escDataSource" parent="dataSource1">
+        <property name="jdbcUrl" value="${jdbc3.localUrl}"/>
+        <property name="user" value="${jdbc3.localUsername}"/>
+        <property name="password" value="${jdbc3.localPassword}"/>
+    </bean>
+    <!--测试数据源-->
+    <bean id="testDataSource" parent="dataSource1">
+        <property name="jdbcUrl" value="${jdbc2.testUrl}"/>
+        <property name="user" value="${jdbc2.testUsername}"/>
+        <property name="password" value="${jdbc2.testPassword}"/>
+    </bean>
+
+    <!-- 动态DataSource配置 -->
+    <bean id="dataSource" class="com.zlcm.server.base.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="rdsDataSource" value-ref="rdsDataSource"/>
+                <entry key="escDataSource" value-ref="escDataSource"/>
+                <entry key="testDataSource" value-ref="testDataSource"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="escDataSource"/>
     </bean>
 
     <!-- 配置SqlSessionFactory对象 -->
@@ -42,5 +104,4 @@
         <!-- 给出需要扫描Dao接口包 -->
         <property name="basePackage" value="com.zlcm.server.dao"/>
     </bean>
-
 </beans>

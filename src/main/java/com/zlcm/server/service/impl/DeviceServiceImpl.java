@@ -20,8 +20,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device,DeviceMapper> impl
 
 
     @Override
-    public List<Device> findDevices(Integer uid) {
-        return null;
+    public List<Device> findDevices(List<Integer> did) {
+        return dao.findDevices(did);
     }
 
     @Override

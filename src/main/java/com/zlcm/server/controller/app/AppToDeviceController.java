@@ -1,6 +1,8 @@
 package com.zlcm.server.controller.app;
 
+import com.alibaba.fastjson.JSON;
 import com.zlcm.server.annotation.SystemControllerLog;
+import com.zlcm.server.base.BaseController;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.apprep.AppDevice;
@@ -16,10 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/device")
 @Api(value = "APP设配接口",description = "设配")
-public class AppToDeviceController {
+public class AppToDeviceController extends BaseController {
 
     private static Logger _log = LoggerFactory.getLogger(AppUserController.class);
 
@@ -120,9 +119,15 @@ public class AppToDeviceController {
     @ResponseBody
     @ApiOperation("投放设配列表")
     @SystemControllerLog(description = "获取投放设配列表")
-    public ResponseData getDeliveryList(@RequestParam("province") String province, @RequestParam("city") String city,
-                                        @RequestParam("area") String area, @RequestParam("devices") List<Integer> devices,
-                                        @RequestParam(value = "page" ,defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "5") int size){
+    public ResponseData getDeliveryList(HttpServletRequest request, @RequestParam(value = "devices",defaultValue = "") String json, @RequestParam(value = "page" , defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "5") int size){
+        String province = request.getParameter("province");
+        String city = request.getParameter("city");
+        String area = request.getParameter("area");
+        List<Integer> devices = JSON.parseArray(json,Integer.class);
+        if (devices.size() == 0){
+            devices = null;
+        }
+
         ResponseData responseData = ResponseData.ok();
         try {
             List<AppDevice> device = deviceService.findDevicesList(devices,province,city,area,size,page);
@@ -133,6 +138,9 @@ public class AppToDeviceController {
             responseData.putDataValue("devices", generatePeriphery(device));
             return responseData;
         } catch (SysException e){
+            return ResponseData.notFound();
+        } catch (Exception e){
+            _log.error(e.getMessage());
             return ResponseData.notFound();
         }
     }

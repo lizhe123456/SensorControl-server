@@ -16,4 +16,6 @@ public interface AdvertMapper extends BaseMapper<Advert>{
     List<String> findAdvertFordid(@Param("did") Integer did);
 
     List<AppAdvert> findAdvertForDid(@Param("did") Integer did,@Param("page") Integer page, @Param("size") Integer size);
+
+    List<Advert> findAdvertWhereState(@Param("state") Integer state,@Param("page") Integer page, @Param("size") Integer size);
 }

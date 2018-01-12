@@ -2,17 +2,25 @@ package com.zlcm.server.controller.app;
 
 import com.alibaba.fastjson.JSON;
 import com.zlcm.server.annotation.SystemControllerLog;
+import com.zlcm.server.base.BaseController;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.ResponseData;
+import com.zlcm.server.model.Result;
 import com.zlcm.server.model.apprep.AppAdvert;
+import com.zlcm.server.model.apprep.AppOrder;
 import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.Order;
+import com.zlcm.server.model.bean.UserDetails;
 import com.zlcm.server.service.AdvertService;
 import com.zlcm.server.service.DeviceService;
 import com.zlcm.server.service.OrderService;
+import com.zlcm.server.service.UserDetailsService;
+import com.zlcm.server.util.UploadUtil;
+import com.zlcm.server.util.id.LoginId;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +38,7 @@ import java.util.List;
 @Controller
 @Api(value = "APP广告接口",description="广告")
 @RequestMapping("/api/advert")
-public class AppAdvertController {
+public class AppAdvertController extends BaseController {
 
     @Autowired
     AdvertService advertService;
@@ -39,6 +48,9 @@ public class AppAdvertController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @RequestMapping(value = "/hot",method = RequestMethod.POST)
     @SystemControllerLog(description = "获取热门广告信息")
@@ -111,28 +123,47 @@ public class AppAdvertController {
         }
     }
 
-//    @RequestMapping(value = "/submit", method = RequestMethod.POST)
-//    @SystemControllerLog(description = "App上传广告生成订单")
-//    @ApiOperation("")
-//    @ResponseBody
-//    public ResponseData getAppAdvert(HttpServletRequest request,@RequestParam("advert") MultipartFile file, @RequestParam("desc") String desc
-//            ,@RequestParam("duration") long duration, @RequestParam("address") String address){
-//        String devices = request.getParameter("device");
-//        List<Integer> d = (List<Integer>) JSON.parse(devices);
-//        Order order = new Order();
-//
-//        Advert advert = new Advert();
-//        advert.setAddress();
-//        advert.setIphone();
-//        advert.setTextInfo();
-//        advert.setDid();
-//
-//        int aid = advertService.save(advert);
-//        advert.setDuration(duration);
-//        order.setCreateTime(new Date());
-//        order.setDuration(duration);
-//        order.setAid(aid);
-//        order.getUid();
-//        orderService.save();
-//    }
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    @SystemControllerLog(description = "App上传广告生成订单")
+    @ApiOperation("App上传广告生成订单")
+    @ResponseBody
+    public Result<AppOrder> getAppAdvert(HttpServletRequest request,@RequestParam("duration") long time, @RequestParam("advert") MultipartFile file){
+        Result<AppOrder> result = Result.ok();
+        Integer uid =  LoginId.getUid(request);
+        String devices = request.getParameter("devices");
+        long duration = time * 24 * 60 * 60 * 1000;
+        String desc = request.getParameter("desc");
+        String address = request.getParameter("address");
+        String phone = request.getParameter("phone");
+        try {
+            UserDetails userDetails = userDetailsService.get(uid);
+            if (TextUtils.isEmpty(userDetails.getRealName()) && TextUtils.isEmpty(userDetails.getIdcrad())){
+                //未实名认证
+            }
+//            if (userDetails.getStorId() == null &&userDetails.getStorId() == 0){
+//                //
+//            }
+            String path = UploadUtil.uploadImg(file,"/alidata/server/advert","advert/");
+            if (TextUtils.isEmpty(devices)){
+                return Result.notFound();
+            }
+            List<Integer> d = JSON.parseArray(devices,Integer.class);
+            Advert advert = new Advert();
+            advert.setUid(uid);
+            advert.setDuration(duration);
+            advert.setTextInfo(desc);
+            advert.setIphone(phone);
+            advert.setAddress(address);
+            advert.setAdvertImg(path);
+            AppOrder order = advertService.insertAdvert(advert,d);
+            result.setInfo(order);
+            return result;
+        } catch (SysException e) {
+            return Result.notFound();
+        } catch (IOException e) {
+            return Result.notFound();
+        }
+    }
+
+
 }

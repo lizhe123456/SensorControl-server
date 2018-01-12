@@ -71,7 +71,7 @@
   </select>
   
   <select id="getDeviceInfo" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Device">
-    SELECT * FROM zlcm_device d WHERE d.did = (SELECT did FROM zlcm_order_device WHERE oid = #{oid,jdbcType=INTEGER})
+    SELECT * FROM zlcm_device d WHERE d.did IN (SELECT did FROM zlcm_order_device WHERE oid = #{oid,jdbcType=INTEGER})
   </select>
   
 </mapper>

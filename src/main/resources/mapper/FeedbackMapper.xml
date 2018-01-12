@@ -74,7 +74,7 @@
     SELECT COUNT(*) FROM zlcm_feedback
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Feedback">
     SELECT * FROM zlcm_feedback a  JOIN (select did from zlcm_feedback limit #{page},#{size}) b ON a.ID = b.id
   </select>
 </mapper>

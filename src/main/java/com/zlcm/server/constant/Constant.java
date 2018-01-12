@@ -57,7 +57,8 @@ public class Constant {
 
 	public final static String UPMS_TYPE = "zlcm-server-type";
 	public final static String ID_AUTHEN = "http://apis.juhe.cn/idimage/verify";
-	public final static String ADDRESS = "http://192.168.1.201:8080/";
+//	public final static String ADDRESS = "http://192.168.1.201:8080/";
+	public final static String ADDRESS = "http://39.106.34.25:8080/";
 	public final static String ID_KEY = "41f1313aeabd170eb2299636d257f545";
 
 	public final static String PRIVATE_KEY = "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAnGbUUvdHAOBEFaQEifonOo1Dwyf/ycS6YcA5iZUyGyuMb6VySaZivhJW87/h/N5NR3ok7SQZWgVS3eWhAmryPwIDAQABAkBgHgHWiwkjzK+K7SWs9gMtxKskQGy+Pxyb/lpd50bH0uEhY4ls/EMIMWrbakvPjTgg+KTqioFsK5GsJGpjHC1BAiEA1YGZb0wHM8NUDONGUUbF/RQPlYkDLtwHux4dWP4MwhcCIQC7h67wmv06mHl4lgXWaeqaGJ0knPTHdyumf0rYiIiyGQIhAIj2BzBvTBt3jN5rmTsgNHgBu3GIoAMaYNc3HUpuRk7nAiEAjEDbVvokAEn/N2/Ep+sJWfyksrhs3i3DyL+VQ8NBsSkCIHChzdVah3gS53CgWIH7F8d1XmqxDMfchj+q2USXSGG6";

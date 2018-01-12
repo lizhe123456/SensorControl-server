@@ -1,7 +1,6 @@
 package com.zlcm.server.model.bean;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order implements Serializable {
@@ -11,14 +10,15 @@ public class Order implements Serializable {
 
     private Integer aid;
 
-    private Date createTime;
+    private Date create_time;
 
     private Byte state;
 
-    private BigDecimal price;
+    private float price;
 
     private String duration;
 
+    private static final long serialVersionUID = 1L;
 
     public Integer getOid() {
         return oid;
@@ -45,11 +45,11 @@ public class Order implements Serializable {
     }
 
     public Date getCreateTime() {
-        return createTime;
+        return create_time;
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.create_time = createTime;
     }
 
     public Byte getState() {
@@ -60,11 +60,11 @@ public class Order implements Serializable {
         this.state = state;
     }
 
-    public BigDecimal getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

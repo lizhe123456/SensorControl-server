@@ -179,13 +179,15 @@
     SELECT did,address,ip,dlatitude,dlongitude,household FROM zlcm_device d WHERE d.province = #{province,jdbcType=INTEGER}
     AND d.city = #{city,jdbcType=INTEGER}
     AND d.area = #{area,jdbcType=INTEGER}
+    <if test="list != null">
     UNION
     SELECT did,address,ip,dlatitude,dlongitude,household FROM zlcm_device d
     WHERE d.did IN
     <foreach collection="list" index="index" item="did" open="(" separator="," close=")">
       #{did,jdbcType=INTEGER}
     </foreach>
-    ASC limit #{page},#{size}
+    </if>
+    limit #{page},#{size}
   </select>
 
   <select id="findDevices" resultType="com.zlcm.server.model.bean.Device" parameterType="java.util.List">

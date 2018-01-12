@@ -140,6 +140,14 @@ public class SmsApi {
         return post(URI_SEND_VOICE, params);
     }
 
+    public static String authName(String image,String side){
+        Map<String,String> params = new HashMap<>();
+        params.put("key","41f1313aeabd170eb2299636d257f545");
+        params.put("image",image);
+        params.put("side",side);
+        return post("http://apis.juhe.cn/idimage/verify",params);
+    }
+
     /**
      * 基于HttpClient 4.3的通用POST方法
      *

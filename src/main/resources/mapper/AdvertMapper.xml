@@ -31,7 +31,7 @@
     delete from zlcm_advert
     where aid = #{aid,jdbcType=INTEGER}
   </delete>
-  <insert id="save" parameterType="com.zlcm.server.model.bean.Advert">
+  <insert id="save" parameterType="com.zlcm.server.model.bean.Advert" useGeneratedKeys="true" keyProperty="aid">
     insert into zlcm_advert
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="aid != null">
@@ -117,7 +117,7 @@
       <if test="auditingInfo != null">
         #{auditingInfo,jdbcType=VARCHAR},
       </if>
-      <if test="auditingInfo != null">
+      <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
     </trim>
@@ -196,13 +196,19 @@
     ORDER BY ad.start_time DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
   </select>
   <select id="findAdvertFordid" parameterType="java.lang.Integer" resultType="java.lang.String">
-      SELECT advert_img FROM zlcm_advert WHERE did = #{did,jdbcType=INTEGER}
+      SELECT advert_img FROM zlcm_advert ad WHERE ad.aid IN (SELECT aid FROM zlcm_advert_device WHERE zlcm_advert_device.did = #{did,jdbcType=INTEGER})
   </select>
   <select id="findAdvertForDid" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.apprep.AppAdvert">
       SELECT ad.aid,ad.advert_img,ad.text_info,ad.start_time,ad.hits,ad.iphone ,a.nickname,a.avatar,a.credit,real_name,a.stor_id,ad.address
     FROM zlcm_advert ad INNER JOIN
     (SELECT ud.uid,ud.nickname,ud.credit,ud.avatar,ud.real_name,ud.stor_id FROM zlcm_user_details ud) as a
-    ON ad.uid = a.uid WHERE ad.did = #{did,jdbcType=INTEGER}
+    ON ad.uid = a.uid WHERE ad.aid IN (SELECT aid FROM zlcm_advert_device WHERE zlcm_advert_device.did = #{did,jdbcType=INTEGER})
     ORDER BY ad.hits DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
   </select>
+  <select id="findAdvertWhereState" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Advert">
+    SELECT * FROM zlcm_advert a JOIN (select aid from zlcm_advert WHERE state = #{state,jdbcType=INTEGER} limit #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}) b
+    ON a.aid = b.aid
+  </select>
+
+
 </mapper>

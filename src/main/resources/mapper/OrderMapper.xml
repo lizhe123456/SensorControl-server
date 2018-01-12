@@ -5,7 +5,7 @@
     <id column="oid" jdbcType="INTEGER" property="oid" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="aid" jdbcType="INTEGER" property="aid" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
     <result column="state" jdbcType="TINYINT" property="state" />
     <result column="price" jdbcType="DECIMAL" property="price" />
   </resultMap>
@@ -30,8 +30,7 @@
     delete from zlcm_order
     where oid = #{oid,jdbcType=INTEGER}
   </delete>
-
-  <insert id="save" parameterType="com.zlcm.server.model.bean.Order">
+  <insert id="save" parameterType="com.zlcm.server.model.bean.Order" useGeneratedKeys="true" keyProperty="oid">
     insert into zlcm_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="oid != null">
@@ -66,8 +65,8 @@
       <if test="aid != null">
         #{aid,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
       </if>
       <if test="state != null">
         #{state,jdbcType=TINYINT},
@@ -90,7 +89,7 @@
         aid = #{aid,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_time = #{create_time,jdbcType=TIMESTAMP},
       </if>
       <if test="state != null">
         state = #{state,jdbcType=TINYINT},
@@ -104,7 +103,6 @@
     </set>
     where oid = #{oid,jdbcType=INTEGER}
   </update>
-
   <select id="findAll" resultType="java.util.List">
     SELECT * FROM zlcm_order
   </select>
@@ -113,7 +111,17 @@
     SELECT COUNT(*) FROM zlcm_order
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
-    SELECT * FROM zlcm_order a  JOIN (select did from zlcm_order limit #{page},#{size}) b ON a.ID = b.id
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Order">
+    SELECT * FROM zlcm_order a  JOIN (select oid from zlcm_order limit #{page},#{size}) b ON a.oid = b.oid
+  </select>
+
+  <select id="getUidForOrder" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Order">
+    SELECT * FROM zlcm_order a  JOIN (select oid from zlcm_order WHERE uid = #{uid} limit #{page},#{size}) b ON a.oid = b.oid
+  </select>
+
+  <select id="getDeviceWhereAid" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Device">
+    SELECT * FROM zlcm_device WHERE did IN
+    (SELECT did FROM zlcm_order_device WHERE oid =
+    (SELECT oid FROM zlcm_order WHERE aid = #{aid,jdbcType=INTEGER}))
   </select>
 </mapper>

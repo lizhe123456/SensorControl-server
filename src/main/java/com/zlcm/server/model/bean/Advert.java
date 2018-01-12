@@ -32,6 +32,18 @@ public class Advert {
   private String auditingInfo;
   private String address;
 
+  public Advert() {
+  }
+
+  public Advert(Integer uid, String advertImg, String textInfo, Date startTime, Long duration, String iphone, String address) {
+    this.uid = uid;
+    this.advertImg = advertImg;
+    this.textInfo = textInfo;
+    this.startTime = startTime;
+    this.duration = duration;
+    this.iphone = iphone;
+    this.address = address;
+  }
 
   public Integer getAid() {
     return aid;

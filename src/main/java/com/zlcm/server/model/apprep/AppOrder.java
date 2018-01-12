@@ -10,9 +10,12 @@ public class AppOrder implements Serializable {
     private int order_number;
     private List<Device> list;
     private String startTime;
-    private int duration;
+    private String duration;
     private int orderState;
     private int advertState;
+    private float price;
+    private String advert;
+    private String desc;
 
     public int getOrder_number() {
         return order_number;
@@ -38,11 +41,11 @@ public class AppOrder implements Serializable {
         this.startTime = startTime;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -61,4 +64,30 @@ public class AppOrder implements Serializable {
     public void setAdvertState(int advertState) {
         this.advertState = advertState;
     }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getAdvert() {
+        return advert;
+    }
+
+    public void setAdvert(String advert) {
+        this.advert = advert;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+
 }

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class LoginId {
 
-    public static Integer getUid(HttpServletRequest request) throws Exception {
+    public static Integer getUid(HttpServletRequest request) {
         if (!TextUtils.isEmpty(request.getHeader("loginId"))) {
             String uid = request.getHeader("loginId");
             return Integer.valueOf(uid);

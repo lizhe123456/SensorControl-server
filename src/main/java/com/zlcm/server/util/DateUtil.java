@@ -387,4 +387,12 @@ public class DateUtil extends DateUtils{
         return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
     }
 
+    /**
+     * 通过long获取天数
+     * @param date
+     * @return
+     */
+    public static String getDayNum(long date){
+        return date/24/60/60/1000 + "";
+    }
 }

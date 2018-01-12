@@ -1,10 +1,7 @@
 package com.zlcm.server.service;
 
 import com.zlcm.server.exception.SysException;
-import com.zlcm.server.model.bean.IdentityInfo;
-import com.zlcm.server.model.bean.User;
-import com.zlcm.server.model.bean.UserDetails;
-import com.zlcm.server.model.bean.Wallet;
+import com.zlcm.server.model.bean.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -34,16 +31,18 @@ public interface AppUserService {
     void agreement();
 
     //实名认证
-    void nameAuthen(Integer uid , String name, String idCrad,int sex,Date birthday,
-                    @NotNull IdentityInfo info) throws SysException;
+    IdentityInfo nameAuthen(Integer uid ,String name, String idCard, String front, String back) throws SysException;
 
     //商家认证
-    void storeAuthen(Integer uid,String organization,String address,String legalPerson,String iphone,String businessLicenseUrl);
+    void storeAuthen(Integer uid, String name, String address, String iphone, String businessLicenseUrl) throws SysException;
 
     //修改手机号
-    void updatePhone(Integer uid,String phone);
+    void updatePhone(Integer uid,String phone) throws SysException;
 
     //修改头像
-    void updateAvatar(Integer uid,String url,String nickName);
+    void updateAvatar(Integer uid,String url);
+
+    //意见反馈
+    void feedBack(Integer uid,String desc, String phone) throws SysException;
 
 }

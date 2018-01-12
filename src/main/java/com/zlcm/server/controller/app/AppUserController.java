@@ -1,8 +1,8 @@
 package com.zlcm.server.controller.app;
 
+import com.alibaba.fastjson.JSON;
 import com.zlcm.server.annotation.SystemControllerLog;
 import com.zlcm.server.base.BaseController;
-import com.zlcm.server.constant.Constant;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
@@ -12,7 +12,6 @@ import com.zlcm.server.model.bean.*;
 import com.zlcm.server.service.*;
 import com.zlcm.server.util.*;
 import com.zlcm.server.util.id.LoginId;
-import com.zlcm.server.util.id.UUIDTools;
 import com.zlcm.server.util.jwt.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,12 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.List;
 
 @Controller
@@ -73,6 +68,31 @@ public class AppUserController extends BaseController{
             request.getServletContext().setAttribute("code", code);
         }
         return ResponseData.ok();
+    }
+
+    @RequestMapping(value = "/proving/phone",method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation("更换手机号")
+    @SystemControllerLog(description = "更换手机号")
+    public ResponseData updatePhone(HttpServletRequest request){
+        Integer uid = LoginId.getUid(request);
+        String phone = request.getParameter("mobile");
+        String code = request.getParameter("code");
+        String code1 = (String) request.getServletContext().getAttribute("code");
+        if (!TextUtils.isEmpty(code1) && code1 .equals(code)) {
+            try {
+                appUserService.updatePhone(uid,phone);
+                request.getServletContext().removeAttribute("code");
+                return ResponseData.ok();
+            } catch (SysException e) {
+                request.getServletContext().removeAttribute("code");
+                return ResponseData.no();
+            }
+        }else {
+            request.getServletContext().removeAttribute("code");
+            return ResponseData.notFound();
+        }
+
     }
 
     /**
@@ -122,27 +142,47 @@ public class AppUserController extends BaseController{
 
     /**
      * 实名认证
-     * type认证方式 0.手机号 1.身份证
      */
-    @LoginRequired
-    @RequestMapping(value = "/authen",method = RequestMethod.GET)
+    @RequestMapping(value = "/authen",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "实名认证")
     @SystemControllerLog(description = "实名认证")
-    public ResponseData authen(@RequestParam("type") Integer type){
-        //0
-        if (type == 0){
-
-        }else if (type == 1){
-
+    public ResponseData authen(HttpServletRequest request) {
+        String name = request.getParameter("name");
+        String idCard = request.getParameter("idCard");
+        String front = request.getParameter("front");
+        String back = request.getParameter("back");
+        Integer uid = LoginId.getUid(request);
+        ResponseData responseData = ResponseData.ok();
+        try {
+            appUserService.nameAuthen(uid, name, idCard, front, back);
+            return responseData;
+        } catch (SysException e) {
+            return ResponseData.notFound();
         }
-        return null;
     }
 
     /**
      * 店家认证
      */
-
+    @RequestMapping(value = "/storeAuthen",method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "实名认证")
+    @SystemControllerLog(description = "实名认证")
+    public ResponseData storeAuthen(HttpServletRequest request){
+        ResponseData responseData = ResponseData.ok();
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String phone = request.getParameter("phone");
+        String image = request.getParameter("image");
+        Integer uid = LoginId.getUid(request);
+        try {
+            appUserService.storeAuthen(uid,name,address,phone,image);
+            return responseData;
+        } catch (SysException e) {
+            return ResponseData.notFound();
+        }
+    }
 
     /**
      * 获取用户信息
@@ -160,7 +200,7 @@ public class AppUserController extends BaseController{
             UserDetails userDetails = appUserService.getUserInfo(user.getUid());
             if (userDetails != null) {
                 Store store = storeService.get(userDetails.getStorId());
-                if (store != null){
+                if (store != null && store.getState() == 1){
                     userInfo.setStorename(store.getName());
                     userInfo.setStorephone(store.getIphone());
                     userInfo.setAddress(store.getAddress());
@@ -191,40 +231,15 @@ public class AppUserController extends BaseController{
     @ResponseBody
     @ApiOperation(value = "上传头像")
     @SystemControllerLog(description = "上传头像")
-    public ResponseData getUpdateUserAvatar(HttpServletRequest request, @RequestParam("avatar") MultipartFile file,@RequestParam("nickName") String nickName){
+    public ResponseData getUpdateUserAvatar(HttpServletRequest request, @RequestParam("avatar") MultipartFile file){
+        Integer uid = LoginId.getUid(request);
         try {
-            Integer uid = LoginId.getUid(request);
-            String newFileName = DateUtil.getStringDate() + "_" + UUIDTools.getImgName()+".jpg";
-            ServletContext servletContext = request.getSession().getServletContext();
-            // 设定文件保存的目录
-            String path = "D:/web/avatar/";
-            File f = new File(path);
-            String serverPath = path + newFileName;
-            if (!f.exists())
-                f.mkdirs();
-            if (!file.isEmpty()){
-                try {
-                    FileOutputStream fos = new FileOutputStream(serverPath);
-                    InputStream in = file.getInputStream();
-                    int b = 0;
-                    while ((b = in.read()) != -1){
-                        fos.write(b);
-                    }
-                    fos.close();
-                    in.close();
-                } catch (Exception  e) {
-                    return ResponseData.notFound();
-                }
-            }
-            appUserService.updateAvatar(Integer.valueOf(uid),Constant.ADDRESS +"avatar/"+newFileName,nickName);
-            return ResponseData.ok();
-        } catch (SysException e) {
-            return ResponseData.sqlError();
-        } catch (UnsupportedEncodingException e) {
-            return ResponseData.notFound();
-        } catch (Exception e) {
+            String path = UploadUtil.uploadImg(file,"/alidata/server/avatar","avatar/");
+            appUserService.updateAvatar(Integer.valueOf(uid),path);
+        } catch (IOException e) {
             return ResponseData.notFound();
         }
+        return ResponseData.ok();
     }
 
     /**
@@ -280,7 +295,8 @@ public class AppUserController extends BaseController{
     @ApiOperation(value = "获取首页信息")
     @SystemControllerLog(description = "获取首页信息")
     public ResponseData homepage(HttpServletRequest request,@RequestParam("longitude") double longitude, @RequestParam("latitude") double latitude
-            ,@RequestParam(value = "range", defaultValue = "5") double range,@RequestParam(value = "size", defaultValue = "1000") int size){
+            ,@RequestParam(value = "range", defaultValue = "5") double range,@RequestParam(value = "size", defaultValue = "1000") int size
+            ,@RequestParam("first") int first){
         ResponseData responseData = ResponseData.ok();
         try {
             Integer uid = LoginId.getUid(request);
@@ -296,7 +312,11 @@ public class AppUserController extends BaseController{
             }
             List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,range,size);
             responseData.putDataValue("hean",null);
-            responseData.putDataValue("pushInfo",null);
+            if (first == 0){
+                File file = new File("/alidata/server/appPush.txt");
+                String push = FileUtils.txt2String(file);
+                responseData.putDataValue("pushInfo", JSON.parse(push));
+            }
             responseData.putDataValue("deviceList",devices);
             responseData.putDataValue("logo",null);
             responseData.putDataValue("wallet",null);
@@ -307,5 +327,19 @@ public class AppUserController extends BaseController{
         }
     }
 
-
+    @RequestMapping(value = "/navigation", method = RequestMethod.GET)
+    @ResponseBody
+    @ApiOperation(value = "获取导航页图片")
+    @SystemControllerLog(description = "获取首页信息")
+    public Result<String> navigation(){
+        try {
+            Result<String> result = Result.ok();
+            File file = new File("D:/web/navigation.txt");
+            String navigation = FileUtils.txt2String(file);
+            result.setInfo(navigation);
+            return result;
+        }catch (Exception e){
+            return Result.notFound();
+        }
+    }
 }
