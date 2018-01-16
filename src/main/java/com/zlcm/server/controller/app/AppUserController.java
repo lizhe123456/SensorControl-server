@@ -3,6 +3,7 @@ package com.zlcm.server.controller.app;
 import com.alibaba.fastjson.JSON;
 import com.zlcm.server.annotation.SystemControllerLog;
 import com.zlcm.server.base.BaseController;
+import com.zlcm.server.constant.Constant;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.interceptor.LoginRequired;
 import com.zlcm.server.model.ResponseData;
@@ -123,11 +124,14 @@ public class AppUserController extends BaseController{
                 if (user.getLocked() == 1){
                     return ResponseData.userLocked();
                 }
+                UserDetails userDetails = userDetailsService.get(user.getUid());
                 String token = JwtUtil.sign(user,1000L*60L*60L*24L*30L);
 //                String loginId = new String(RSAUtils.encryptByPublicKey(String.valueOf(user.getUid()).getBytes(), Constant.PUBLIC_KEY),"utf-8");
                 ResponseData responseData = ResponseData.ok();
                 responseData.putDataValue("token",token);
                 responseData.putDataValue("loginId",user.getUid());
+                responseData.putDataValue("avatar",userDetails.getAvatar());
+                responseData.putDataValue("nickName",userDetails.getNickname());
                 request.getServletContext().removeAttribute("code");
                 return responseData;
             }else {
@@ -234,7 +238,7 @@ public class AppUserController extends BaseController{
     public ResponseData getUpdateUserAvatar(HttpServletRequest request, @RequestParam("avatar") MultipartFile file){
         Integer uid = LoginId.getUid(request);
         try {
-            String path = UploadUtil.uploadImg(file,"/alidata/server/avatar","avatar/");
+            String path = UploadUtil.uploadImg(file, Constant.AVATAR_IMG_URL,"avatar/");
             appUserService.updateAvatar(Integer.valueOf(uid),path);
         } catch (IOException e) {
             return ResponseData.notFound();
@@ -300,26 +304,22 @@ public class AppUserController extends BaseController{
         ResponseData responseData = ResponseData.ok();
         try {
             Integer uid = LoginId.getUid(request);
-            if (uid != null && uid != 0){
-                UserDetails userDetails = userDetailsService.get(uid);
-                responseData.putDataValue("head",null);
-                responseData.putDataValue("pushInfo",null);
-                responseData.putDataValue("logo",null);
-                responseData.putDataValue("wallet",null);
-                responseData.putDataValue("avatar",userDetails.getAvatar());
-                responseData.putDataValue("nickName",userDetails.getNickname());
-                responseData.putDataValue("credit",userDetails.getCredit());
-            }
             List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,range,size);
-            responseData.putDataValue("hean",null);
             if (first == 0){
-                File file = new File("/alidata/server/appPush.txt");
+                if (uid != null && uid != 0){
+                    UserDetails userDetails = userDetailsService.get(uid);
+                    responseData.putDataValue("wallet",null);
+                    responseData.putDataValue("credit",userDetails.getCredit());
+                }
+                File head = new File(Constant.HEAD_JSON_URL);
+                responseData.putDataValue("hean",JSON.parse(FileUtils.txt2String(head)));
+                File file = new File(Constant.PUSH_JSON_URL);
                 String push = FileUtils.txt2String(file);
                 responseData.putDataValue("pushInfo", JSON.parse(push));
+                responseData.putDataValue("logo",null);
+                responseData.putDataValue("wallet",null);
             }
             responseData.putDataValue("deviceList",devices);
-            responseData.putDataValue("logo",null);
-            responseData.putDataValue("wallet",null);
             return responseData;
         } catch (Exception e) {
             _log.error(e.toString());
@@ -334,7 +334,7 @@ public class AppUserController extends BaseController{
     public Result<String> navigation(){
         try {
             Result<String> result = Result.ok();
-            File file = new File("D:/web/navigation.txt");
+            File file = new File(Constant.NAVIGATION_JSON_URL);
             String navigation = FileUtils.txt2String(file);
             result.setInfo(navigation);
             return result;

@@ -2,6 +2,7 @@ package com.zlcm.server.controller.app;
 
 import com.zlcm.server.annotation.SystemControllerLog;
 import com.zlcm.server.base.BaseController;
+import com.zlcm.server.constant.Constant;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.service.AppUserService;
@@ -31,7 +32,7 @@ public class AppSettingController extends BaseController{
     @ResponseBody
     public ResponseData getNewVersion(){
         ResponseData responseData = ResponseData.ok();
-        File file = new File("/alidata/server/version.txt");
+        File file = new File(Constant.VERSION_JSON_URL);
         String version = FileUtils.txt2String(file);
         responseData.putDataValue("version",version);
         return responseData;

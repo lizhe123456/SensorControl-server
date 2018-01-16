@@ -21,6 +21,11 @@
     <mybatis-ehcache.version>1.0.0</mybatis-ehcache.version>
     <ehcache.version>2.10.0</ehcache.version>
     <shiro.version>1.3.2</shiro.version>
+    <!-- 消息队列 rabbitmq -->
+    <rabbitmq-client.version>3.5.1</rabbitmq-client.version>
+    <spring-rabbit.version>1.3.9.RELEASE</spring-rabbit.version>
+    <!--jedis -->
+    <jedis.version>2.7.0</jedis.version>
   </properties>
 
   <dependencies>
@@ -70,13 +75,6 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.8.7</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid</artifactId>
-      <version>1.0.26</version>
     </dependency>
     <!-- 使用@RequestBody @ResponseBody 时得用到下面两jar包 -->
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
@@ -282,10 +280,25 @@
       <artifactId>commons-compress</artifactId>
       <version>1.12</version>
     </dependency>
+    <!-- spring-data-redis -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>1.6.0.RELEASE</version>
+    </dependency>
+
+    <!--redis client config-->
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>3.1</version>
+    </dependency>
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>2.6.1</version>
+      <version>${jedis.version}</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <!-- httpclient -->
     <dependency>
@@ -333,11 +346,27 @@
       <artifactId>mina-filter-compression</artifactId>
       <version>2.0.16</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>com.alibaba</groupId>-->
-      <!--<artifactId>druid</artifactId>-->
-      <!--<version>1.1.5</version>-->
-    <!--</dependency>-->
+    <!-- 消息队列 mq -->
+    <dependency>
+      <groupId>com.rabbitmq</groupId>
+      <artifactId>amqp-client</artifactId>
+      <version>${rabbitmq-client.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.amqp</groupId>
+      <artifactId>spring-rabbit</artifactId>
+      <version>${spring-rabbit.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.6.1</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>SensorControl-server</finalName>

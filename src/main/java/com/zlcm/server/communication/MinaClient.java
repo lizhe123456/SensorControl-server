@@ -6,6 +6,7 @@ import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.AdvertDevice;
 import com.zlcm.server.model.bean.Device;
 import com.zlcm.server.service.OrderService;
+import com.zlcm.server.util.BmpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.UnknownHostException;
@@ -31,9 +32,10 @@ public class MinaClient {
 //        send(new String[]{"192.168.1.201"},BmpUtil.getImagePixel("D:/pa/sdh.png"));
     }
 
-    public void send(AdvertDeviceMapper advertDeviceMapper,AdvertMapper advertMapper,List<Device> devices, Advert advert, byte[] bytes){
+    public void send(AdvertDeviceMapper advertDeviceMapper,AdvertMapper advertMapper,List<Device> devices, Advert advert){
         try {
             ExecutorService executorService = ZLExecutor.getZlExecutor().getZlThreadPoolExecutor();
+            byte[] bytes = BmpUtil.getImagePixel(advert.getAdvertImg());
             for (int i = 0; i < devices.size(); i++) {
                 executorService.execute(new ZlRunnable(devices.get(i), advert.getAid(), 8221, bytes));
             }

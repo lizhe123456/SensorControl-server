@@ -20,6 +20,14 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
     private static final char SEPARATOR = '_';
     private static final String CHARSET_NAME = "UTF-8";
 
+    public static String byteToStr(byte[] byteArray){
+        if (byteArray == null) {
+            return null;
+        }
+        String str = new String(byteArray);
+        return str;
+    }
+
     /**
      * 检测字符串是否不为空(null,"","null")
      *

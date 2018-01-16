@@ -2,14 +2,12 @@ package com.zlcm.server.service.impl;
 
 import com.zlcm.server.base.BaseServiceImpl;
 import com.zlcm.server.constant.Constant;
-import com.zlcm.server.dao.AdvertMapper;
-import com.zlcm.server.dao.DeviceMapper;
-import com.zlcm.server.dao.OrderDeviceMapper;
-import com.zlcm.server.dao.OrderMapper;
+import com.zlcm.server.dao.*;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.apprep.AppOrder;
 import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.Device;
+import com.zlcm.server.model.bean.Income;
 import com.zlcm.server.model.bean.Order;
 import com.zlcm.server.service.OrderService;
 import com.zlcm.server.util.DateUtil;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +42,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order,OrderMapper> impleme
     DeviceMapper deviceMapper;
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    IncomeMapper incomeMapper;
+    @Autowired
+    ExpenditureMapper expenditureMapper;
 
     /**
      * 生成订单信息
@@ -122,8 +123,18 @@ public class OrderServiceImpl extends BaseServiceImpl<Order,OrderMapper> impleme
      * 支付成功改变订单状态并将广告状态改为待审核状态
      */
     @Override
-    public void payOrder(Integer uid, Integer oid) {
-
+    public void payOrder(Integer oid, String amount, String trade_no, String passback_params,int type) {
+        Order order = orderMapper.get(oid);
+        order.setState((byte) 1);
+        orderMapper.update(order);
+        Income income = new Income();
+        income.setOid(oid);
+        income.setTime(new Date());
+        income.setPrice(BigDecimal.valueOf(Double.parseDouble(amount)));
+        income.setPassbackParams(passback_params);
+        income.setType((byte) type);
+        income.setTradeNo(trade_no);
+        incomeMapper.save(income);
     }
 
     /**

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.IncomeMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.Income">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="oid" jdbcType="INTEGER" property="oid" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="passback_params" jdbcType="VARCHAR" property="passbackParams" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, oid, time, price, type, passback_params, trade_no
+  </sql>
+  <select id="save" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zlcm_income
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from zlcm_income
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="get" parameterType="com.zlcm.server.model.bean.Income">
+    insert into zlcm_income
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="oid != null">
+        oid,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="passbackParams != null">
+        passback_params,
+      </if>
+      <if test="tradeNo != null">
+        trade_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="oid != null">
+        #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="passbackParams != null">
+        #{passbackParams,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.bean.Income">
+    update zlcm_income
+    <set>
+      <if test="oid != null">
+        oid = #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="passbackParams != null">
+        passback_params = #{passbackParams,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="com.zlcm.server.model.bean.Income">
+    SELECT * FROM zlcm_expenditure
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_expenditure
+  </select>
+
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Income">
+    SELECT * FROM zlcm_expenditure a  JOIN (select did from zlcm_device limit #{page},#{size}) b ON a.did = b.did
+  </select>
+</mapper>

@@ -1,5 +1,8 @@
 package com.zlcm.server.model.bean;
 
+import com.zlcm.server.util.DateUtil;
+
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -91,8 +94,8 @@ public class User implements Serializable {
         this.registerIp = registerIp == null ? null : registerIp.trim();
     }
 
-    public Date getRegisterTime() {
-        return registerTime;
+    public String getRegisterTime() {
+        return registerTime == null ? null : DateUtil.formatDateTime(registerTime);
     }
 
     public void setRegisterTime(Date registerTime) {
@@ -107,8 +110,8 @@ public class User implements Serializable {
         this.lastLoginIp = lastLoginIp == null ? null : lastLoginIp.trim();
     }
 
-    public Date getLastLoginTime() {
-        return lastLoginTime;
+    public String getLastLoginTime() {
+        return lastLoginTime == null ? null :DateUtil.formatDateTime(lastLoginTime);
     }
 
     public void setLastLoginTime(Date lastLoginTime) {

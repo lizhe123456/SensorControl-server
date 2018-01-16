@@ -24,15 +24,15 @@
         <thead>
         <tr>
             <th lay-data="{type:'checkbox', fixed:'left'}"></th>
-            <th lay-data="{field:'user_id', width:80, fixed: 'left', sort: true}">ID</th>
+            <th lay-data="{field:'uid', width:80, fixed: 'left', sort: true}">ID</th>
             <th lay-data="{field:'username', width:120}">用户名</th>
             <th lay-data="{field:'password', width:150}">密码</th>
             <th lay-data="{field:'salt', width:80}">盐</th>
             <th lay-data="{field:'state',width:100}">登录状态</th>
-            <th lay-data="{field:'register_ip',width:80,}">注册IP</th>
-            <th lay-data="{field:'register_time',width:80, sort: true}">注册时间</th>
-            <th lay-data="{field:'last_login_ip', width:120}">登入IP</th>
-            <th lay-data="{field:'last_login_time', width:100, sort: true}">登入时间</th>
+            <th lay-data="{field:'registerIp',width:80,}">注册IP</th>
+            <th lay-data="{field:'registerTime',width:80, sort: true}">注册时间</th>
+            <th lay-data="{field:'lastLoginIp', width:120}">登入IP</th>
+            <th lay-data="{field:'lastLoginTime', width:100, sort: true}">登入时间</th>
             <th lay-data="{field:'locked', width:120}">锁定</th>
             <th lay-data="{fixed: 'right', toolbar: '#barDemo', width:150}">操作</th>
         </tr>
@@ -61,6 +61,10 @@
                 msgName: 'msg', //消息字段
                 countName: 'count', //总数字段
                 dataName: 'data' //数据字段
+            },
+            request :{
+              page : 0,
+              size : 10
             }
         };
 

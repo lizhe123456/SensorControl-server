@@ -14,7 +14,7 @@ public class FileUtils {
     public static String txt2String(File file){
         StringBuilder result = new StringBuilder();
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"GBK"));
             String s = null;
             while((s = br.readLine())!=null){//使用readLine方法，一次读一行
                 result.append(System.lineSeparator()+s);

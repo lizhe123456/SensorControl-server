@@ -20,7 +20,7 @@ public interface OrderService extends BaseService<Order> {
 
     List<AppOrder> getOrderList(Integer uid,int page,int size) throws SysException;
 
-    void payOrder(Integer uid,Integer oid);
+    void payOrder(Integer oid,String amount,String trade_no,String passback_params,int type);
 
     void refund(Integer uid, Integer oid);
 

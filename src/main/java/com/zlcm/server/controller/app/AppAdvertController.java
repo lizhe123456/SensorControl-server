@@ -3,6 +3,7 @@ package com.zlcm.server.controller.app;
 import com.alibaba.fastjson.JSON;
 import com.zlcm.server.annotation.SystemControllerLog;
 import com.zlcm.server.base.BaseController;
+import com.zlcm.server.constant.Constant;
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.Result;
@@ -143,7 +144,7 @@ public class AppAdvertController extends BaseController {
 //            if (userDetails.getStorId() == null &&userDetails.getStorId() == 0){
 //                //
 //            }
-            String path = UploadUtil.uploadImg(file,"/alidata/server/advert","advert/");
+            String path = UploadUtil.uploadImg(file, Constant.ADVERT_IMG_URL,"advert/");
             if (TextUtils.isEmpty(devices)){
                 return Result.notFound();
             }

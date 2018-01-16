@@ -15,9 +15,9 @@
 
         <!-- 数据库链接URL、用户名、密码 -->
         <jdbcConnection driverClass="${jdbc.driver}"
-                        connectionURL="${jdbc.url}"
-                        userId="${jdbc.username}"
-                        password="${jdbc.password}">
+                        connectionURL="${jdbc2.testUrl}"
+                        userId="${jdbc2.testUsername}"
+                        password="${jdbc2.testPassword}">
         </jdbcConnection>
 
         <!--
@@ -52,7 +52,9 @@
 
         <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
         <!-- 指定数据库表 -->
-        <table tableName="zlcm_advert_device" schema="" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+        <table tableName="zlcm_income" schema="" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" ></table>
+        <table tableName="zlcm_expenditure" schema="" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false" ></table>
     </context>
 </generatorConfiguration>

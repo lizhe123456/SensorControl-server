@@ -13,7 +13,7 @@
     <!-- needed for ContextLoaderListener -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring-mybatis.xml,classpath:spring-context.xml</param-value>
+        <param-value>classpath:spring-mybatis.xml,classpath:spring-context.xml,classpath:applicationContext-alipay.xml</param-value>
     </context-param>
     <!-- Bootstraps the root web application context before servlet initialization -->
     <listener>

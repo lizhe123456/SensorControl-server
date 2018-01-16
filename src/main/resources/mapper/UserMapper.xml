@@ -144,7 +144,7 @@
     </set>
     where uid = #{uid,jdbcType=INTEGER}
   </update>
-  <select id="findAll" resultType="java.util.List">
+  <select id="findAll" resultType="com.zlcm.server.model.bean.User">
     SELECT * FROM zlcm_user
   </select>
 
@@ -152,8 +152,8 @@
     SELECT COUNT(*) FROM zlcm_user
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
-    SELECT * FROM zlcm_user a  JOIN (select did from zlcm_user limit #{page},#{size}) b ON a.ID = b.id
+  <select id="getPageList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT * FROM zlcm_user a  JOIN (select uid from zlcm_user limit #{page},#{size}) b ON a.uid = b.uid
   </select>
 
 </mapper>

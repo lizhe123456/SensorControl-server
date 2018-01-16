@@ -36,19 +36,14 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
-            <mvc:mapping path="/**" />
+            <mvc:mapping path="/api/**" />
             <!-- /register 和 /login 不需要拦截-->
             <mvc:exclude-mapping path="/api/user/login" />
             <mvc:exclude-mapping path="/api/user/phoneCode" />
             <mvc:exclude-mapping path="/api/user/homepage" />
             <mvc:exclude-mapping path="/api/device/charging" />
-            <mvc:exclude-mapping path="/report" />
-            <mvc:exclude-mapping path="/manage" />
-            <mvc:exclude-mapping path="/api/advert/hot"/>
-            <mvc:exclude-mapping path="/api/advert/fordevice"/>
-            <mvc:exclude-mapping path="/api/device/periphery"/>
-            <mvc:exclude-mapping path="/api/order/returnPay"/>
-            <mvc:exclude-mapping path="/api/order/notifyPay"/>
+            <mvc:exclude-mapping path="/api/user/navigation" />
+            <mvc:exclude-mapping path="/manage/**" />
             <mvc:exclude-mapping path="/**/fonts/*"/>
             <mvc:exclude-mapping path="/**/*.css"/>
             <mvc:exclude-mapping path="/**/*.js"/>
