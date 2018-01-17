@@ -57,8 +57,11 @@ public class Constant {
 
 	public final static String UPMS_TYPE = "zlcm-server-type";
 	public final static String ID_AUTHEN = "http://apis.juhe.cn/idimage/verify";
-//	public final static String ADDRESS = "http://192.168.1.201:8080/";
-	public final static String ADDRESS = "http://39.106.34.25:8080/";
+	public final static String ADDRESS = "http://192.168.1.201:8080/";
+//	public final static String ADDRESS = "http://39.106.34.25:8080/";
+	public final static String ZS_ADDRESS = "D:/web/";
+//	public final static String ZS_ADDRESS = "D:/web/";
+
 	public final static String ID_KEY = "41f1313aeabd170eb2299636d257f545";
 
 	public final static String ADVERT_IMG_URL = "D:/web/advert";

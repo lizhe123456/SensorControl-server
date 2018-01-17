@@ -1,5 +1,7 @@
 package com.zlcm.server.model.apprep;
 
+import com.zlcm.server.constant.Constant;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -38,7 +40,7 @@ public class AppAdvert implements Serializable{
     }
 
     public String getAdvertImg() {
-        return advert_img;
+        return Constant.ADDRESS +advert_img;
     }
 
     public void setAdvertImg(String advertImg) {
@@ -86,7 +88,7 @@ public class AppAdvert implements Serializable{
     }
 
     public String getAvatar() {
-        return avatar;
+        return Constant.ADDRESS + avatar;
     }
 
     public void setAvatar(String avatar) {

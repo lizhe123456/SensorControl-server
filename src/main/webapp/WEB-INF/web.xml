@@ -8,7 +8,7 @@
          version="2.5">
     <display-name>SensorControl</display-name>
     <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
+        <welcome-file>index2.html</welcome-file>
     </welcome-file-list>
     <!-- needed for ContextLoaderListener -->
     <context-param>

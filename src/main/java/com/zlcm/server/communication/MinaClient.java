@@ -1,10 +1,12 @@
 package com.zlcm.server.communication;
+import com.zlcm.server.constant.Constant;
 import com.zlcm.server.dao.AdvertDeviceMapper;
 import com.zlcm.server.dao.AdvertMapper;
 import com.zlcm.server.dao.OrderMapper;
 import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.AdvertDevice;
 import com.zlcm.server.model.bean.Device;
+import com.zlcm.server.netty.NettyRunnable;
 import com.zlcm.server.service.OrderService;
 import com.zlcm.server.util.BmpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,9 @@ public class MinaClient {
             ,8172,8173,8174,8175,8176,8177,8178,8179,8180,8181,8182,8183,8184,8185,8186,8187,8188,8189,8190,8191,8192,8193,8194,8195,8196,8197,8198,8199,8200,8201,8202,8203
             ,8204,8205,8206,8207,8208,8209,8210,8211};
 
-    private static int[] sads = {8211,8212,8213,8214,8215,8216,8217,8218,8219,8220,8221};;
+    private static int[] sads = {8222,8223,8224};
 
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args) throws UnknownHostException, InterruptedException {
 //        for (int i = 0; i < sads.length; i++) {
 //            executorService.execute(new ZlRunnable("192.168.1.201",sads[i], BmpUtil.getImagePixel("D:/pa/sdh.png")));
 //        }
@@ -33,13 +35,14 @@ public class MinaClient {
     }
 
     public void send(AdvertDeviceMapper advertDeviceMapper,AdvertMapper advertMapper,List<Device> devices, Advert advert){
+
         try {
             ExecutorService executorService = ZLExecutor.getZlExecutor().getZlThreadPoolExecutor();
-            byte[] bytes = BmpUtil.getImagePixel(advert.getAdvertImg());
+            byte[] bytes = BmpUtil.getImagePixel(Constant.ZS_ADDRESS+advert.getAdvertImg());
             for (int i = 0; i < devices.size(); i++) {
-                executorService.execute(new ZlRunnable(devices.get(i), advert.getAid(), 8221, bytes));
+//                executorService.execute(new ZlRunnable(devices.get(i), advert.getAid(), sads[i], bytes));
             }
-            executorService.shutdown();
+//            executorService.shutdown();
             while (true) {
                 if (executorService.isTerminated()) {
                     //所有线程结束

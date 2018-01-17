@@ -1,254 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="Generator" content="EditPlus®">
-    <meta name="Keywords" content="">
-    <meta name="Description" content="">
-    <title>智领传媒</title>
-    <link rel="stylesheet" href="plugins/layui/css/layui.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台管理系统</title>
+    <link href="plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
+    <link href="plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css" rel="stylesheet"/>
+    <link href="plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
+    <link href="plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
+    <link href="css/admin.css" rel="stylesheet"/>
+    <style>
+        #header {background: #29A176;}
+        .content_tab{background: #29A176;}
+        .s-profile>a{background: url(images/zheng-upms.png) left top no-repeat;}
+    </style>
 </head>
-<style>
-
-</style>
 <body>
-    <!-- 布局容器 -->
-    <div class="layui-layout layui-layout-admin">
-        <!-- 头部 -->
-        <div class="layui-header">
-            <div class="layui-main">
-                <!-- logo -->
-                <a href="/" style="color: #c2c2c2; font-size: 18px; line-height: 60px;">后台管理系统</a>
-                <!-- 水平导航 -->
-                <ul class="layui-nav" style="position: absolute; top: 0; right: 0; background: none;">
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            欢迎登录！admin
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;">
-                                    个人信息
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;">
-                                    修改密码
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;">
-                                    退出登录
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
+<header id="header">
+    <ul id="menu">
+        <li id="guide" class="line-trigger">
+            <div class="line-wrap">
+                <div class="line top"></div>
+                <div class="line center"></div>
+                <div class="line bottom"></div>
+            </div>
+        </li>
+        <li id="logo" class="hidden-xs">
+            <a href="index.html">
+                <img src="images/logo.png"/>
+            </a>
+            <span id="system_title">后台管理系统</span>
+        </li>
+        <li class="pull-right">
+            <ul class="hi-menu">
+                <!-- 搜索 -->
+                <li class="dropdown">
+                    <a class="waves-effect waves-light" data-toggle="dropdown" href="javascript:;">
+                        <i class="him-icon zmdi zmdi-search"></i>
+                    </a>
+                    <ul class="dropdown-menu dm-icon pull-right">
+                        <form id="search-form" class="form-inline">
+                            <div class="input-group">
+                                <input id="keywords" type="text" name="keywords" class="form-control" placeholder="搜索"/>
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="waves-effect waves-light" data-toggle="dropdown" href="javascript:;">
+                        <i class="him-icon zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dm-icon pull-right">
+                        <li class="hidden-xs">
+                            <a class="waves-effect" data-ma-action="fullscreen" href="javascript:fullPage();"><i class="zmdi zmdi-fullscreen"></i> 全屏模式</a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" data-ma-action="clear-localstorage" href="javascript:;"><i class="zmdi zmdi-delete"></i> 清除缓存</a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-face"></i> 隐私管理</a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-settings"></i> 系统设置</a>
+                        </li>
+                        <li>
+                            <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-run"></i> 退出登录</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</header>
+<section id="main">
+    <aside id="sidebar">
+        <!-- 个人资料区 -->
+        <div class="s-profile">
+            <a class="waves-effect waves-light" href="javascript:;">
+                <div class="sp-pic">
+                    <img src="images/avatar.jpg"/>
+                </div>
+                <div class="sp-info">
+                    Admin，您好！
+                    <i class="zmdi zmdi-caret-down"></i>
+                </div>
+            </a>
+            <ul class="main-menu">
+                <li>
+                    <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-account"></i> 个人资料</a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-face"></i> 隐私管理</a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-settings"></i> 系统设置</a>
+                </li>
+                <li>
+                    <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-run"></i> 退出登录</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="main-menu">
+            <li>
+                <a class="waves-effect" href="javascript:Tab.addTab('首页', 'home');"><i class="zmdi zmdi-home"></i> 首页</a>
+            </li>
+            <li class="sub-menu system_menus system_1 0">
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 用户管理</a>
+                <ul>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('用户管理', 'usercurd.html');">用户管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('角色管理', '/manage/organization/index');">角色管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('权限管理', '/manage/organization/index');">权限管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('意见反馈', '/manage/organization/index');">意见反馈</a></li>
                 </ul>
-            </div>
-        </div>
-
-        <!-- 侧边栏 -->
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <ul class="layui-nav layui-nav-tree" lay-filter="left-nav" style="border-radius: 0;">
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" data-url="main.html" data-id="1">
-                           首页
-                        </a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            APP用户管理
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;" data-url="appuser.html" data-id="2">
-                                    APP用户列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="appuserlog.html" data-id="3">
-                                    APP用户日志
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            后台用户管理
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;" data-url="adminuser.html" data-id="4">
-                                    后台用户列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="adminuserlog.html" data-id="5">
-                                    后台用户日志
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            广告管理
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;" data-url="advert.html" data-id="6">
-                                    广告列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="noadvert.html" data-id="7">
-                                    待审核
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            订单管理
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;" data-url="order.html" data-id="8">
-                                    订单列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="http://cn.bing.com/" data-id="3">
-                                    待审核
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            设配管理
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;" data-url="device.html" data-id="9">
-                                    设配列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="devicelog.html" data-id="10">
-                                    设配日志
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">
-                            权限管理
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a href="javascript:;" data-url="role.html" data-id="11">
-                                    角色列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="permission.html" data-id="12">
-                                    权限列表
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" data-url="organization.html" data-id="13">
-                                    组织列表
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
+            </li>
+            <li class="sub-menu system_menus system_1 3">
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 设配管理</a>
+                <ul>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('设配管理', 'devicecurd.html');">设配管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('报修列表', '/manage/user/index');">报修列表</a></li>
                 </ul>
+            </li>
+            <li class="sub-menu system_menus system_1 6">
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 广告管理</a>
+                <ul>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('广告管理', '/manage/role/index');">广告管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('待审列表', 'advertmager.html');">待审列表</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu system_menus system_1 7">
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 系统参数</a>
+                <ul>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('系统参数', '/manage/role/index');">系统参数</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="upms-version">
+                    &copy; 智领传媒 V1.0.0
+                </div>
+            </li>
+        </ul>
+    </aside>
+    <section id="content">
+        <div class="content_tab">
+            <div class="tab_left">
+                <a class="waves-effect waves-light" href="javascript:;"><i class="zmdi zmdi-chevron-left"></i></a>
+            </div>
+            <div class="tab_right">
+                <a class="waves-effect waves-light" href="javascript:;"><i class="zmdi zmdi-chevron-right"></i></a>
+            </div>
+            <ul id="tabs" class="tabs">
+                <li id="tab_home" data-index="home" data-closeable="false" class="cur">
+                    <a class="waves-effect waves-light">首页</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content_main">
+            <div id="iframe_home" class="iframe cur">
+
             </div>
         </div>
+    </section>
+</section>
+<footer id="footer"></footer>
 
-        <!-- 主体 -->
-        <div class="layui-body">
-            <!-- 顶部切换卡 -->
-            <div class="layui-tab layui-tab-brief" lay-filter="top-tab" lay-allowClose="true" style="margin: 0;">
-                <ul class="layui-tab-title"></ul>
-                <div class="layui-tab-content" style="padding: 0;"></div>
-            </div>
-        </div>
+<script src="plugins/jquery.1.12.4.min.js"></script>
+<script src="plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="plugins/waves-0.7.5/waves.min.js"></script>
+<script src="plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="plugins/BootstrapMenu.min.js"></script>
+<script src="plugins/device.min.js"></script>
+<script src="plugins/fullPage/jquery.fullPage.min.js"></script>
+<script src="plugins/fullPage/jquery.jdirk.min.js"></script>
+<script src="plugins/jquery.cookie.js"></script>
 
-        <!-- 底部 -->
-        <div class="layui-footer" style="text-align: center; line-height: 44px;">
-            Copyright © 2017 <a href="http://www.kiscms.com" target="_blank">kiscms</a> Powered by 智领传媒
-        </div>
-    </div>
+<script src="js/admin.js"></script>
 
-    <script type="text/javascript" src="plugins/layui/layui.js"></script>
-    <script type="text/javascript">
-        layui.use(['layer','element'], function() {
-            var element    = layui.element;
-            var layer      = layui.layer;
-            var $          = layui.jquery;
-
-            var navfilter  = 'left-nav';
-            var nav        = $('.layui-nav[lay-filter='+navfilter+']').eq(0);
-
-            var tabfilter  = 'top-tab';
-            var tab        = $('.layui-tab[lay-filter='+tabfilter+']').eq(0);
-            var tabcontent = tab.children('.layui-tab-content').eq(0);
-            var tabtitle   = tab.children('.layui-tab-title').eq(0);
-
-            /**
-             * iframe自适应
-             */
-            $(window).resize(function() {
-                //设置顶部切换卡容器度
-                tabcontent.height($(this).height() - 60 - 41 - 44); //头部高度 顶部切换卡高度 底部高度
-                //设置顶部切换卡容器内每个iframe高度
-                tabcontent.find('iframe').each(function () {
-                    $(this).height(tabcontent.height());
-                });
-            }).resize();
-
-            /**
-             * 监听侧边栏导航点击事件
-             */
-            element.on('nav('+navfilter+')', function(elem) {
-                var a         = elem.children('a');
-                var title     = a.text();
-                var src       = elem.children('a').attr('data-url');
-                var id        = elem.children('a').attr('data-id');
-                var iframe    = tabcontent.find('iframe[data-id='+id+']').eq(0);
-                var tabindex  = tabtitle.children('li').length;
-
-                if(src != undefined && src != null && id != undefined && id != null) {
-                    if(iframe.length) { //存在 iframe
-                        //获取iframe身上的tab index
-                        tabindex = iframe.attr('data-tabindex');
-                    }else{ //不存在 iframe
-                        //显示加载层
-                        layer.load();
-                        setTimeout(function() {
-                            layer.closeAll('loading');
-                        }, 300);
-                        //拼接iframe
-                        var iframe = '<iframe';
-                        iframe += ' src="'+src+'" data-id="'+id+'" data-tabindex="'+tabindex+'"';
-                        iframe += ' style="width: 100%; height: '+tabcontent.height()+'px; border: 0px;"';
-                        iframe += '></iframe>';
-                        //顶部切换卡新增一个卡片
-                        element.tabAdd(tabfilter, {title: title,content: iframe});
-                    }
-                    //切换到指定索引的卡片
-                    element.tabChange(tabfilter, tabindex);
-                }
-            });
-
-            /**
-             * 初始化点击侧边栏第一个导航
-             */
-            nav.find('li').eq(0).click();
-        });
-    </script>
 </body>
 </html>

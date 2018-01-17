@@ -1,6 +1,7 @@
 package com.zlcm.server.dao;
 
 import com.zlcm.server.base.BaseMapper;
+import com.zlcm.server.model.admin.AdminAdvert;
 import com.zlcm.server.model.apprep.AppAdvert;
 import com.zlcm.server.model.bean.Advert;
 import org.apache.ibatis.annotations.Param;
@@ -18,4 +19,7 @@ public interface AdvertMapper extends BaseMapper<Advert>{
     List<AppAdvert> findAdvertForDid(@Param("did") Integer did,@Param("page") Integer page, @Param("size") Integer size);
 
     List<Advert> findAdvertWhereState(@Param("state") Integer state,@Param("page") Integer page, @Param("size") Integer size);
+
+    List<AdminAdvert> findAdminAdvert(@Param("page") Integer page, @Param("size") Integer size);
+
 }

@@ -1,5 +1,7 @@
 package com.zlcm.server.model.bean;
 
+import com.zlcm.server.constant.Constant;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -52,7 +54,7 @@ public class UserDetails implements Serializable {
     }
 
     public String getAvatar() {
-        return avatar;
+        return Constant.ADDRESS + avatar;
     }
 
     public void setAvatar(String avatar) {

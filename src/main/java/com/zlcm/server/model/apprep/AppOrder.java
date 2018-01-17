@@ -1,5 +1,6 @@
 package com.zlcm.server.model.apprep;
 
+import com.zlcm.server.constant.Constant;
 import com.zlcm.server.model.bean.Device;
 
 import java.io.Serializable;
@@ -74,7 +75,7 @@ public class AppOrder implements Serializable {
     }
 
     public String getAdvert() {
-        return advert;
+        return Constant.ADDRESS + advert;
     }
 
     public void setAdvert(String advert) {

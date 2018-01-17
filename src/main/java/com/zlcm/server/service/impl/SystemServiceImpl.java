@@ -7,11 +7,12 @@ import com.zlcm.server.dao.AdvertMapper;
 import com.zlcm.server.dao.OrderMapper;
 import com.zlcm.server.dao.UserMapper;
 import com.zlcm.server.exception.SysException;
+import com.zlcm.server.model.admin.AdminAdvert;
 import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.Device;
 import com.zlcm.server.model.bean.User;
+import com.zlcm.server.netty.NettyRunnable;
 import com.zlcm.server.service.SystemService;
-import com.zlcm.server.util.BmpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,25 +39,32 @@ public class SystemServiceImpl implements SystemService {
         Advert advert = advertMapper.get(aid);
         if (advert != null){
             //0待审，1通过，2未通过
-            advert.setState((byte) state);
-            advert.setAuditingInfo(auditingInfo);
             if (state == 1){
                 List<Device> list = orderMapper.getDeviceWhereAid(aid);
-                new MinaClient().send(advertDeviceMapper,advertMapper,list,advert);
+                new NettyRunnable().send(advertDeviceMapper,advertMapper,list,advert);
+            }else if (state == 2){
+                advert.setState((byte) state);
+                advert.setAuditingInfo(auditingInfo);
+                advertMapper.update(advert);
             }
-            advertMapper.update(advert);
+
         }
     }
 
     @Override
-    public void auditingInfo(int state, int page, int size) {
-        List<Advert> list = advertMapper.findAdvertWhereState(state,page*size,size);
+    public List<AdminAdvert> auditingInfo(int page, int size) throws SysException {
+        try {
+            return advertMapper.findAdminAdvert(page*size,size);
+        }catch (DataAccessException e){
+            _log.error(e.getMessage());
+            throw new SysException(Constant.SELECE_ERROR);
+        }
     }
 
     @Override
     public List<User> userList(int page,int size) throws SysException {
         try {
-            return userMapper.getPageList((page-1)*size,size);
+            return userMapper.getPageList(page*size,size);
         }catch (DataAccessException e){
             _log.error(e.getMessage());
             throw new SysException(Constant.SELECE_ERROR);

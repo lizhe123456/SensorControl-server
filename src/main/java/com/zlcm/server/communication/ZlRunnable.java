@@ -1,7 +1,11 @@
 package com.zlcm.server.communication;
 
 import com.zlcm.server.communication.main.ZLIoHandlerAdapter;
+import com.zlcm.server.dao.AdvertDeviceMapper;
+import com.zlcm.server.dao.AdvertMapper;
+import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.Device;
+import com.zlcm.server.netty.NettyRunnable;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoConnector;
@@ -14,25 +18,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.List;
 
 public class ZlRunnable implements Runnable{
-    private Device device;
-    private Integer aid;
-    private int port;
-    private byte[] data;
+    private AdvertDeviceMapper advertDeviceMapper;
+    private AdvertMapper advertMapper;
+    private List<Device> devices;
+    private Advert advert;
     private static final Logger logger = LoggerFactory.getLogger(ZlRunnable.class);
 
-    public ZlRunnable(Device device, Integer aid, int port, byte[] data) {
-        this.device = device;
-        this.aid = aid;
-        this.port = port;
-        this.data = data;
+    public ZlRunnable(AdvertDeviceMapper advertDeviceMapper, AdvertMapper advertMapper, List<Device> devices, Advert advert) {
+        this.advertDeviceMapper = advertDeviceMapper;
+        this.advertMapper = advertMapper;
+        this.devices = devices;
+        this.advert = advert;
     }
 
     @Override
     public void run() {
-        sendData(device,aid,port,data);
-
+//        sendData(device,aid,port,data);
+        new NettyRunnable().send(advertDeviceMapper,advertMapper,devices,advert);
     }
 
     public static void sendData(Device device,Integer aid,int port,byte[] data){

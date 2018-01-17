@@ -1,5 +1,7 @@
 package com.zlcm.server.model.bean;
 
+import com.zlcm.server.constant.Constant;
+
 import java.io.Serializable;
 
 public class PushInfo implements Serializable{
@@ -35,7 +37,7 @@ public class PushInfo implements Serializable{
     }
 
     public String getImg() {
-        return img;
+        return Constant.ADDRESS + img;
     }
 
     public void setImg(String img) {

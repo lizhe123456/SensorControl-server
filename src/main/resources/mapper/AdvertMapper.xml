@@ -210,5 +210,11 @@
     ON a.aid = b.aid
   </select>
 
+  <select id="findAdminAdvert" resultType="com.zlcm.server.model.admin.AdminAdvert">
+    SELECT a.aid,a.uid,a.advert_img,a.text_info,a.start_time,a.duration,a.state,a.iphone,a.address, s.name FROM zlcm_advert AS a
+    LEFT JOIN (SELECT * FROM zlcm_store) AS s ON  s.sid = a.sid
+    WHERE a.aid IN (select o.aid from zlcm_order o WHERE o.state = 1 AND a.state = 0)
+    ORDER BY a.start_time DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
+  </select>
 
 </mapper>

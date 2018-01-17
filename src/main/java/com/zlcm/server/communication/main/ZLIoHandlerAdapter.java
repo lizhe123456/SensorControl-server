@@ -44,20 +44,18 @@ public class ZLIoHandlerAdapter extends IoHandlerAdapter {
     //当连接空闲时触发此方法.
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-//        session.close(true);
     }
 
     //当信息已经传送给客户端后触发此方法.
     @Override
     public void messageSent(IoSession session, Object message){
-//        session.close(true);
         logger.info("Sent message " + message.toString());
         boolean flag = true;
         byte[] b = new byte[0];
         try {
             b = SubPackage.chuli(num,data);
         } catch (SysException e) {
-            session.close(true);
+//            session.close(true);
             flag = false;
             num = 0;
         }
@@ -96,7 +94,7 @@ public class ZLIoHandlerAdapter extends IoHandlerAdapter {
     @Override
     public void exceptionCaught(IoSession session, Throwable cause)
             throws Exception {
-//        session.close(true);
+        session.close(true);
         logger.error("客户端发生异常...", cause);
         System.out.println("客户端发生异常..." + cause.getMessage());
     }

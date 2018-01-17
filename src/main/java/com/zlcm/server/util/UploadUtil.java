@@ -29,6 +29,6 @@ public class UploadUtil {
             }
         }
 
-        return Constant.ADDRESS +sqlPath+newFileName;
+        return sqlPath+newFileName;
     }
 }

@@ -1,5 +1,7 @@
 package com.zlcm.server.model.apprep;
 
+import com.zlcm.server.constant.Constant;
+
 import java.util.List;
 
 public class Periphery {
