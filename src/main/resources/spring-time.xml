@@ -37,7 +37,7 @@
     <bean id="DayRTaskJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="DayRTask"/>
         <!--每天23:59触发-->
-        <property name="cronExpression" value="0 29 16 * * ?"/>
+        <property name="cronExpression" value="0 52 16 * * ?"/>
     </bean>
 
 

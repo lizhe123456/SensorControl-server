@@ -165,7 +165,7 @@
   </delete>
 
   <select id="findFormDate" resultType="java.lang.Integer">
-    SELECT COUNT(*) FROM zlcm_log WHERE operateDate BETWEEN ${start} AND ${end}
+    SELECT COUNT(*) FROM zlcm_log WHERE operateDate BETWEEN ${start,jdbcType=VARCHAR} AND ${end,jdbcType=VARCHAR}
   </select>
 
 </mapper>
