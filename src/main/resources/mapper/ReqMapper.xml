@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlcm.server.dao.ReqMapper">
+  <resultMap id="BaseResultMap" type="com.zlcm.server.model.bean.Req">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="reqNum" jdbcType="INTEGER" property="reqnum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `date`, reqNum
+  </sql>
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zlcm_req
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPK" parameterType="java.lang.Integer">
+    delete from zlcm_req
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" parameterType="com.zlcm.server.model.bean.Req">
+    insert into zlcm_req
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="reqnum != null">
+        reqNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="reqnum != null">
+        #{reqnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.zlcm.server.model.bean.Req">
+    update zlcm_req
+    <set>
+      <if test="date != null">
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="reqnum != null">
+        reqNum = #{reqnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAll" resultType="com.zlcm.server.model.bean.Req">
+    SELECT * FROM zlcm_req
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_req
+  </select>
+
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Req">
+    SELECT * FROM zlcm_req a  JOIN (select id from zlcm_req limit #{page},#{size}) b ON a.id = b.id
+  </select>
+
+</mapper>

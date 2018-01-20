@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+    <!-- 定时任务bean -->
+    <bean name="Inspect" class="com.zlcm.server.time.InspectAdvertService" />
+    <bean name="Log" class="com.zlcm.server.time.CleanLogService" />
+
+    <!-- 定时任务 -->
+    <bean id="InspectAdvertTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="Inspect"/>
+        <property name="targetMethod" value="inspectAdvertService"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+
+    <bean id="cleanLogTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="Log"/>
+        <property name="targetMethod" value="cleanLog"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    <bean id="DayRTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="Log"/>
+        <property name="targetMethod" value="DayR"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+
+    <bean id="cleanLogJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="cleanLogTask"/>
+        <!--每月最后一日的上午10:15触发-->
+        <property name="cronExpression" value="0 15 10 L * ?"/>
+    </bean>
+    <bean id="InspectAdvertJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="InspectAdvertTask"/>
+        <!--每天凌晨4:00触发-->
+        <property name="cronExpression" value="0 0 04 * * ?"/>
+    </bean>
+    <bean id="DayRTaskJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="DayRTask"/>
+        <!--每天23:59触发-->
+        <property name="cronExpression" value="0 29 16 * * ?"/>
+    </bean>
+
+
+    <bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cleanLogJob" />
+                <ref bean="InspectAdvertJob" />
+                <ref bean="DayRTaskJob" />
+            </list>
+        </property>
+    </bean>
+</beans>

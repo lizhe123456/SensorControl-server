@@ -45,7 +45,7 @@ public class NettyRunnable {
                         p.addLast(new SimpleClientHandler(bytes,devices.get(finalI).getDid(),advert.getAid(),advertDeviceMapper));
                     }
                 });
-                ChannelFuture f = b.connect(devices.get(finalI).getIp(),sads[i]).sync();
+                ChannelFuture f = b.connect(devices.get(finalI).getIp(),8080).sync();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

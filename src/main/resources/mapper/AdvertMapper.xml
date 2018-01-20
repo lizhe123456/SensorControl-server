@@ -216,5 +216,4 @@
     WHERE a.aid IN (select o.aid from zlcm_order o WHERE o.state = 1 AND a.state = 0)
     ORDER BY a.start_time DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
   </select>
-
 </mapper>

@@ -15,9 +15,9 @@ public class IdentityInfo implements Serializable {
 
     private String end;
 
-    private Integer frontOrderid;
+    private String frontOrderid;
 
-    private Integer backOrderid;
+    private String backOrderid;
 
     private String frontImg;
 
@@ -72,19 +72,19 @@ public class IdentityInfo implements Serializable {
         this.end = end == null ? null : end.trim();
     }
 
-    public Integer getFrontOrderid() {
+    public String getFrontOrderid() {
         return frontOrderid;
     }
 
-    public void setFrontOrderid(Integer frontOrderid) {
+    public void setFrontOrderid(String frontOrderid) {
         this.frontOrderid = frontOrderid;
     }
 
-    public Integer getBackOrderid() {
+    public String getBackOrderid() {
         return backOrderid;
     }
 
-    public void setBackOrderid(Integer backOrderid) {
+    public void setBackOrderid(String backOrderid) {
         this.backOrderid = backOrderid;
     }
 

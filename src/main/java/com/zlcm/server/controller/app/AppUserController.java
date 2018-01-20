@@ -97,16 +97,6 @@ public class AppUserController extends BaseController{
     }
 
     /**
-     * 测试接口
-     */
-    @RequestMapping(value = "/hehe", method = RequestMethod.GET)
-    @ResponseBody
-    @SystemControllerLog(description = "测试heh")
-    public ResponseData heiehi(@RequestParam("heh") String hee,HttpServletRequest request){
-        return ResponseData.ok();
-    }
-
-    /**
      * 登录
      */
     @RequestMapping(value = "/login",method = RequestMethod.GET)
@@ -130,7 +120,7 @@ public class AppUserController extends BaseController{
                 ResponseData responseData = ResponseData.ok();
                 responseData.putDataValue("token",token);
                 responseData.putDataValue("loginId",user.getUid());
-                responseData.putDataValue("avatar",userDetails.getAvatar());
+                responseData.putDataValue("avatar",Constant.ADDRESS + userDetails.getAvatar());
                 responseData.putDataValue("nickName",userDetails.getNickname());
                 request.getServletContext().removeAttribute("code");
                 return responseData;
@@ -204,16 +194,17 @@ public class AppUserController extends BaseController{
             UserDetails userDetails = appUserService.getUserInfo(user.getUid());
             if (userDetails != null) {
                 Store store = storeService.get(userDetails.getStorId());
-                if (store != null && store.getState() == 1){
-                    userInfo.setStorename(store.getName());
-                    userInfo.setStorephone(store.getIphone());
-                    userInfo.setAddress(store.getAddress());
-                }
                 if (!TextUtils.isEmpty(userDetails.getIdcrad())){
                     userInfo.setReal_name(userDetails.getRealName());
                     userInfo.setBirthday(DateUtil.dateToStr(userDetails.getBirthday()));
                     userInfo.setSex(userDetails.getSex() == 0 ? "男" : "女");
                     userInfo.setIdCrad(StringReplaceUtil.IdReplaceWithStar(userDetails.getIdcrad()));
+                }
+                if (store != null){
+                    userInfo.setStoreState(store.getState());
+                    userInfo.setStorename(store.getName());
+                    userInfo.setStorephone(store.getIphone());
+                    userInfo.setAddress(store.getAddress());
                 }
 
                 userInfo.setPhone(StringReplaceUtil.phoneReplaceWithStar(userDetails.getPhone()));
@@ -239,7 +230,7 @@ public class AppUserController extends BaseController{
         Integer uid = LoginId.getUid(request);
         try {
             String path = UploadUtil.uploadImg(file, Constant.AVATAR_IMG_URL,"avatar/");
-            appUserService.updateAvatar(Integer.valueOf(uid),path);
+            appUserService.updateAvatar(uid,path);
         } catch (IOException e) {
             return ResponseData.notFound();
         }
@@ -336,7 +327,7 @@ public class AppUserController extends BaseController{
             Result<String> result = Result.ok();
             File file = new File(Constant.NAVIGATION_JSON_URL);
             String navigation = FileUtils.txt2String(file);
-            result.setInfo(navigation);
+            result.setInfo(Constant.ADDRESS + navigation.trim());
             return result;
         }catch (Exception e){
             return Result.notFound();

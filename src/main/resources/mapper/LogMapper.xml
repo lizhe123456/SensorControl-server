@@ -147,7 +147,7 @@
     </set>
     where lid = #{lid,jdbcType=INTEGER}
   </update>
-  <select id="findAll" resultType="java.util.List">
+  <select id="findAll" resultType="com.zlcm.server.model.bean.Log">
     SELECT * FROM zlcm_log
   </select>
 
@@ -155,7 +155,17 @@
     SELECT COUNT(*) FROM zlcm_log
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Log">
     SELECT * FROM zlcm_log a  JOIN (select did from zlcm_log limit #{page},#{size}) b ON a.ID = b.id
   </select>
+
+  <delete id="deleteUid" >
+    delete from zlcm_log
+    where uid = 0
+  </delete>
+
+  <select id="findFormDate" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_log WHERE operateDate BETWEEN ${start} AND ${end}
+  </select>
+
 </mapper>

@@ -8,8 +8,8 @@
     <result column="begin" jdbcType="VARCHAR" property="begin" />
     <result column="department" jdbcType="VARCHAR" property="department" />
     <result column="end" jdbcType="VARCHAR" property="end" />
-    <result column="front_orderid" jdbcType="INTEGER" property="frontOrderid" />
-    <result column="back_orderid" jdbcType="INTEGER" property="backOrderid" />
+    <result column="front_orderid" jdbcType="VARCHAR" property="frontOrderid" />
+    <result column="back_orderid" jdbcType="VARCHAR" property="backOrderid" />
     <result column="front_img" jdbcType="VARCHAR" property="frontImg" />
     <result column="back_img" jdbcType="VARCHAR" property="backImg" />
   </resultMap>
@@ -81,10 +81,10 @@
         #{end,jdbcType=VARCHAR},
       </if>
       <if test="frontOrderid != null">
-        #{frontOrderid,jdbcType=INTEGER},
+        #{frontOrderid,jdbcType=VARCHAR},
       </if>
       <if test="backOrderid != null">
-        #{backOrderid,jdbcType=INTEGER},
+        #{backOrderid,jdbcType=VARCHAR},
       </if>
       <if test="frontImg != null">
         #{frontImg,jdbcType=VARCHAR},
@@ -113,10 +113,10 @@
         end = #{end,jdbcType=VARCHAR},
       </if>
       <if test="frontOrderid != null">
-        front_orderid = #{frontOrderid,jdbcType=INTEGER},
+        front_orderid = #{frontOrderid,jdbcType=VARCHAR},
       </if>
       <if test="backOrderid != null">
-        back_orderid = #{backOrderid,jdbcType=INTEGER},
+        back_orderid = #{backOrderid,jdbcType=VARCHAR},
       </if>
       <if test="frontImg != null">
         front_img = #{frontImg,jdbcType=VARCHAR},

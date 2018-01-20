@@ -17,6 +17,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private static Logger _log = LoggerFactory.getLogger(TokenInterceptor.class);
 
     //拦截每个请求
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
         response.setCharacterEncoding("utf-8");
@@ -42,8 +43,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 responseMessage(response, response.getWriter(), responseData);
                 return false;
             }
-        }
-        else {
+        } else {
             responseData = ResponseData.forbidden();
             responseMessage(response, response.getWriter(), responseData);
             return false;

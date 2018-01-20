@@ -19,8 +19,8 @@
     <!-- 配置jsp 显示ViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".html"/>
     </bean>
 
     <!-- 定义文件解释器（文件上传） -->
@@ -32,7 +32,7 @@
     </bean>
 
     <bean class="com.zlcm.server.exception.CustomExcetionResolver"/>
-    
+
     <mvc:interceptors>
         <mvc:interceptor>
             <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
@@ -57,7 +57,6 @@
 
             <bean class="com.zlcm.server.interceptor.TokenInterceptor"></bean>
         </mvc:interceptor>
-        <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->
     </mvc:interceptors>
 
     <mvc:annotation-driven>

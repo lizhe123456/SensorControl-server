@@ -1,7 +1,8 @@
 package com.zlcm.server.util;
 
 
-import org.apache.log4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LogUtil {
 
@@ -14,22 +15,22 @@ public class LogUtil {
     public static LogUtil getInstance(Class c){
         if (logUtil == null) {
             logUtil = new LogUtil();
-            Logger.getLogger(c.getClass());
+            LoggerFactory.getLogger(c.getClass());
         }
         return logUtil;
     }
 
 
     public void e(Object error){
-        logger.error(error);
+        logger.error(error.toString());
     }
 
     public void d(Object debug){
-        logger.debug(debug);
+        logger.debug(debug.toString());
     }
 
     public void info(Object info){
-        logger.info(info);
+        logger.info(info.toString());
     }
 
 }

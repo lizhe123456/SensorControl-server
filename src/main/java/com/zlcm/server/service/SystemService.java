@@ -2,6 +2,7 @@ package com.zlcm.server.service;
 
 import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.admin.AdminAdvert;
+import com.zlcm.server.model.admin.AdminDevice;
 import com.zlcm.server.model.bean.User;
 
 import java.util.List;
@@ -14,6 +15,6 @@ public interface SystemService {
 
     List<User> userList(int page, int size) throws SysException;
 
-
+    List<AdminDevice> deviceList(int page, int size) throws SysException;
 
 }

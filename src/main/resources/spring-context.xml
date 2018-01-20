@@ -24,6 +24,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
 
+
     <!-- shiro权限配置
 	<import resource="classpath:META-INF/config/spring/spring-shiro.xml"/>
 	-->

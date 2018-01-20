@@ -10,12 +10,21 @@ public class AppUserInfo implements Serializable{
     String phone;
     String storephone;
     String sex;
+    int storeState;
     String birthday;
     String storename;
     String address;
 
     public String getNickname() {
         return nickname;
+    }
+
+    public int getStoreState() {
+        return storeState;
+    }
+
+    public void setStoreState(int storeState) {
+        this.storeState = storeState;
     }
 
     public void setNickname(String nickname) {

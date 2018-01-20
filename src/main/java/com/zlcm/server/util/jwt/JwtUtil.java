@@ -1,5 +1,6 @@
 package com.zlcm.server.util.jwt;
 
+import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWTSigner;
 import com.auth0.jwt.JWTVerifier;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,8 +43,7 @@ public class JwtUtil {
                 long currentTimeMillis = System.currentTimeMillis();
                 if (exp > currentTimeMillis) {
                     String json = (String)claims.get(PAYLOAD);
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    return objectMapper.readValue(json, classT);
+                    return JSON.parseObject(json,classT);
                 }
             }
             return null;

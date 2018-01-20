@@ -4,8 +4,14 @@ import java.io.Serializable;
 
 public class AuthFront implements Serializable{
 
+    /**
+     * reason : 成功
+     * result : {"realname":"平药","sex":"男","nation":"汉","born":"19961207","address":"湖北省州市州区八岭山杨村五组","idcard":"421003199612072611","side":"front","orderid":"2018011918061469516"}
+     * error_code : 0
+     */
+
     private String reason;
-    private DataBean result;
+    private ResultBean result;
     private int error_code;
 
     public String getReason() {
@@ -16,11 +22,11 @@ public class AuthFront implements Serializable{
         this.reason = reason;
     }
 
-    public DataBean getResult() {
+    public ResultBean getResult() {
         return result;
     }
 
-    public void setResult(DataBean result) {
+    public void setResult(ResultBean result) {
         this.result = result;
     }
 
@@ -32,16 +38,16 @@ public class AuthFront implements Serializable{
         this.error_code = error_code;
     }
 
-    public class DataBean implements Serializable{
+    public static class ResultBean {
         /**
-         * realname : 张三
+         * realname : 平药
          * sex : 男
-         * nation : 侗
-         * born : 19760613
-         * address : 贵州省都匀市甘塘镇长红机器厂散居户169号
-         * idcard : 522701197606131938
+         * nation : 汉
+         * born : 19961207
+         * address : 湖北省州市州区八岭山杨村五组
+         * idcard : 421003199612072611
          * side : front
-         * orderid : 339057896
+         * orderid : 2018011918061469516
          */
 
         private String realname;
@@ -51,7 +57,7 @@ public class AuthFront implements Serializable{
         private String address;
         private String idcard;
         private String side;
-        private int orderid;
+        private String orderid;
 
         public String getRealname() {
             return realname;
@@ -109,11 +115,11 @@ public class AuthFront implements Serializable{
             this.side = side;
         }
 
-        public int getOrderid() {
+        public String getOrderid() {
             return orderid;
         }
 
-        public void setOrderid(int orderid) {
+        public void setOrderid(String orderid) {
             this.orderid = orderid;
         }
     }

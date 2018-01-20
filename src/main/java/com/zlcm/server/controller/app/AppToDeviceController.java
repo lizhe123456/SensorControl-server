@@ -38,22 +38,6 @@ public class AppToDeviceController extends BaseController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    /**
-     * 发送数据
-     */
-    @RequestMapping(value = "/advert",method = RequestMethod.GET)
-    @ResponseBody
-    @ApiOperation(value = "发送广告")
-    public ResponseData sendData(HttpServletRequest request, @RequestParam("did") String did,
-                                 @RequestParam("uploadFile") MultipartFile file,
-                                 @RequestParam(value = "desc", defaultValue = "") String desc,
-                                 @RequestParam(value = "continuedTime",defaultValue = "60000") String continuedTime){
-
-        return null;
-
-    }
-
-
 
     /**
      * 获取设配计费信息
@@ -70,6 +54,7 @@ public class AppToDeviceController extends BaseController {
             responseData = ResponseData.ok();
             responseData.putDataValue("address",device.getAddress());
             responseData.putDataValue("charging",1);
+            responseData.putDataValue("did",device.getDid());
             responseData.putDataValue("household",device.getHousehold());
             responseData.putDataValue("visitorsflowrate",((device.getHousehold() * 0.8f) * 3));
             if (uid != null){

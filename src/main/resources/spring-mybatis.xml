@@ -94,7 +94,7 @@
                 <entry key="testDataSource" value-ref="testDataSource"/>
             </map>
         </property>
-        <property name="defaultTargetDataSource" ref="escDataSource"/>
+        <property name="defaultTargetDataSource" ref="testDataSource"/>
     </bean>
 
     <!-- 配置SqlSessionFactory对象 -->

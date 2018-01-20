@@ -24,7 +24,7 @@
     delete from zlcm_store
     where sid = #{sid,jdbcType=INTEGER}
   </delete>
-  <insert id="save" parameterType="com.zlcm.server.model.bean.Store">
+  <insert id="save" parameterType="com.zlcm.server.model.bean.Store" useGeneratedKeys="true" keyProperty="sid">
     insert into zlcm_store
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="sid != null">

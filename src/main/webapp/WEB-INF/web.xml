@@ -8,12 +8,12 @@
          version="2.5">
     <display-name>SensorControl</display-name>
     <welcome-file-list>
-        <welcome-file>index2.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <!-- needed for ContextLoaderListener -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring-mybatis.xml,classpath:spring-context.xml,classpath:applicationContext-alipay.xml</param-value>
+        <param-value>classpath:spring-mybatis.xml,classpath:spring-context.xml,classpath:applicationContext-alipay.xml,classpath:spring-time.xml</param-value>
     </context-param>
     <!-- Bootstraps the root web application context before servlet initialization -->
     <listener>
@@ -106,10 +106,21 @@
         <session-timeout>30</session-timeout>
     </session-config>
 
-    <!-- 欢迎页面 -->
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.html</location>
+    </error-page>
 
 </web-app>

@@ -156,7 +156,7 @@
     SELECT COUNT(*) FROM zlcm_device
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="java.util.List">
+  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Device">
     SELECT * FROM zlcm_device a  JOIN (select did from zlcm_device limit #{page},#{size}) b ON a.did = b.did
   </select>
 

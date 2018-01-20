@@ -89,6 +89,17 @@ public class DateUtil extends DateUtils{
         return date_3_hm_date;
     }
 
+    public static String getFirstDate(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+
+        String first = format.format(c.getTime());
+        return first;
+//        System.out.println("===============first:"+first);
+    }
+
     /**
      * 得到现在小时
      */
@@ -338,6 +349,11 @@ public class DateUtil extends DateUtils{
     public static long pastDays(Date date) {
         long t = new Date().getTime()-date.getTime();
         return t/(24*60*60*1000);
+    }
+
+    public static long pastS(Date date) {
+        long t = new Date().getTime()-date.getTime();
+        return t;
     }
 
     /**

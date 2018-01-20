@@ -4,8 +4,14 @@ import java.io.Serializable;
 
 public class AuthBack implements Serializable{
 
+    /**
+     * reason : 成功
+     * result : {"begin":"20130415","department":"剩州市公安局荆州分局","end":"20230415","side":"back","orderid":"2018011918061676933"}
+     * error_code : 0
+     */
+
     private String reason;
-    private DataBean result;
+    private ResultBean result;
     private int error_code;
 
     public String getReason() {
@@ -16,11 +22,11 @@ public class AuthBack implements Serializable{
         this.reason = reason;
     }
 
-    public DataBean getResult() {
+    public ResultBean getResult() {
         return result;
     }
 
-    public void setResult(DataBean result) {
+    public void setResult(ResultBean result) {
         this.result = result;
     }
 
@@ -32,20 +38,20 @@ public class AuthBack implements Serializable{
         this.error_code = error_code;
     }
 
-    public class DataBean implements Serializable{
+    public static class ResultBean {
         /**
-         * begin : 20130501
-         * department : 东台市公安局
-         * end : 20180501
+         * begin : 20130415
+         * department : 剩州市公安局荆州分局
+         * end : 20230415
          * side : back
-         * orderid : 478799279
+         * orderid : 2018011918061676933
          */
 
         private String begin;
         private String department;
         private String end;
         private String side;
-        private int orderid;
+        private String orderid;
 
         public String getBegin() {
             return begin;
@@ -79,14 +85,13 @@ public class AuthBack implements Serializable{
             this.side = side;
         }
 
-        public int getOrderid() {
+        public String getOrderid() {
             return orderid;
         }
 
-        public void setOrderid(int orderid) {
+        public void setOrderid(String orderid) {
             this.orderid = orderid;
         }
     }
-
 
 }

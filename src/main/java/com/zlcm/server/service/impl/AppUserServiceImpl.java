@@ -7,10 +7,8 @@ import com.zlcm.server.exception.SysException;
 import com.zlcm.server.model.Sms;
 import com.zlcm.server.model.bean.*;
 import com.zlcm.server.service.AppUserService;
-import com.zlcm.server.util.DateUtil;
 import com.zlcm.server.util.IPUtils;
 import com.zlcm.server.util.JackJsonUtils;
-import com.zlcm.server.util.StringReplaceUtil;
 import com.zlcm.server.util.sms.SmsApi;
 import org.apache.http.util.TextUtils;
 import org.slf4j.Logger;
@@ -19,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ytx.org.apache.http.client.utils.HttpClientUtils;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -192,7 +187,7 @@ public class AppUserServiceImpl implements AppUserService {
                 //TODO:已认证
                 return identityInfoMapper.get(uid);
             }
-        }catch (DataAccessException e){
+        }catch (Exception e){
             _log.error(e.getMessage());
             throw new SysException(Constant.UPDATE_ERROR);
         }
@@ -202,7 +197,7 @@ public class AppUserServiceImpl implements AppUserService {
     public void storeAuthen(Integer uid, String name, String address, String iphone, String businessLicenseUrl) throws SysException {
         try {
             UserDetails userDetails = userDetailsMapper.get(uid);
-            if (userDetails != null && userDetails.getStorId() != 0){
+            if (userDetails != null && userDetails.getStorId() != null){
                 //已认证
                 return;
             }
