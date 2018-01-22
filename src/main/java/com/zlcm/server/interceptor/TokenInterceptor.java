@@ -31,14 +31,12 @@ public class TokenInterceptor implements HandlerInterceptor {
             if(null != loginId && null != login) {
                 if(Integer.parseInt(loginId) == login.getUid()) {
                     return true;
-                }
-                else{
+                } else{
                     responseData = ResponseData.forbidden();
                     responseMessage(response, response.getWriter(), responseData);
                     return false;
                 }
-            }
-            else {
+            } else {
                 responseData = ResponseData.forbidden();
                 responseMessage(response, response.getWriter(), responseData);
                 return false;
@@ -71,4 +69,5 @@ public class TokenInterceptor implements HandlerInterceptor {
         String name = httpServletRequest.getServletPath().toString();
         _log.debug("========"+name+"===>LoginInterceptor afterCompletion");
     }
+
 }

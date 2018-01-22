@@ -15,20 +15,24 @@
     <result column="timeout" jdbcType="TIMESTAMP" property="timeout" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
   </resultMap>
+
   <sql id="Base_Column_List">
     lid, type, title, remoteAddr, requestUri, params, exception, method, ip, operateDate, 
     uid
   </sql>
+
   <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from zlcm_log
     where lid = #{lid,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPK" parameterType="java.lang.Integer">
     delete from zlcm_log
     where lid = #{lid,jdbcType=INTEGER}
   </delete>
+
   <insert id="save" parameterType="com.zlcm.server.model.bean.Log">
     insert into zlcm_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -108,6 +112,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="update" parameterType="com.zlcm.server.model.bean.Log">
     update zlcm_log
     <set>
@@ -147,6 +152,7 @@
     </set>
     where lid = #{lid,jdbcType=INTEGER}
   </update>
+
   <select id="findAll" resultType="com.zlcm.server.model.bean.Log">
     SELECT * FROM zlcm_log
   </select>
@@ -164,8 +170,14 @@
     where uid = 0
   </delete>
 
-  <select id="findFormDate" resultType="java.lang.Integer">
-    SELECT COUNT(*) FROM zlcm_log WHERE operateDate BETWEEN ${start,jdbcType=VARCHAR} AND ${end,jdbcType=VARCHAR}
+  <select id="findFormDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_log WHERE
+    <if test="start != null and start != ''">
+      operateDate <![CDATA[>=]]> #{start}
+    </if>
+    <if test="end != null and end != ''">
+      AND operateDate <![CDATA[<=]]>#{end}
+    </if>
   </select>
 
 </mapper>

@@ -54,6 +54,9 @@ public class AppUserController extends BaseController{
     @Autowired
     StoreService storeService;
 
+    @Autowired
+    AdvertService advertService;
+
     /**
      * 获取手机验证码
      */
@@ -299,16 +302,19 @@ public class AppUserController extends BaseController{
             if (first == 0){
                 if (uid != null && uid != 0){
                     UserDetails userDetails = userDetailsService.get(uid);
-                    responseData.putDataValue("wallet",null);
+                    responseData.putDataValue("money",null);
                     responseData.putDataValue("credit",userDetails.getCredit());
+                    responseData.putDataValue("releaseNum",advertService.findReleaseNum(uid));
+                    responseData.putDataValue("auditingNum",advertService.findAuditingNum(uid));
                 }
                 File head = new File(Constant.HEAD_JSON_URL);
-                responseData.putDataValue("hean",JSON.parse(FileUtils.txt2String(head)));
+                String headJson = JSON.parse(FileUtils.txt2String(head)).toString().trim();
+                responseData.putDataValue("hean",headJson);
                 File file = new File(Constant.PUSH_JSON_URL);
                 String push = FileUtils.txt2String(file);
-                responseData.putDataValue("pushInfo", JSON.parse(push));
+                responseData.putDataValue("pushInfo", JSON.parse(push).toString().trim());
                 responseData.putDataValue("logo",null);
-                responseData.putDataValue("wallet",null);
+                responseData.putDataValue("money",null);
             }
             responseData.putDataValue("deviceList",devices);
             return responseData;
@@ -333,4 +339,5 @@ public class AppUserController extends BaseController{
             return Result.notFound();
         }
     }
+
 }

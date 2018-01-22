@@ -55,6 +55,7 @@
             <mvc:exclude-mapping path="/**/*.htm"/>
             <mvc:exclude-mapping path="/**/*.jsp"/>
 
+
             <bean class="com.zlcm.server.interceptor.TokenInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
@@ -83,5 +84,8 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    <!-- Include a swagger configuration -->
+    <bean name="applicationSwaggerConfig" class="com.zlcm.apidoc.ApplicationSwaggerConfig" />
+    <mvc:default-servlet-handler/>
 
 </beans>

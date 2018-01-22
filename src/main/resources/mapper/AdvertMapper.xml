@@ -168,7 +168,7 @@
     where aid = #{aid,jdbcType=INTEGER}
   </update>
 
-  <select id="findAll" resultType="com.zlcm.server.model.bean.Advert">
+  <select id="findAll" resultMap="BaseResultMap">
     SELECT * FROM zlcm_advert
   </select>
 
@@ -176,7 +176,7 @@
     SELECT COUNT(*) FROM zlcm_advert
   </select>
 
-  <select id="getPageList" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Advert">
+  <select id="getPageList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT * FROM zlcm_advert a JOIN (select aid from zlcm_advert limit #{page},#{size}) b ON a.aid = b.aid
   </select>
 
@@ -205,7 +205,7 @@
     ON ad.uid = a.uid WHERE ad.aid IN (SELECT aid FROM zlcm_advert_device WHERE zlcm_advert_device.did = #{did,jdbcType=INTEGER})
     ORDER BY ad.hits DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
   </select>
-  <select id="findAdvertWhereState" parameterType="java.lang.Integer" resultType="com.zlcm.server.model.bean.Advert">
+  <select id="findAdvertWhereState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT * FROM zlcm_advert a JOIN (select aid from zlcm_advert WHERE state = #{state,jdbcType=INTEGER} limit #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}) b
     ON a.aid = b.aid
   </select>
@@ -216,4 +216,17 @@
     WHERE a.aid IN (select o.aid from zlcm_order o WHERE o.state = 1 AND a.state = 0)
     ORDER BY a.start_time DESC limit #{page,jdbcType=INTEGER} ,#{size,jdbcType=INTEGER}
   </select>
+
+  <select id="findReleaseNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_advert a WHERE
+    a.aid IN (SELECT aid FROM zlcm_order o WHERE o.uid = #{uid} AND o.state = 1)
+    AND a.state = 1
+  </select>
+
+  <select id="findAuditingNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM zlcm_advert a WHERE
+    a.aid IN (SELECT aid FROM zlcm_order o WHERE o.uid = #{uid} AND o.state = 1)
+    AND a.state = 0
+  </select>
+
 </mapper>

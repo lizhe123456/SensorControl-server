@@ -28,40 +28,40 @@
 <div id="createDialog" class="crudDialog" hidden>
     <form>
         <div class="form-group">
-            <label for="address">地址</label>
-            <input id="address" type="text" class="form-control">
+            <label for="etAddress">地址</label>
+            <input id="etAddress" type="text" class="form-control">
         </div>
         <div class="form-group">
             <label for="mac">mac</label>
             <input id="mac" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="dlatitude">纬度</label>
-            <input id="dlatitude" type="text" class="form-control">
+            <label for="latitude">纬度</label>
+            <input id="latitude" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="ip">ip地址</label>
-            <input id="ip" type="text" class="form-control">
+            <label for="longitude">经度</label>
+            <input id="longitude" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="dlongitude">经度</label>
-            <input id="dlongitude" type="text" class="form-control">
+            <label for="etIp">ip地址</label>
+            <input id="etIp" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="household">小区住户</label>
-            <input id="household" type="text" class="form-control">
+            <label for="etHousehold">小区住户</label>
+            <input id="etHousehold" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="province">省</label>
-            <input id="province" type="text" class="form-control">
+            <label for="etProvince">省</label>
+            <input id="etProvince" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="city">市</label>
-            <input id="city" type="text" class="form-control">
+            <label for="etCity">市</label>
+            <input id="etCity" type="text" class="form-control">
         </div>
         <div class="form-group">
-            <label for="area">区</label>
-            <input id="area" type="text" class="form-control">
+            <label for="etArea">区</label>
+            <input id="etArea" type="text" class="form-control">
         </div>
     </form>
 </div>
@@ -213,15 +213,15 @@
                     text: '确认',
                     btnClass: 'waves-effect waves-button',
                     action: function () {
-                        var address = $("#address").val();
+                        var address = $("#etAddress").val();
                         var mac = $("#mac").val();
-                        var dlatitude = $("#dlatitude").val();
-                        var dlongitude = $("#dlongitude").val();
-                        var ip = $("#ip").val();
-                        var household = $("#household").val();
-                        var province = $("#province").val();
-                        var city = $("#city").val();
-                        var area = $("#area").val();
+                        var dlatitude = $("#latitude").val();
+                        var dlongitude = $("#longitude").val();
+                        var ip = $("#etIp").val();
+                        var household = $("#etHousehold").val();
+                        var province = $("#etProvince").val();
+                        var city = $("#etCity").val();
+                        var area = $("#etArea").val();
                         ajsxR(address,ip,mac,dlatitude,dlongitude,household,province,city,area);
 
                     }

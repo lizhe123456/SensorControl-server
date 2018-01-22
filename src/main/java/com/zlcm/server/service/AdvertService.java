@@ -22,4 +22,8 @@ public interface AdvertService extends BaseService<Advert>{
     List<AppAdvert> findAdvertForDid(Integer did, Integer page, Integer size) throws SysException;
 
     AppOrder insertAdvert(Advert advert, List<Integer> devices) throws SysException;
+
+    Integer findReleaseNum(Integer uid);
+
+    Integer findAuditingNum(Integer uid);
 }

@@ -30,7 +30,7 @@ import java.util.Map;
 
 @Transactional
 @Service
-public class AdvertServiceImpl  extends BaseServiceImpl<Advert,AdvertMapper> implements AdvertService {
+public class AdvertServiceImpl extends BaseServiceImpl<Advert,AdvertMapper> implements AdvertService {
 
     private final static Logger _log = LoggerFactory.getLogger(AdvertServiceImpl.class);
 
@@ -40,6 +40,8 @@ public class AdvertServiceImpl  extends BaseServiceImpl<Advert,AdvertMapper> imp
     OrderMapper orderMapper;
     @Autowired
     DeviceMapper deviceMapper;
+    @Autowired
+    AdvertMapper advertMapper;
 
     /**
      * 分页获取人文
@@ -126,6 +128,7 @@ public class AdvertServiceImpl  extends BaseServiceImpl<Advert,AdvertMapper> imp
         return appOrder;
     }
 
+
     /**
      * 查询待审广告
      */
@@ -134,5 +137,15 @@ public class AdvertServiceImpl  extends BaseServiceImpl<Advert,AdvertMapper> imp
     /**
      * 审核广告并发送到设配
      */
+
+    @Override
+    public Integer findReleaseNum(Integer uid) {
+        return advertMapper.findReleaseNum(uid);
+    }
+
+    @Override
+    public Integer findAuditingNum(Integer uid) {
+        return advertMapper.findAuditingNum(uid);
+    }
 
 }

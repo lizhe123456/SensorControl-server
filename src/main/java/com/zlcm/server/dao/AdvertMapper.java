@@ -22,4 +22,8 @@ public interface AdvertMapper extends BaseMapper<Advert>{
 
     List<AdminAdvert> findAdminAdvert(@Param("page") Integer page, @Param("size") Integer size);
 
+    Integer findReleaseNum(@Param("uid") Integer uid);
+
+    Integer findAuditingNum(@Param("uid") Integer uid);
+
 }
