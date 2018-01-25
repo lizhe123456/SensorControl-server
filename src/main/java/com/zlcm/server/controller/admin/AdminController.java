@@ -7,8 +7,10 @@ import com.zlcm.server.model.AdminResponse;
 import com.zlcm.server.model.ResponseData;
 import com.zlcm.server.model.admin.AdminAdvert;
 import com.zlcm.server.model.admin.AdminDevice;
+import com.zlcm.server.model.bean.Advert;
 import com.zlcm.server.model.bean.Device;
 import com.zlcm.server.model.bean.User;
+import com.zlcm.server.service.AdvertService;
 import com.zlcm.server.service.DeviceService;
 import com.zlcm.server.service.OrderService;
 import com.zlcm.server.service.SystemService;
@@ -38,6 +40,8 @@ public class AdminController extends BaseAdminController {
     SystemService systemService;
     @Autowired
     DeviceService deviceService;
+    @Autowired
+    AdvertService advertService;
 
     @RequestMapping(value = "/auditInfo", method = RequestMethod.GET)
     @ApiOperation("待审列表")
@@ -110,10 +114,11 @@ public class AdminController extends BaseAdminController {
         }
 
     }
+
     @RequestMapping(value = "/add/device", method = RequestMethod.POST)
     @ApiOperation("添加设配")
     @ResponseBody
-    public ResponseData addD(HttpServletRequest request){
+    public ResponseData addDevice(HttpServletRequest request){
         try {
             String address = request.getParameter("address");
             String ip = request.getParameter("ip");
@@ -144,6 +149,22 @@ public class AdminController extends BaseAdminController {
         }catch (SysException e){
             e.printStackTrace();
             return ResponseData.notFound();
+        }
+    }
+
+    @RequestMapping(value = "/advertlist", method = RequestMethod.GET)
+    @ApiOperation("获取广告列表")
+    @ResponseBody
+    public AdminResponse<List<Advert>>  getAdvertList(HttpServletRequest request){
+        Integer page = Integer.parseInt(request.getParameter("offset"));
+        Integer size = Integer.parseInt(request.getParameter("limit"));
+        AdminResponse<List<Advert>> adminResponse = AdminResponse.ok();
+        try {
+            adminResponse.setData(advertService.getPageList(page,size));
+            return adminResponse;
+        } catch (SysException e) {
+            e.printStackTrace();
+            return AdminResponse.notFound();
         }
     }
 

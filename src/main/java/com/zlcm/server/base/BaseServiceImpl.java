@@ -80,7 +80,7 @@ public abstract class BaseServiceImpl<Entity,DAO extends BaseMapper<Entity>> imp
     @Override
     public List<Entity> getPageList(Integer page, Integer size) throws SysException {
         try {
-            return dao.getPageList((page -1) * size,size);
+            return dao.getPageList(page * size,size);
         } catch (DataAccessException e){
             _log.error(e.getMessage());
             throw new SysException(Constant.SELECE_ERROR);

@@ -1,7 +1,6 @@
 package com.zlcm.server.model.bean;
 
 
-import com.zlcm.server.constant.Constant;
 
 import java.util.Date;
 

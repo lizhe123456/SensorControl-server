@@ -29,39 +29,39 @@
     <form>
         <div class="form-group">
             <label for="etAddress">地址</label>
-            <input id="etAddress" type="text" class="form-control">
+            <input id="etAddress" type="text" class="form-control" onblur="var etAddress=this.value;getValue(0,etAddress)">
         </div>
         <div class="form-group">
             <label for="mac">mac</label>
-            <input id="mac" type="text" class="form-control">
+            <input id="mac" type="text" class="form-control" onblur="var mac=this.value;getValue(1,mac)">
         </div>
         <div class="form-group">
             <label for="latitude">纬度</label>
-            <input id="latitude" type="text" class="form-control">
+            <input id="latitude" type="text" class="form-control" onblur="var latitude=this.value;getValue(2,latitude)">
         </div>
         <div class="form-group">
             <label for="longitude">经度</label>
-            <input id="longitude" type="text" class="form-control">
+            <input id="longitude" type="text" class="form-control" onblur="var longitude=this.value;getValue(3,longitude)">
         </div>
         <div class="form-group">
             <label for="etIp">ip地址</label>
-            <input id="etIp" type="text" class="form-control">
+            <input id="etIp" type="text" class="form-control" onblur="var etIp=this.value;getValue(4,etIp)">
         </div>
         <div class="form-group">
             <label for="etHousehold">小区住户</label>
-            <input id="etHousehold" type="text" class="form-control">
+            <input id="etHousehold" type="text" class="form-control" onblur="var etHousehold=this.value;getValue(5,etHousehold)">
         </div>
         <div class="form-group">
             <label for="etProvince">省</label>
-            <input id="etProvince" type="text" class="form-control">
+            <input id="etProvince" type="text" class="form-control" onblur="var etProvince=this.value;getValue(6,etProvince)">
         </div>
         <div class="form-group">
             <label for="etCity">市</label>
-            <input id="etCity" type="text" class="form-control">
+            <input id="etCity" type="text" class="form-control" onblur="var etCity=this.value;getValue(7,etCity)">
         </div>
         <div class="form-group">
             <label for="etArea">区</label>
-            <input id="etArea" type="text" class="form-control">
+            <input id="etArea" type="text" class="form-control" onblur="var etArea=this.value;getValue(8,etArea)">
         </div>
     </form>
 </div>
@@ -167,6 +167,7 @@
         return html.join('');
     }
 
+
     function ajsxR(address,ip,mac,latitude,longitude,household,province,city,area) {
         $.ajax({
             url: "manage/add/device",
@@ -199,6 +200,46 @@
             }
         });
     }
+    var address;
+    var mac;
+    var dlatitude;
+    var dlongitude;
+    var ip;
+    var household;
+    var province;
+    var city;
+    var area;
+    function getValue(code,value){
+        switch (code){
+            case 0:
+                address = value;
+                break;
+            case 1:
+                mac = value;
+                break;
+            case 2:
+                dlatitude = value;
+                break;
+            case 3:
+                dlongitude = value;
+                break;
+            case 4:
+                ip = value;
+                break;
+            case 5:
+                household = value;
+                break;
+            case 6:
+                province = value;
+                break;
+            case 7:
+                city = value;
+                break;
+            case 8:
+                area = value;
+                break;
+        }
+    }
 
     // 新增
     function createAction() {
@@ -213,15 +254,7 @@
                     text: '确认',
                     btnClass: 'waves-effect waves-button',
                     action: function () {
-                        var address = $("#etAddress").val();
-                        var mac = $("#mac").val();
-                        var dlatitude = $("#latitude").val();
-                        var dlongitude = $("#longitude").val();
-                        var ip = $("#etIp").val();
-                        var household = $("#etHousehold").val();
-                        var province = $("#etProvince").val();
-                        var city = $("#etCity").val();
-                        var area = $("#etArea").val();
+
                         ajsxR(address,ip,mac,dlatitude,dlongitude,household,province,city,area);
 
                     }

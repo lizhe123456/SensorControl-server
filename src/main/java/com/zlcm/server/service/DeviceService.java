@@ -21,6 +21,8 @@ public interface DeviceService extends BaseService<Device> {
 
     List<AppDevice> findPeriphery(double longitude, double latitude, double range, int size);
 
+    List<AppDevice> findPeripheryD(double longitude, double latitude, double range,int page, int size);
+
     Device getDeviceFormMac(String mac);
 
     int getHouseholdNum(Integer did);

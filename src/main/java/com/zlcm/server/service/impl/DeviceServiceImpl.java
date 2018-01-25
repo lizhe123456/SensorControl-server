@@ -47,6 +47,17 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device,DeviceMapper> impl
     }
 
     @Override
+    public List<AppDevice> findPeripheryD(double longitude, double latitude, double range,int page, int size) {
+        Map<String , Object> map = new HashMap<>();
+        map.put("lng",longitude);
+        map.put("lat",latitude);
+        map.put("range",range);
+        map.put("size",size);
+        map.put("page",page * size);
+        return dao.peripheryDevicesImg(map);
+    }
+
+    @Override
     public Device getDeviceFormMac(String mac) {
         return dao.getDeviceFormMac(mac);
     }

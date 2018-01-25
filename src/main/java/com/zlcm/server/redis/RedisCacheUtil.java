@@ -106,7 +106,7 @@ public class RedisCacheUtil<T> {
     /**
      * 获得缓存的set
      * @param key
-     * @param operation
+     * @param
      * @return
      */
     public Set<T> getCacheSet(String key/*,BoundSetOperations<String,T> operation*/)
@@ -149,7 +149,7 @@ public class RedisCacheUtil<T> {
     /**
      * 获得缓存的Map
      * @param key
-     * @param hashOperation
+     * @param
      * @return
      */
     public <T> Map<String,T> getCacheMap(String key/*,HashOperations<String,String,T> hashOperation*/)
@@ -191,7 +191,7 @@ public class RedisCacheUtil<T> {
     /**
      * 获得缓存的Map
      * @param key
-     * @param hashOperation
+     * @param
      * @return
      */
     public <T> Map<Integer,T> getCacheIntegerMap(String key/*,HashOperations<String,String,T> hashOperation*/)

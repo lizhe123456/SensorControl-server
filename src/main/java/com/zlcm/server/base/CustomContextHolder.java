@@ -14,7 +14,7 @@ public class CustomContextHolder {
     public static String getCustomerType() {
         String db = contextHolder.get();
         if (db == null){
-            db = DATA_SOURCE_TEST;
+            db = DATA_SOURCE_RDS;
         }
         return db;
     }

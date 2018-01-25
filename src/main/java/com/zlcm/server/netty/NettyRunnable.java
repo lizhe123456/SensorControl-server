@@ -14,14 +14,16 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class NettyRunnable {
-    private static final Logger logger = LoggerFactory.getLogger(NettyRunnable.class);
+
     private Timer timer = new Timer();
-    private static int[] sads = {8222,8223,8224};
 
     public void send(AdvertDeviceMapper advertDeviceMapper, AdvertMapper advertMapper, List<Device> devices, Advert advert) {
         NioEventLoopGroup group = new NioEventLoopGroup(4, new DefaultThreadFactory("client", true));
@@ -38,10 +40,6 @@ public class NettyRunnable {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-//                    if (sslCtx != null) {
-////                        p.addLast(sslCtx.newHandler(ch.alloc(), HOST, PORT));
-//                    }
-                        //p.addLast(new LoggingHandler(LogLevel.INFO));
                         p.addLast(new SimpleClientHandler(bytes,devices.get(finalI).getDid(),advert.getAid(),advertDeviceMapper));
                     }
                 });

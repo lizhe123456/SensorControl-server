@@ -19,6 +19,7 @@ import com.zlcm.server.util.UploadUtil;
 import com.zlcm.server.util.id.LoginId;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,6 +84,24 @@ public class AppAdvertController extends BaseController {
             responseData.putDataValue("hot",list);
             return responseData;
         } catch (SysException e) {
+            return ResponseData.notFound();
+        }
+    }
+
+    @RequestMapping(value = "/pageview", method = RequestMethod.POST)
+    @ApiOperation("点击量")
+    @ResponseBody
+    public ResponseData getPageView(HttpServletRequest request){
+//        Integer uid = LoginId.getUid(request);
+        Integer aid = Integer.parseInt(request.getParameter("aid"));
+        try {
+            Advert advert = advertService.get(aid);
+            int hits = advert.getHits();
+            advert.setHits(hits+1);
+            advertService.update(advert);
+            return ResponseData.ok();
+        } catch (SysException e) {
+            e.printStackTrace();
             return ResponseData.notFound();
         }
     }

@@ -46,20 +46,22 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public User login(String phone, HttpServletRequest request) throws SysException {
-
+        Date date = new Date();
         User user = getUser(phone);
         if (user == null){
             user = new User();
             user.setUsername(phone);
-            user.setLastLoginTime(new Date());
+            user.setLastLoginTime(date);
             user.setLastLoginIp(IPUtils.getIpAddr(request));
+            user.setRegisterIp(IPUtils.getIpAddr(request));
+            user.setRegisterTime(date);
             try{
                 userMapper.save(user);
                 UserDetails details = new UserDetails();
                 details.setUid(user.getUid());
                 details.setPhone(phone);
                 details.setNickname(phone);
-                details.setAvatar("http://localhost:8080/img/avatar.jpg");
+                details.setAvatar("img/avatar.jpg");
                 try {
                     userDetailsMapper.save(details);
                 }catch (DataAccessException e){
@@ -72,6 +74,8 @@ public class AppUserServiceImpl implements AppUserService {
                 throw new SysException(Constant.ADD_ERROR);
             }
         }
+        user.setLastLoginTime(date);
+        user.setLastLoginIp(IPUtils.getIpAddr(request));
         user.setState((byte) 1);
         try {
             userMapper.update(user);

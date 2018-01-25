@@ -299,23 +299,19 @@ public class AppUserController extends BaseController{
         try {
             Integer uid = LoginId.getUid(request);
             List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,range,size);
-            if (first == 0){
-                if (uid != null && uid != 0){
-                    UserDetails userDetails = userDetailsService.get(uid);
-                    responseData.putDataValue("money",null);
+            if (uid != null && uid != 0){
+                UserDetails userDetails = userDetailsService.get(uid);
+                responseData.putDataValue("money",null);
                     responseData.putDataValue("credit",userDetails.getCredit());
                     responseData.putDataValue("releaseNum",advertService.findReleaseNum(uid));
                     responseData.putDataValue("auditingNum",advertService.findAuditingNum(uid));
-                }
-                File head = new File(Constant.HEAD_JSON_URL);
-                String headJson = JSON.parse(FileUtils.txt2String(head)).toString().trim();
-                responseData.putDataValue("hean",headJson);
-                File file = new File(Constant.PUSH_JSON_URL);
-                String push = FileUtils.txt2String(file);
-                responseData.putDataValue("pushInfo", JSON.parse(push).toString().trim());
-                responseData.putDataValue("logo",null);
-                responseData.putDataValue("money",null);
             }
+            File head = new File(Constant.HEAD_JSON_URL);
+            responseData.putDataValue("hean",JSON.parse(FileUtils.txt2String(head)));
+            File file = new File(Constant.PUSH_JSON_URL);
+            String push = FileUtils.txt2String(file);
+            responseData.putDataValue("pushInfo", JSON.parse(push));
+            responseData.putDataValue("logo",null);
             responseData.putDataValue("deviceList",devices);
             return responseData;
         } catch (Exception e) {

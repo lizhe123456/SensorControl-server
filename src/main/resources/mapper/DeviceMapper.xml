@@ -170,6 +170,16 @@
     ORDER BY ACOS(SIN((#{lat} * pi()) / 180 ) *SIN((dlatitude * pi()) / 180 ) +COS((#{lat} * pi()) / 180 ) * COS((dlatitude * pi()) / 180 ) *COS((#{lng}* pi()) / 180 - (dlongitude * pi()) / 180 ) ) * 6380
     ASC LIMIT #{size}
   </select>
+    <select id="peripheryDevicesImg" parameterType="java.util.Map" resultType="com.zlcm.server.model.apprep.AppDevice">
+    SELECT did,address,ip,dlatitude,dlongitude,household FROM zlcm_device WHERE
+    state = 0 AND
+    dlatitude > #{lat}-(#{range}/111) AND
+    dlatitude <![CDATA[ < ]]> #{lat}+(#{range}/111) AND
+    dlongitude > #{lng}-(#{range}/111) AND
+    dlongitude <![CDATA[ < ]]> #{lng}+(#{range}/111)
+    ORDER BY ACOS(SIN((#{lat} * pi()) / 180 ) *SIN((dlatitude * pi()) / 180 ) +COS((#{lat} * pi()) / 180 ) * COS((dlatitude * pi()) / 180 ) *COS((#{lng}* pi()) / 180 - (dlongitude * pi()) / 180 ) ) * 6380
+    ASC LIMIT #{page},#{size}
+  </select>
 
   <select id="findHouseholdNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     SELECT zd.household FROM zlcm_device zd WHERE zd.did = #{did,jdbcType=INTEGER}

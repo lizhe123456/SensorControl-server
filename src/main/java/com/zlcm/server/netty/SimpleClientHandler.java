@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
 
@@ -18,9 +17,6 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
     private int num;
     private boolean flag = true;
     private AdvertDeviceMapper advertDeviceMapper;
-
-//    private Timer timerTask = new Timer();
-
 
     public SimpleClientHandler(byte[] data, Integer did, Integer aid,AdvertDeviceMapper advertDeviceMapper) {
         this.data = data;

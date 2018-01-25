@@ -56,31 +56,30 @@ public class Constant {
 
 
 	public final static String ID_AUTHEN = "http://apis.juhe.cn/idimage/verify";
-	public final static String ADDRESS = "http://192.168.1.201:8080/";
-//	public final static String ADDRESS = "http://libolg.vicp.io/";
-
+//	public final static String ADDRESS = "http://192.168.1.201:8080/";
+	public final static String ADDRESS = "http://libolg.vicp.io/";
 
 
 
 	public final static String ID_KEY = "41f1313aeabd170eb2299636d257f545";
 
-//	public final static String ZS_ADDRESS = "/alidata/server";
-//	public final static String ADVERT_IMG_URL = "/alidata/server/advert";
-//	public final static String AVATAR_IMG_URL = "/alidata/server/avatar";
-//	public final static String IMAGE_IMG_URL = "/alidata/server/image";
-//	public final static String PUSH_JSON_URL = "/alidata/server/appPush.txt";
-//	public final static String HEAD_JSON_URL = "/alidata/server/headPush.txt";
-//	public final static String NAVIGATION_JSON_URL = "/alidata/server/navigation.txt";
-//	public final static String VERSION_JSON_URL = "/alidata/server/version.txt";
+	public final static String ZS_ADDRESS = "/alidata/server";
+	public final static String ADVERT_IMG_URL = "/alidata/server/advert";
+	public final static String AVATAR_IMG_URL = "/alidata/server/avatar";
+	public final static String IMAGE_IMG_URL = "/alidata/server/image";
+	public final static String PUSH_JSON_URL = "/alidata/server/appPush.txt";
+	public final static String HEAD_JSON_URL = "/alidata/server/headPush.txt";
+	public final static String NAVIGATION_JSON_URL = "/alidata/server/navigation.txt";
+	public final static String VERSION_JSON_URL = "/alidata/server/version.txt";
 
-	public final static String ADVERT_IMG_URL = "D:/web/advert";
-	public final static String AVATAR_IMG_URL = "D:/web/avatar";
-	public final static String VERSION_JSON_URL = "D:/web/version.txt";
-	public final static String NAVIGATION_JSON_URL = "D:/web/navigation.txt";
-	public final static String HEAD_JSON_URL = "D:/web/headPush.txt";
-	public final static String PUSH_JSON_URL = "D:/web/appPush.txt";
-	public final static String IMAGE_IMG_URL = "D:/web/image";
-	public final static String ZS_ADDRESS = "D:/web/";
+//	public final static String ADVERT_IMG_URL = "D:/web/advert";
+//	public final static String AVATAR_IMG_URL = "D:/web/avatar";
+//	public final static String VERSION_JSON_URL = "D:/web/version.txt";
+//	public final static String NAVIGATION_JSON_URL = "D:/web/navigation.txt";
+//	public final static String HEAD_JSON_URL = "D:/web/headPush.txt";
+//	public final static String PUSH_JSON_URL = "D:/web/appPush.txt";
+//	public final static String IMAGE_IMG_URL = "D:/web/image";
+//	public final static String ZS_ADDRESS = "D:/web/";
 
 	public final static String PRIVATE_KEY = "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAnGbUUvdHAOBEFaQEifonOo1Dwyf/ycS6YcA5iZUyGyuMb6VySaZivhJW87/h/N5NR3ok7SQZWgVS3eWhAmryPwIDAQABAkBgHgHWiwkjzK+K7SWs9gMtxKskQGy+Pxyb/lpd50bH0uEhY4ls/EMIMWrbakvPjTgg+KTqioFsK5GsJGpjHC1BAiEA1YGZb0wHM8NUDONGUUbF/RQPlYkDLtwHux4dWP4MwhcCIQC7h67wmv06mHl4lgXWaeqaGJ0knPTHdyumf0rYiIiyGQIhAIj2BzBvTBt3jN5rmTsgNHgBu3GIoAMaYNc3HUpuRk7nAiEAjEDbVvokAEn/N2/Ep+sJWfyksrhs3i3DyL+VQ8NBsSkCIHChzdVah3gS53CgWIH7F8d1XmqxDMfchj+q2USXSGG6";
 

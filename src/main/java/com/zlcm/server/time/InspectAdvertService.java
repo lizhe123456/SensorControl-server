@@ -27,7 +27,8 @@ public class InspectAdvertService {
                 Advert advert = list.get(i);
                 long duration = advert.getDuration();
                 Date start = advert.getStartTime();
-                if (start != null && duration < DateUtil.pastS(start)){
+                Date date = new Date();
+                if (start != null && duration <= DateUtil.pastS(date) - DateUtil.pastS(start)){
                     //过期
                     advert.setState((byte) 3);
                     advertService.update(advert);

@@ -86,9 +86,10 @@ public class AppToDeviceController extends BaseController {
     public ResponseData getMyperiphery(HttpServletRequest request){
         double longitude = Double.parseDouble(request.getParameter("longitude"));
         double latitude = Double.parseDouble(request.getParameter("latitude"));
+        int page = Integer.parseInt(request.getParameter("page"));
         ResponseData responseData = ResponseData.ok();
         try {
-            List<AppDevice> devices = deviceService.findPeriphery(longitude,latitude,20,5);
+            List<AppDevice> devices = deviceService.findPeripheryD(longitude,latitude,20,page,5);
             if (devices == null){
                 responseData.putDataValue("devices",null);
                 return responseData;

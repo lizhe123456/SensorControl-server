@@ -7,6 +7,7 @@ import com.zlcm.server.model.bean.Log;
 import com.zlcm.server.model.bean.User;
 import com.zlcm.server.service.LogService;
 import com.zlcm.server.util.DateUtil;
+import com.zlcm.server.util.IPUtils;
 import com.zlcm.server.util.id.LoginId;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -106,7 +107,7 @@ public class SystemLogAspect {
         if(uid != null){
             String title="";
             String type="info";                       //日志类型(info:入库,error:错误)
-            String remoteAddr=request.getRemoteAddr();//请求的IP
+            String remoteAddr= IPUtils.getIpAddr(request);//请求的IP
             String requestUri=request.getRequestURI();//请求的Uri
             String method=request.getMethod();        //请求的方法类型(post/get)
             Map<String,String[]> params=request.getParameterMap(); //请求提交的参数

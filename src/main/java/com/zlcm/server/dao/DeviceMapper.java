@@ -14,6 +14,8 @@ public interface DeviceMapper extends BaseMapper<Device>{
 
     List<AppDevice> peripheryDevices(Map<String , Object> map);
 
+    List<AppDevice> peripheryDevicesImg(Map<String , Object> map);
+
     Device getDeviceFormMac(String mac);
 
     int findHouseholdNum(@Param("did") Integer did);
